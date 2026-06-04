@@ -1,0 +1,54 @@
+[
+  {
+    "version": "0.6.0",
+    "date": "2026-06-03",
+    "summary": "A fresh glass interface, smart knob alignment, and a real Windows installer.",
+    "changes": [
+      { "type": "new", "text": "**Smart alignment** — drop a crosshair on a knob's true centre so off-centre artwork spins perfectly, previewed on a smooth high-resolution animation." },
+      { "type": "new", "text": "**Preview transport** — play the animation, step frame-by-frame, or reset while you dial in the look." },
+      { "type": "new", "text": "**Windows installer** — choose your install folder, optional desktop and Start-Menu shortcuts, and a clean uninstaller; published automatically with a VirusTotal scan." },
+      { "type": "improved", "text": "A refreshed **glassmorphism** interface with a polished dark theme and an in-app About panel." }
+    ]
+  },
+  {
+    "version": "0.5.0",
+    "date": "2026-06-03",
+    "summary": "Meter components.",
+    "changes": [
+      { "type": "new", "text": "Build **LED-style meters** — segment bars with four fill directions, generated for you or layered from your own on/off art, discrete or smooth." }
+    ]
+  },
+  {
+    "version": "0.4.0",
+    "date": "2026-06-03",
+    "summary": "Batch processing.",
+    "changes": [
+      { "type": "new", "text": "**Batch mode** — point StripKit at a folder and render a whole set of source images into filmstrips in one pass, with live progress and a working cancel." }
+    ]
+  },
+  {
+    "version": "0.3.0",
+    "date": "2026-06-03",
+    "summary": "Importer and manifests.",
+    "changes": [
+      { "type": "new", "text": "**Filmstrip importer** — drop an existing strip and StripKit detects its frame count and orientation, extracts a single frame, or re-stacks it to a new layout." },
+      { "type": "new", "text": "Export a **skin.json manifest** that binds each strip to a parameter id, ready for a JUCE-style LookAndFeel loader." }
+    ]
+  },
+  {
+    "version": "0.2.0",
+    "date": "2026-06-03",
+    "summary": "App foundations.",
+    "changes": [
+      { "type": "improved", "text": "The three-tab workflow — **Create**, **Import**, and **Batch** — with drag-and-drop source loading." }
+    ]
+  },
+  {
+    "version": "0.1.0",
+    "date": "2026-06-02",
+    "summary": "First build.",
+    "changes": [
+      { "type": "new", "text": "The core filmstrip engine: turn a single transparent PNG into an animated sprite sheet for **knobs, faders, and sliders**." }
+    ]
+  }
+]

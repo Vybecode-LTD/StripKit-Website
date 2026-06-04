@@ -34,10 +34,16 @@
     var verText = (version ? 'v' + version + ' · ' : '') + 'Windows 10/11 · x64' + (sizeMb ? ' · ' + sizeMb : '');
     setEach(VER_IDS, function (el) { el.textContent = verText; });
 
-    if (data.body) {
+    // VirusTotal report link: prefer the asset's SHA-256 digest, fall back to
+    // the report URL embedded in the release notes.
+    var vtUrl = '';
+    if (asset.digest && asset.digest.indexOf('sha256:') === 0) {
+      vtUrl = 'https://www.virustotal.com/gui/file/' + asset.digest.slice(7);
+    } else if (data.body) {
       var m = data.body.match(/https:\/\/www\.virustotal\.com\/gui\/file\/[a-f0-9]+/);
-      if (m) setEach(VT_IDS, function (el) { el.href = m[0]; });
+      if (m) vtUrl = m[0];
     }
+    if (vtUrl) setEach(VT_IDS, function (el) { el.href = vtUrl; });
   }
 
   function fetchLatest() {

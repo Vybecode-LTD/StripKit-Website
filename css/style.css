@@ -137,7 +137,8 @@ a:hover { color: var(--accent-hi); }
 .stat-value { font-size: 1.6rem; font-weight: 800; color: var(--text); }
 .stat-label { font-size: .82rem; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
 
-.hero-shot { position: relative; }
+.hero-shot { position: relative; text-align: center; }
+.hero-shot .oss-badge { margin: 18px 0 0; }
 .shot-frame {
   position: relative;
   background: linear-gradient(160deg, #20242c, #14171d);

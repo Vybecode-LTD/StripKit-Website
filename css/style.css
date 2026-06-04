@@ -132,8 +132,8 @@ a:hover { color: var(--accent-hi); }
 .nav-gh { display: inline-flex; align-items: center; gap: 6px; }
 .nav-gh svg { width: 17px; height: 17px; fill: currentColor; }
 
-.hero-stats { list-style: none; display: flex; gap: 36px; margin-top: 40px; }
-.hero-stats li { display: flex; flex-direction: column; }
+.hero-stats { list-style: none; display: flex; justify-content: center; gap: 36px; margin-top: 40px; }
+.hero-stats li { display: flex; flex-direction: column; align-items: center; text-align: center; }
 .stat-value { font-size: 1.6rem; font-weight: 800; color: var(--text); }
 .stat-label { font-size: .82rem; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
 

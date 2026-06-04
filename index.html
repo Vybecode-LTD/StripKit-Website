@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StripKit — Animated Filmstrip Generator for Audio-Plugin GUIs</title>
+  <meta name="description" content="StripKit turns a single transparent PNG into animated filmstrip sprite sheets for audio-plugin knobs, faders, sliders, and meters — with smart alignment, batch processing, and JUCE-ready manifests." />
+  <meta name="theme-color" content="#e8440a" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="StripKit — Animated Filmstrip Generator" />
+  <meta property="og:description" content="One PNG in, an animated knob/fader/slider/meter filmstrip out. Built for audio-plugin GUIs." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://stripkit.pro" />
+  <meta property="og:image" content="https://stripkit.pro/resources/screenshot.png" />
+
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="apple-touch-icon" href="resources/stripkit-icon.png" />
+  <link rel="preconnect" href="https://api.github.com" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ===== Header ===== -->
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a class="brand" href="#top" aria-label="StripKit home">
+        <img src="resources/stripkit-icon.png" alt="" class="brand-mark" />
+        <span class="brand-name">StripKit</span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="#features">Features</a>
+        <a href="#download">Download</a>
+        <a href="#changelog">Changelog</a>
+        <a class="btn btn-sm" id="nav-download-btn" href="#download">Get StripKit</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow">Filmstrip generator for plugin UIs</span>
+        <h1>One PNG in.<br />A flawless animated <span class="accent">filmstrip</span> out.</h1>
+        <p class="lede">
+          StripKit turns a single transparent image into a frame-perfect sprite sheet for
+          rotary knobs, faders, sliders, and meters — the exact format a JUCE-style
+          LookAndFeel loads, one frame per parameter value.
+        </p>
+        <div class="hero-cta">
+          <a class="btn btn-lg" id="download-btn" href="#download">Download for Windows</a>
+          <div class="cta-meta">
+            <span id="download-version">Windows 10/11 · x64</span>
+            <a href="#" id="vt-link" class="vt-badge" target="_blank" rel="noopener">VirusTotal verified</a>
+          </div>
+        </div>
+        <ul class="hero-stats">
+          <li><span class="stat-value">4</span><span class="stat-label">control types</span></li>
+          <li><span class="stat-value">32–128</span><span class="stat-label">frames</span></li>
+          <li><span class="stat-value">@2x</span><span class="stat-label">HiDPI export</span></li>
+        </ul>
+      </div>
+      <div class="hero-shot">
+        <div class="shot-frame">
+          <img src="resources/screenshot.png" alt="The StripKit application window"
+               onerror="this.closest('.shot-frame').classList.add('shot-pending')" />
+          <div class="shot-placeholder">App preview</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Features ===== -->
+  <section class="features" id="features">
+    <div class="container">
+      <header class="section-head">
+        <span class="eyebrow">Everything in the box</span>
+        <h2>Built for plugin asset production</h2>
+        <p>From a single source image to a shippable, manifest-bound sprite sheet — without leaving the app.</p>
+      </header>
+
+      <div class="feature-grid">
+        <article class="feature-card">
+          <div class="feature-icon">⟳</div>
+          <h3>Rotary knobs</h3>
+          <p>Sweep 270°, 300°, 360° or any custom range, rotated about the knob's true centre so it spins clean — no wobble.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon">↕</div>
+          <h3>Faders &amp; sliders</h3>
+          <p>Vertical faders and horizontal sliders: the cap travels its track with pixel-accurate end margins.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon">▮▮▮</div>
+          <h3>Meters</h3>
+          <p>Procedural LED segments or layered on/off art, four fill directions, discrete or continuous.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon">◎</div>
+          <h3>Smart alignment</h3>
+          <p>Auto-detects the spin centre on load; a draggable crosshair lets you nail it by eye on a smooth 1024-step preview.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon">⇊</div>
+          <h3>Filmstrip importer</h3>
+          <p>Drop an existing strip — StripKit detects its frame count and orientation, extracts a frame, or re-stacks it.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon">▦</div>
+          <h3>Batch processing</h3>
+          <p>Point it at a folder and render a whole set of sources to strips in one off-thread pass, with progress and cancel.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon">{ }</div>
+          <h3>skin.json manifest</h3>
+          <p>Emit a schema-valid manifest that binds each strip to a parameter id — ready for a JUCE LookAndFeel loader.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon">✦</div>
+          <h3>Crisp rendering</h3>
+          <p>Supersampling + a Mitchell cubic resampler keep rotated edges sharp; export @2x for HiDPI in one toggle.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon">▷</div>
+          <h3>Live preview</h3>
+          <p>Scrub, play, or step frame-by-frame and watch the control animate before you ever hit export.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Download ===== -->
+  <section class="download" id="download">
+    <div class="container download-card">
+      <div class="download-copy">
+        <span class="eyebrow">Free download</span>
+        <h2>Get StripKit for Windows</h2>
+        <p>A signed installer with a desktop shortcut, Start-Menu entry, and a clean uninstaller. Pulls the latest build straight from GitHub Releases.</p>
+        <a class="btn btn-lg" id="download-btn-2" href="#">Download for Windows</a>
+        <p class="download-sub"><span id="download-version-2">Windows 10/11 · x64</span></p>
+        <p class="download-vt"><a href="#" id="vt-link-2" target="_blank" rel="noopener">🛡 Scanned with VirusTotal</a></p>
+      </div>
+      <ul class="download-points">
+        <li>Choose your own install location</li>
+        <li>Optional desktop icon &amp; Start-Menu group</li>
+        <li>Full uninstaller — leaves nothing behind</li>
+        <li>No account, no telemetry</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== Changelog ===== -->
+  <section class="changelog" id="changelog">
+    <div class="container">
+      <header class="section-head">
+        <span class="eyebrow">What's new</span>
+        <h2>Recent updates</h2>
+        <p>The three latest releases. <a href="changelog.html">See the full changelog →</a></p>
+      </header>
+      <div class="update-timeline" id="changelog-timeline">
+        <p class="muted">Loading the latest changes…</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <img src="resources/stripkit-icon.png" alt="" class="footer-mark" />
+        <div>
+          <div class="footer-name">StripKit</div>
+          <div class="footer-tag">Animated filmstrip generator for audio-plugin GUIs.</div>
+        </div>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+      <div class="footer-maker">
+        <span>Made by</span>
+        <a href="https://vybeco.de" target="_blank" rel="noopener" class="maker-link">
+          <img src="resources/vybeco-logo.png" alt="VybeCode" class="maker-logo" />
+        </a>
+        <span class="footer-copy">© <span id="year">2026</span> VybeCode Software</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/download.js" defer></script>
+  <script src="js/changelog.js" defer></script>
+  <script src="js/main.js" defer></script>
+</body>
+</html>

@@ -96,7 +96,7 @@ a:hover { color: var(--accent-hi); }
 /* ===== Hero ===== */
 .hero { padding: 84px 0 64px; }
 .hero-grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: 56px; align-items: center; }
-.hero-copy h1 { font-size: clamp(2.2rem, 4.4vw, 3.5rem); line-height: 1.08; letter-spacing: -.02em; font-weight: 800; }
+.hero-copy h1 { font-size: clamp(1.98rem, 3.96vw, 3.15rem); line-height: 1.08; letter-spacing: -.02em; font-weight: 800; }
 .lede { font-size: 1.16rem; color: var(--text-2); margin: 22px 0 30px; max-width: 36ch; }
 .hero-cta { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
 .cta-meta { display: flex; flex-direction: column; gap: 2px; font-size: .85rem; color: var(--muted); }

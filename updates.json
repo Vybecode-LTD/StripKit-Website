@@ -1,5 +1,15 @@
 [
   {
+    "version": "0.7.0",
+    "date": "2026-06-04",
+    "summary": "Export ready-to-paste loader code for your plugin, and a Serum-style value arc on knobs.",
+    "changes": [
+      { "type": "new", "text": "**Code export** — every export can now also write ready-to-paste loader code next to the PNG. Choose your target: **JUCE** (`LookAndFeel` filmstrip slider/knob), **CSS/HTML** (self-contained sprite + value setter), **iPlug2** (bitmap control), or **HISE** (ScriptPanel paint routine). Preview and copy to clipboard right in the app — no hand-wiring step." },
+      { "type": "new", "text": "**Value arc / fill ring** — add a Serum/Vital-style arc that sweeps with the knob's value. Configure the colour, thickness, glow, gradient, and end caps. Off by default — existing exports are unchanged." },
+      { "type": "improved", "text": "Open-sourced under the **MIT license**. Public README with badges and a contributing guide, CI on every pull request." }
+    ]
+  },
+  {
     "version": "0.6.0",
     "date": "2026-06-03",
     "summary": "A fresh glass interface, smart knob alignment, and a real Windows installer.",

@@ -1,5 +1,17 @@
 [
   {
+    "version": "0.8.0",
+    "date": "2026-06-05",
+    "summary": "Layered knobs, a Skin tab, importer resampling, batch meter support, and a signed installer.",
+    "changes": [
+      { "type": "new", "text": "**Layered knob animation** — load a separate base and pointer image so only the pointer rotates while the body stays crisp. Plus **auto-extract from flat art**: one click splits a single knob image into the two layers automatically." },
+      { "type": "new", "text": "**Skin tab** — bind multiple exported strips into one `skin.json` manifest. Add controls from strips or blank, edit each control's type, parameter, bounds, and value range, then export a single multi-control skin file." },
+      { "type": "new", "text": "**Importer resampling** — re-time an existing strip to a different frame count (nearest-frame, no ghosting). First and last frames always land on min/max." },
+      { "type": "improved", "text": "**Batch meter support** — the Batch tab now exposes meter settings (segments, fill direction, on/off colours) and a backdrop toggle for layered vs procedural meters." },
+      { "type": "improved", "text": "**Signed installer** — the app and installer are now code-signed with a Microsoft-verified certificate. SmartScreen no longer warns on first run." }
+    ]
+  },
+  {
     "version": "0.7.0",
     "date": "2026-06-04",
     "summary": "Export ready-to-paste loader code for your plugin, and a Serum-style value arc on knobs.",

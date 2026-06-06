@@ -1,5 +1,15 @@
 [
   {
+    "version": "1.0.0",
+    "date": "2026-06-06",
+    "summary": "StripKit 1.0 — import layered PSD & SVG knobs, plus a built-in Getting Started guide.",
+    "changes": [
+      { "type": "new", "text": "**Layered PSD / SVG import** — drop a layered knob from Photoshop (`.psd`) or Illustrator / Inkscape / Figma (`.svg`) and StripKit turns each layer into a tagged layer automatically. Set the body to stay put and the indicator to rotate, then export a clean layered filmstrip — no hand-splitting." },
+      { "type": "new", "text": "**Interactive Getting Started guide** — a built-in, re-openable walkthrough for every tab (Create, Import, Batch, Skin), with a one-click **sample knob** so you can try the whole flow with no art of your own. It opens on first run and is always available from the **Help** button." },
+      { "type": "improved", "text": "**Refined About box** — now a centered dialog showing the live app version, plus helpful tooltips on the main controls." }
+    ]
+  },
+  {
     "version": "0.8.0",
     "date": "2026-06-05",
     "summary": "Layered knobs, a Skin tab, importer resampling, batch meter support, and a signed installer.",

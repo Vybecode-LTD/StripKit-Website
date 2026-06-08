@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Getting Started — StripKit</title>
+  <meta name="description" content="Make your first animated filmstrip in under 5 minutes. Step-by-step guide to StripKit: load art, pick a control type, preview, and export JUCE-ready sprite sheets for audio-plugin knobs, faders, sliders, and meters." />
+  <meta name="theme-color" content="#e8440a" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Getting Started — StripKit" />
+  <meta property="og:description" content="Load a PNG, pick a control type, set frame count, preview, export. Your first filmstrip in 5 minutes." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://stripkit.pro/getting-started.html" />
+  <meta property="og:image" content="https://stripkit.pro/resources/screenshot.png" />
+
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="apple-touch-icon" href="resources/stripkit-icon.png" />
+  <link rel="stylesheet" href="css/style.css" />
+
+  <style>
+    /* ===== Getting Started page ===== */
+
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: .88em;
+      background: rgba(232,68,10,.09);
+      color: var(--accent-ink);
+      padding: 1px 6px;
+      border-radius: 5px;
+      white-space: nowrap;
+    }
+
+    /* Active nav link */
+    .nav a[aria-current="page"] { color: var(--accent); }
+
+    /* ---- Hero ---- */
+    .gs-hero {
+      padding: 72px 0 56px;
+      text-align: center;
+    }
+    .gs-hero-inner { max-width: 680px; margin: 0 auto; }
+    .gs-hero h1 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -.02em;
+      line-height: 1.1;
+      margin: 12px 0 20px;
+    }
+    .gs-hero .lede {
+      font-size: 1.14rem;
+      color: var(--text-2);
+      max-width: 46ch;
+      margin: 0 auto 32px;
+    }
+    .gs-hero .hero-cta { justify-content: center; margin-bottom: 48px; }
+    .gs-hero-shot { max-width: 920px; margin: 0 auto; }
+    .gs-hero-shot .shot-frame { min-height: 300px; }
+
+    /* ---- Steps ---- */
+    .gs-steps-section { padding: 72px 0 64px; }
+
+    .steps-flow {
+      display: grid;
+      gap: 0;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .gs-step {
+      display: grid;
+      grid-template-columns: 52px 1fr;
+      column-gap: 24px;
+      padding-bottom: 52px;
+    }
+    .gs-step:last-child { padding-bottom: 0; }
+
+    .step-track {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .step-num {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      display: grid; place-items: center;
+      font-size: 1.05rem; font-weight: 800;
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent), var(--accent-hi));
+      box-shadow: var(--shadow-accent);
+      flex-shrink: 0;
+      z-index: 1;
+    }
+    .step-line {
+      width: 2px; flex: 1;
+      background: var(--line);
+      margin-top: 10px;
+    }
+    .gs-step:last-child .step-line { display: none; }
+
+    .step-content { padding-top: 9px; }
+    .step-content h3 {
+      font-size: 1.22rem; font-weight: 700;
+      margin-bottom: 11px; color: var(--text);
+    }
+    .step-content p {
+      font-size: .97rem; color: var(--text-2);
+      line-height: 1.65; margin-bottom: 12px;
+    }
+    .step-content ul {
+      list-style: none; display: grid; gap: 7px;
+      margin-bottom: 14px; padding: 0;
+    }
+    .step-content ul li {
+      font-size: .95rem; color: var(--text-2);
+      padding-left: 22px; position: relative;
+    }
+    .step-content ul li::before {
+      content: "→"; position: absolute; left: 0;
+      color: var(--accent); font-weight: 700;
+    }
+
+    /* Tip callout */
+    .tip {
+      background: linear-gradient(135deg, rgba(232,68,10,.07), rgba(255,90,30,.04));
+      border-left: 3px solid var(--accent);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 12px 16px;
+      font-size: .9rem; color: var(--text-2); line-height: 1.55;
+    }
+    .tip strong { color: var(--accent-ink); font-weight: 700; }
+
+    /* ---- Control types ---- */
+    .ctrl-section {
+      padding: 64px 0 72px;
+      background: var(--surface-2);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .ctrl-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .ctrl-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 22px 20px;
+      box-shadow: var(--shadow-sm);
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+    .ctrl-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+      border-color: #f0c3b0;
+    }
+    .ctrl-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      display: grid; place-items: center;
+      font-size: 1.2rem; color: var(--accent);
+      background: linear-gradient(135deg, rgba(232,68,10,.12), rgba(255,90,30,.08));
+      border: 1px solid rgba(232,68,10,.18);
+      margin-bottom: 14px;
+    }
+    .ctrl-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .ctrl-card > p { font-size: .9rem; color: var(--text-2); margin-bottom: 12px; }
+    .ctrl-detail { list-style: none; display: grid; gap: 5px; padding: 0; }
+    .ctrl-detail li {
+      font-size: .84rem; color: var(--muted);
+      padding-left: 14px; position: relative;
+    }
+    .ctrl-detail li::before {
+      content: "·"; position: absolute; left: 0;
+      color: var(--accent); font-weight: 900;
+    }
+
+    /* ---- JUCE code ---- */
+    .code-section { padding: 72px 0; }
+    .code-inner { max-width: 860px; margin: 0 auto; }
+    .code-inner .section-head { margin-bottom: 36px; }
+    .code-inner .section-head p code {
+      font-size: .82em;
+    }
+
+    .code-wrap {
+      background: #1a1e26;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      border: 1px solid rgba(255,255,255,.07);
+    }
+    .code-bar {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 10px 18px;
+      background: #0d1017;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+    .code-lang {
+      font-size: .73rem; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: #636e7b;
+    }
+    .copy-btn {
+      font-size: .78rem; font-weight: 600; color: #8b949e;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 6px; padding: 4px 12px;
+      cursor: pointer; transition: background .15s, color .15s;
+    }
+    .copy-btn:hover { background: rgba(255,255,255,.12); color: #dde3ea; }
+    .copy-btn.copied { color: #56d364; border-color: rgba(86,211,100,.3); }
+
+    .code-body {
+      padding: 24px 24px 28px;
+      overflow-x: auto;
+    }
+    .code-body pre {
+      margin: 0;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: .82rem; line-height: 1.78; color: #c9d1d9;
+      white-space: pre; tab-size: 4;
+    }
+    /* Syntax colours */
+    .c  { color: #6e7681; }  /* comment */
+    .kw { color: #ff7b72; }  /* keyword / directive */
+    .ty { color: #79c0ff; }  /* type / class name */
+    .fn { color: #d2a8ff; }  /* function call */
+    .st { color: #a5d6ff; }  /* string / include */
+    .nm { color: #f0883e; }  /* number */
+    .cm { color: #e3b341; }  /* BinaryData constant */
+
+    .code-note { margin-top: 20px; }
+
+    /* ---- Advanced / next steps ---- */
+    .next-section {
+      padding: 64px 0 80px;
+      background: var(--surface-2);
+      border-top: 1px solid var(--line);
+    }
+    .next-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px; max-width: 800px; margin: 0 auto;
+    }
+    .next-card {
+      display: flex; gap: 16px; align-items: flex-start;
+      background: var(--surface); border: 1px solid var(--line);
+      border-radius: var(--radius); padding: 20px 22px;
+      box-shadow: var(--shadow-sm);
+      transition: transform .15s, box-shadow .15s, border-color .15s;
+      text-decoration: none; color: var(--text);
+    }
+    .next-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md); border-color: #f0c3b0; color: var(--text);
+    }
+    .next-icon {
+      width: 40px; height: 40px; flex-shrink: 0;
+      border-radius: 10px; display: grid; place-items: center;
+      font-size: 1rem; color: var(--accent);
+      background: linear-gradient(135deg, rgba(232,68,10,.12), rgba(255,90,30,.08));
+      border: 1px solid rgba(232,68,10,.18);
+    }
+    .next-body h4 { font-size: .97rem; font-weight: 700; margin-bottom: 5px; }
+    .next-body p  { font-size: .88rem; color: var(--text-2); line-height: 1.52; }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 760px) {
+      .gs-step { grid-template-columns: 40px 1fr; column-gap: 16px; }
+      .step-num { width: 36px; height: 36px; font-size: .92rem; }
+      .ctrl-grid { grid-template-columns: repeat(2, 1fr); }
+      .next-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .ctrl-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== Header ===== -->
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="StripKit home">
+        <img src="resources/stripkit-icon.png" alt="" class="brand-mark" />
+        <span class="brand-name">StripKit</span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="index.html#features">Features</a>
+        <a href="getting-started.html" aria-current="page">Guide</a>
+        <a href="index.html#download">Download</a>
+        <a href="changelog.html">Changelog</a>
+        <a class="nav-gh" href="https://github.com/Vybecode-LTD/stripkit" target="_blank" rel="noopener"
+           aria-label="StripKit on GitHub">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.5v-1.8c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17 4.7 18 5 18 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.3v3.3c0 .3.2.7.8.5A11.5 11.5 0 0 0 23.5 12C23.5 5.7 18.3.5 12 .5z"/></svg>
+          GitHub
+        </a>
+        <a class="btn btn-sm" href="index.html#download">Get StripKit</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ===== Hero ===== -->
+    <section class="gs-hero">
+      <div class="container gs-hero-inner">
+        <span class="eyebrow">Getting started</span>
+        <h1>Your first filmstrip<br />in 5 minutes</h1>
+        <p class="lede">
+          Open StripKit, drop in your transparent PNG, choose a control type,
+          and hit Export. This guide walks you through every step — and shows
+          you how to load the result straight into JUCE.
+        </p>
+        <div class="hero-cta">
+          <a class="btn btn-lg" href="index.html#download">Download StripKit</a>
+          <span class="muted" style="font-size:.9rem;">Free · Windows 10/11 · x64</span>
+        </div>
+      </div>
+      <div class="container gs-hero-shot">
+        <div class="shot-frame">
+          <img src="resources/screenshot.png"
+               alt="StripKit — the Create tab with a knob loaded and the filmstrip preview running"
+               onerror="this.closest('.shot-frame').classList.add('shot-pending')" />
+          <div class="shot-placeholder">App preview</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Step-by-step ===== -->
+    <section class="gs-steps-section">
+      <div class="container">
+        <header class="section-head">
+          <span class="eyebrow">Step by step</span>
+          <h2>The core workflow</h2>
+          <p>Five steps from a blank canvas to a shippable, loader-ready sprite sheet.</p>
+        </header>
+
+        <div class="steps-flow">
+
+          <!-- 1 -->
+          <div class="gs-step">
+            <div class="step-track">
+              <div class="step-num">1</div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-content">
+              <h3>Load your source art</h3>
+              <p>
+                Drag-and-drop a transparent PNG onto the preview area, or click
+                <strong>Load source image…</strong> in the Create tab. StripKit
+                accepts any PNG with an alpha channel — a knob face, fader cap,
+                slider thumb, meter art, or a layered SVG / PSD.
+              </p>
+              <p>
+                On load, StripKit automatically detects the opaque-content centre
+                and uses it as the rotation pivot. For most well-prepared art this
+                just works with no manual adjustment.
+              </p>
+              <div class="tip">
+                <strong>Tip:</strong> Leave ~10% transparent margin around knob
+                art. Rotation clips at the image boundary, so a tight crop will
+                cut corners on extreme frames.
+              </div>
+            </div>
+          </div>
+
+          <!-- 2 -->
+          <div class="gs-step">
+            <div class="step-track">
+              <div class="step-num">2</div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-content">
+              <h3>Choose your control type</h3>
+              <p>
+                Pick one of the four types in the <strong>Type</strong> dropdown.
+                The type determines how the per-frame transform is computed:
+              </p>
+              <ul>
+                <li><strong>Knob</strong> — rotary sweep, default 270° (-135° to +135°)</li>
+                <li><strong>Fader</strong> — vertical cap that travels a fixed pixel distance</li>
+                <li><strong>Slider</strong> — horizontal cap, same travel logic as Fader</li>
+                <li><strong>Meter</strong> — progressive fill; procedural or layered art</li>
+              </ul>
+              <div class="tip">
+                <strong>Tip:</strong> You don't need source art for a procedural
+                Meter — StripKit draws the LED segments itself. Just set the
+                segment count, size, gap, and colour.
+              </div>
+            </div>
+          </div>
+
+          <!-- 3 -->
+          <div class="gs-step">
+            <div class="step-track">
+              <div class="step-num">3</div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-content">
+              <h3>Set frame count &amp; sweep</h3>
+              <p>
+                Frame count controls how smooth the animation looks and how large
+                the output file is. <strong>64 frames</strong> is the right
+                default for most UIs.
+              </p>
+              <ul>
+                <li><strong>32 frames</strong> — compact; looks good at small on-screen sizes</li>
+                <li><strong>64 frames</strong> — standard; smooth at typical 64–128 px knob sizes</li>
+                <li><strong>128 frames</strong> — premium; ideal for large or HiDPI knobs</li>
+              </ul>
+              <p>
+                For <strong>knobs</strong>, adjust the start/end angles if you
+                need a range other than 270°. For <strong>faders and sliders</strong>,
+                set the travel distance in pixels (how far the cap moves from
+                minimum to maximum).
+              </p>
+              <div class="tip">
+                <strong>Tip:</strong> The last frame always lands
+                exactly on the max angle — the divisor is <code>N−1</code>, not
+                <code>N</code>. This is by design: frame 0 = min, frame N−1 = max.
+              </div>
+            </div>
+          </div>
+
+          <!-- 4 -->
+          <div class="gs-step">
+            <div class="step-track">
+              <div class="step-num">4</div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-content">
+              <h3>Preview and align</h3>
+              <p>
+                The live preview updates whenever you change a setting. Drag the
+                scrubber to step through frames, or press <strong>Play</strong>
+                to watch a looping animation.
+              </p>
+              <p>
+                If the knob wobbles, the auto-detected centre may need adjusting.
+                Use any of these tools in the <strong>Alignment</strong> panel:
+              </p>
+              <ul>
+                <li><strong>Auto-centre</strong> — recalculates from the opaque bounding box</li>
+                <li><strong>Crosshair guide</strong> — drag a visual overlay to pin the exact spin centre, then click <strong>Pin</strong></li>
+                <li><strong>Centre X / Y</strong> — type a fractional value directly (0.5, 0.5 = image centre)</li>
+              </ul>
+              <div class="tip">
+                <strong>Tip:</strong> Step to frame 0 and frame N−1 and check
+                both endpoint positions carefully. Wobble is most visible at the
+                extremes, not in the middle.
+              </div>
+            </div>
+          </div>
+
+          <!-- 5 -->
+          <div class="gs-step">
+            <div class="step-track">
+              <div class="step-num">5</div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-content">
+              <h3>Export your filmstrip</h3>
+              <p>
+                Click <strong>Export filmstrip…</strong> and choose a save
+                location. StripKit writes a vertical PNG — frame 0 at the top,
+                frame N−1 at the bottom. Total height is
+                <code>frameHeight × frameCount</code>.
+              </p>
+              <ul>
+                <li><strong>@2x export</strong> — doubles the resolution for HiDPI displays; name ends in <code>@2x.png</code></li>
+                <li><strong>skin.json manifest</strong> — a schema-valid JSON file that binds the strip to a parameter id and records its dimensions</li>
+                <li><strong>Loader code</strong> — pick JUCE, iPlug2, CSS/HTML, or HISE; StripKit writes a ready-to-paste file next to the PNG</li>
+              </ul>
+              <div class="tip">
+                <strong>Tip:</strong> Enable <strong>Export loader code → JUCE</strong>
+                and StripKit generates a <code>.juce.h</code> file alongside the
+                PNG — copy it into your project and you're done.
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /steps-flow -->
+      </div>
+    </section>
+
+    <!-- ===== Control type reference ===== -->
+    <section class="ctrl-section">
+      <div class="container">
+        <header class="section-head">
+          <span class="eyebrow">Control types</span>
+          <h2>What each type needs</h2>
+          <p>Each control type has its own art requirements and per-frame rendering logic.</p>
+        </header>
+
+        <div class="ctrl-grid">
+
+          <div class="ctrl-card">
+            <div class="ctrl-icon">⟳</div>
+            <h3>Knob</h3>
+            <p>A rotary control swept through a customisable arc.</p>
+            <ul class="ctrl-detail">
+              <li>Transparent PNG of the full knob face</li>
+              <li>Default sweep: 270° (−135° → +135°)</li>
+              <li>64 frames recommended</li>
+              <li>Layered mode: static base + rotating pointer</li>
+            </ul>
+          </div>
+
+          <div class="ctrl-card">
+            <div class="ctrl-icon">↕</div>
+            <h3>Fader</h3>
+            <p>A vertical cap that travels the length of a track.</p>
+            <ul class="ctrl-detail">
+              <li>Transparent PNG of the cap only</li>
+              <li>Set travel in pixels (min → max)</li>
+              <li>Frames stack vertically by default</li>
+              <li>Track background drawn separately in your plugin</li>
+            </ul>
+          </div>
+
+          <div class="ctrl-card">
+            <div class="ctrl-icon">↔</div>
+            <h3>Slider</h3>
+            <p>A horizontal cap — same logic as Fader, rotated 90°.</p>
+            <ul class="ctrl-detail">
+              <li>Transparent PNG of the cap only</li>
+              <li>Set travel in pixels (min → max)</li>
+              <li>Cap moves left to right</li>
+              <li>Track background drawn separately in your plugin</li>
+            </ul>
+          </div>
+
+          <div class="ctrl-card">
+            <div class="ctrl-icon">▮▮▮</div>
+            <h3>Meter</h3>
+            <p>A progressive fill — procedural or layered art.</p>
+            <ul class="ctrl-detail">
+              <li>No art needed for procedural mode</li>
+              <li>Layered mode: source = lit-segment overlay</li>
+              <li>Four fill directions (up/down/left/right)</li>
+              <li>Discrete or continuous fill</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== JUCE code ===== -->
+    <section class="code-section">
+      <div class="container code-inner">
+        <header class="section-head">
+          <span class="eyebrow">JUCE integration</span>
+          <h2>Load the strip in your plugin</h2>
+          <p>
+            A single <code>LookAndFeel</code> override is all you need.
+            StripKit can generate this file for you — enable
+            <strong>Export loader code → JUCE</strong> in the Export panel
+            before you click Export.
+          </p>
+        </header>
+
+        <div class="code-wrap">
+          <div class="code-bar">
+            <span class="code-lang">C++ / JUCE</span>
+            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">Copy</button>
+          </div>
+          <div class="code-body">
+<pre><span class="c">// MyKnobLookAndFeel.h — generated by StripKit (https://stripkit.pro)
+// Filmstrip: knob_strip.png — 64 frames, 128×128 px each, vertical stack.
+// Assign to your Slider: slider.setLookAndFeel(&amp;lnf);
+// Use RotaryHorizontalVerticalDrag style.</span>
+<span class="kw">#pragma once</span>
+
+<span class="kw">#include</span> <span class="st">&lt;juce_gui_basics/juce_gui_basics.h&gt;</span>
+<span class="kw">#include</span> <span class="st">&lt;cmath&gt;</span>
+
+<span class="kw">class</span> <span class="ty">MyKnobLookAndFeel</span> : <span class="kw">public</span> <span class="ty">juce::LookAndFeel_V4</span>
+{
+<span class="kw">public:</span>
+    <span class="ty">MyKnobLookAndFeel</span>()
+    {
+        <span class="c">// Embed via Projucer / CMake BinaryData (recommended).  Alternatively:</span>
+        <span class="c">//   filmStrip = juce::ImageFileFormat::loadFrom(juce::File("knob_strip.png"));</span>
+        filmStrip = <span class="ty">juce::ImageCache::</span><span class="fn">getFromMemory</span>(
+            <span class="cm">BinaryData::knob_strip_png</span>,
+            <span class="cm">BinaryData::knob_strip_pngSize</span>);
+    }
+
+    <span class="kw">void</span> <span class="fn">drawRotarySlider</span>(<span class="ty">juce::Graphics</span>&amp; g,
+                          <span class="kw">int</span> x, <span class="kw">int</span> y, <span class="kw">int</span> w, <span class="kw">int</span> h,
+                          <span class="kw">float</span> pos, <span class="kw">float</span>, <span class="kw">float</span>,
+                          <span class="ty">juce::Slider</span>&amp;) <span class="kw">override</span>
+    {
+        <span class="kw">const int</span> frames = <span class="nm">64</span>;
+        <span class="kw">const int</span> frameW  = <span class="nm">128</span>;
+        <span class="kw">const int</span> frameH  = <span class="nm">128</span>;
+        <span class="kw">const int</span> frame   = <span class="ty">juce::</span><span class="fn">jlimit</span>(<span class="nm">0</span>, frames - <span class="nm">1</span>,
+                                (<span class="kw">int</span>) std::<span class="fn">lround</span>(pos * (frames - <span class="nm">1</span>)));
+
+        g.<span class="fn">drawImage</span>(filmStrip,
+                    x, y, w, h,              <span class="c">// destination rect</span>
+                    <span class="nm">0</span>, frame * frameH, frameW, frameH); <span class="c">// source frame</span>
+    }
+
+<span class="kw">private:</span>
+    <span class="ty">juce::Image</span> filmStrip;
+};</pre>
+          </div>
+        </div>
+
+        <div class="code-note">
+          <div class="tip">
+            <strong>Let StripKit write this file for you.</strong>
+            Tick <strong>Export loader code → JUCE</strong> in the Export panel — StripKit writes
+            <code>knob_strip.juce.h</code> alongside your PNG with the exact frame count,
+            frame dimensions, and stack direction already filled in. iPlug2, CSS/HTML, and
+            HISE targets are available in the same panel.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== What's next ===== -->
+    <section class="next-section">
+      <div class="container">
+        <header class="section-head">
+          <span class="eyebrow">Go further</span>
+          <h2>More in StripKit</h2>
+          <p>Once you have the core workflow down, these features unlock the rest of the toolset.</p>
+        </header>
+
+        <div class="next-grid">
+
+          <a class="next-card" href="index.html#features">
+            <div class="next-icon">⇊</div>
+            <div class="next-body">
+              <h4>Import an existing strip</h4>
+              <p>
+                Drop any filmstrip into the <strong>Import</strong> tab. StripKit
+                detects its frame count and orientation automatically — then you
+                can re-slice, flip the stack direction, or resample to a new
+                frame count.
+              </p>
+            </div>
+          </a>
+
+          <a class="next-card" href="index.html#features">
+            <div class="next-icon">▦</div>
+            <div class="next-body">
+              <h4>Batch render a folder</h4>
+              <p>
+                Have a whole folder of source PNGs? The <strong>Batch</strong>
+                tab renders them all in one off-thread pass using a shared
+                template — frame count, sweep, @2x, and code export all apply
+                to every file.
+              </p>
+            </div>
+          </a>
+
+          <a class="next-card" href="index.html#features">
+            <div class="next-icon">◑</div>
+            <div class="next-body">
+              <h4>Layered knobs</h4>
+              <p>
+                Split your knob into a static <strong>base</strong> and a
+                rotating <strong>pointer</strong> — only the indicator moves,
+                so the body stays crisp at every position. Load them as separate
+                PNGs, or let StripKit auto-extract the pointer from a flat knob.
+              </p>
+            </div>
+          </a>
+
+          <a class="next-card" href="index.html#features">
+            <div class="next-icon">✦</div>
+            <div class="next-body">
+              <h4>AI-generated art</h4>
+              <p>
+                The <strong>Generate</strong> tab takes a style prompt and your
+                own OpenAI, Gemini, or Claude API key, and produces a layered
+                knob SVG — body and pointer in separate groups — ready to render
+                straight to a filmstrip. No external design tool needed.
+              </p>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <img src="resources/stripkit-icon.png" alt="" class="footer-mark" />
+        <div>
+          <div class="footer-name">StripKit</div>
+          <div class="footer-tag">Animated filmstrip generator for audio-plugin GUIs.</div>
+        </div>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="contact.html">Contact</a>
+        <a href="https://github.com/Vybecode-LTD/stripkit" target="_blank" rel="noopener">Source (MIT)</a>
+      </nav>
+      <div class="footer-maker">
+        <span>Made by</span>
+        <a href="https://vybeco.de" target="_blank" rel="noopener" class="maker-link">
+          <img src="resources/vybeco-logo.png" alt="VybeCode" class="maker-logo" />
+        </a>
+        <span class="footer-copy">© <span id="year">2026</span> VybeCode Software</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    function copyCode(btn) {
+      const pre = btn.closest(".code-wrap").querySelector("pre");
+      // Strip HTML tags to get plain text
+      const text = pre.innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        btn.textContent = "Copied!";
+        btn.classList.add("copied");
+        setTimeout(() => {
+          btn.textContent = "Copy";
+          btn.classList.remove("copied");
+        }, 2000);
+      }).catch(() => {
+        // Fallback: select the text
+        const range = document.createRange();
+        range.selectNode(pre);
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+      });
+    }
+  </script>
+
+</body>
+</html>

@@ -1,14 +1,24 @@
 [
   {
+    "version": "1.2.0",
+    "date": "2026-06-09",
+    "summary": "Button filmstrips, AI generates every control type, and a colour picker fix.",
+    "changes": [
+      { "type": "new", "text": "**Button filmstrips.** Create multi-state button art — off, on, hover, and pressed — the same way you make knobs and faders. Import a layered file with groups named `off` and `on` and StripKit assigns the states automatically." },
+      { "type": "new", "text": "**AI generates every control type.** The Generate tab now works for faders, sliders, and buttons as well as knobs — pick the type, describe your style, and get ready-to-use layered art." },
+      { "type": "fix", "text": "**Fixed: colour pickers.** The body and accent colour swatches in the Generate tab now open a real colour picker. Before this release they were display-only and clicking them did nothing." }
+    ]
+  },
+  {
     "version": "1.1.0",
     "date": "2026-06-07",
-    "summary": "Generate tab — AI-generated SVG control art (your own API key).",
+    "summary": "Generate tab — AI-generated control art using your own API key.",
     "changes": [
-      { "type": "new", "text": "**Generate tab — AI-generated SVG control art (your own API key).** A new **fifth tab** uses your own **OpenAI**, **Google Gemini**, or **Anthropic Claude** key to generate a **layered knob SVG** — a static `<g id=\"body\">` plus a separate `<g id=\"pointer\">` — which drops straight into the existing layered-import pipeline so only the pointer rotates (crisp at any resolution). One `IAssetGenerationService` builds a StripKit-aware prompt (square canvas, ~10% rotation margin, body+pointer groups, pointer drawn at 12 o'clock) and dispatches to one of three `IAssetGenerationProvider`s (Claude Messages / OpenAI Chat Completions / Gemini generateContent), all behind a shared `HttpClient`. The reply is carved down to a clean SVG by `SvgSanitizer` (strips scripts, event handlers, embedded raster, and off-document references) and **validated by importing it** — the preview is the real imported result, so what you see will import. **\"Use in Create\"** hands it to the Create tab (switches tabs + runs the layered import); **Save SVG** / **Copy SVG** reuse it anywhere. API keys are stored **encrypted per-user via Windows DPAPI** (`ISecretStore` / `DpapiSecretStore` → `%APPDATA%/StripKit/secrets.dat`, ciphertext only — never plaintext). Knob-first (the layered path is knob-only today; faders/sliders/meters follow). **App-only** — no renderer change, and **not** mirrored into `FilmstripEngine.cs`. New dependency: `System.Security.Cryptography.ProtectedData` 9.0.0." },
-      { "type": "new", "text": "**Generate tab: verified model dropdown.** Each provider now exposes a `SuggestedModels` list of current, validated model IDs; the model TextBox is replaced by a `ComboBox` that resets to the new provider's defaults when the user switches providers. Verified IDs: Claude (`claude-sonnet-4-6`, `claude-opus-4-8`, `claude-haiku-4-5-20251001`), OpenAI (`gpt-4o`, `gpt-4.1`, `gpt-4.1-mini`), Gemini (`gemini-2.5-flash`, `gemini-2.5-pro`, `gemini-2.5-flash-lite`). **Also fixes the Gemini crash**: `gemini-2.0-flash` was shut down 2026-06-01 — replaced with `gemini-2.5-flash`." },
-      { "type": "new", "text": "**Generate tab: body colour + accent colour inputs with live swatches.** Two hex TextBoxes (body and accent) in a side-by-side layout, each with a `HexToColorBrushConverter`-backed swatch `Border` that updates as you type. Body colour folds into the generation prompt; an empty body field lets the model choose. `AccentColorHex` was already sent; now displayed next to the swatch too." },
-      { "type": "new", "text": "**Generate tab: style effects checkboxes.** Four checkboxes — **Drop shadow**, **Outer glow**, **Bevel / 3D**, **Metallic sheen** — fold into the generation prompt as effect directives." },
-      { "type": "fix", "text": "**Off-centre knob wobble (content-centred placement).** The renderer now places the knob so its *content centre* lands at the frame centre, not the image-rectangle centre. An off-centre PNG (e.g. the bundled sample knob where the disc is off to one side) is now centred in the frame rather than left at its raw pixel position; the knob spins in place instead of orbiting. `ComputeTransform` uses `drawX = fw/2 − SourceCenterX·drawW` (identical to the old formula when `SourceCenterX = 0.5`, so all prior golden baselines are byte-identical). Mirrored in `FilmstripEngine.cs`. (`Centering_on_content_places_an_offcenter_knob_at_the_frame_centre`, suite →157)." }
+      { "type": "new", "text": "**AI-generated control art (use your own API key).** Paste in an OpenAI, Google Gemini, or Anthropic Claude key and StripKit generates a layered knob SVG for you — a static body plus a rotating pointer — ready to drop straight into your filmstrip. Your key is stored encrypted on your own machine, never sent anywhere else." },
+      { "type": "new", "text": "**One-click handoff.** Preview the generated art inside the app, then click \"Use in Create\" to jump straight to the filmstrip builder with the generated layers already loaded." },
+      { "type": "new", "text": "**Updated model list.** The Generate tab now shows a curated list of current, working model IDs for each provider. Also fixes a crash caused by a retired Gemini model." },
+      { "type": "new", "text": "**Body & accent colour controls.** Set the knob's base colour and the accent highlight before generating, using the new colour swatches in the Generate tab." },
+      { "type": "new", "text": "**Style effects.** Tick drop shadow, outer glow, bevel, or metallic sheen to include those effects in the generation prompt." }
     ]
   },
   {

@@ -1,5 +1,15 @@
 [
   {
+    "version": "1.2.1",
+    "date": "2026-06-14",
+    "summary": "Generated faders, sliders & buttons now work end-to-end.",
+    "changes": [
+      { "type": "new", "text": "**Generated faders, sliders & buttons now work end-to-end.** Picking a non-knob type in the Generate tab and clicking \"Use in Create\" now builds the right control — sliders slide, buttons toggle between states — instead of being treated as a knob." },
+      { "type": "new", "text": "**Safer SVG handling.** Imported and AI-generated SVGs are now parsed defensively, so a malformed or hostile file can't hang the app." },
+      { "type": "new", "text": "**Generation warnings.** The Generate tab tells you when a knob came back without a moving pointer (or a button without both on/off states) so you can regenerate before building the filmstrip." }
+    ]
+  },
+  {
     "version": "1.2.0",
     "date": "2026-06-09",
     "summary": "Button filmstrips, AI generates every control type, and a colour picker fix.",

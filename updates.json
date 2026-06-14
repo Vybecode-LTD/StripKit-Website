@@ -1,5 +1,14 @@
 [
   {
+    "version": "1.2.2",
+    "date": "2026-06-14",
+    "summary": "Type any model ID in the Generate tab.",
+    "changes": [
+      { "type": "new", "text": "**Type any model ID in the Generate tab.** The model field now accepts free text *and* the suggested list, so you can use a brand-new or private model the moment your provider ships it — and if a listed model is ever retired, just type the replacement instead of being stuck." },
+      { "type": "new", "text": "**Snappier generation.** Building the preview no longer briefly freezes the window on large canvases — the work now happens in the background." }
+    ]
+  },
+  {
     "version": "1.2.1",
     "date": "2026-06-14",
     "summary": "Generated faders, sliders & buttons now work end-to-end.",

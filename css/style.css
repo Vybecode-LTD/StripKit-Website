@@ -180,6 +180,8 @@ a:hover { color: var(--accent-hi); }
   border: 1px solid rgba(232,68,10,.18);
   margin-bottom: 16px;
 }
+/* The meter glyph is three bars (▮▮▮) — shrink + tighten so it fits inside the rounded square. */
+.feature-icon--bars { font-size: .72rem; letter-spacing: -.04em; }
 .feature-card h3 { font-size: 1.12rem; font-weight: 700; margin-bottom: 6px; }
 .feature-card p { color: var(--text-2); font-size: .96rem; }
 

@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tutorials — StripKit</title>
+  <meta name="description" content="The complete StripKit reference: every setting on every tab — Create, Import, Batch, Skin, Generate, and Assemble — plus keyboard shortcuts, render presets, and session persistence." />
+  <meta name="theme-color" content="#e8440a" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Tutorials — StripKit" />
+  <meta property="og:description" content="Every control, every default, every gotcha — across all six StripKit tabs." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://stripkit.pro/tutorials.html" />
+  <meta property="og:image" content="https://stripkit.pro/resources/screenshot.png" />
+
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="apple-touch-icon" href="resources/stripkit-icon.png" />
+  <link rel="stylesheet" href="css/style.css" />
+
+  <style>
+    /* ===== Tutorials page ===== */
+
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: .88em;
+      background: rgba(232,68,10,.09);
+      color: var(--accent-ink);
+      padding: 1px 6px;
+      border-radius: 5px;
+      white-space: nowrap;
+    }
+
+    .nav a[aria-current="page"] { color: var(--accent); }
+
+    /* ---- Hero ---- */
+    .tut-hero { padding: 64px 0 32px; text-align: center; }
+    .tut-hero-inner { max-width: 720px; margin: 0 auto; }
+    .tut-hero h1 {
+      font-size: clamp(1.9rem, 3.6vw, 2.7rem);
+      font-weight: 800;
+      letter-spacing: -.02em;
+      line-height: 1.12;
+      margin: 12px 0 18px;
+    }
+    .tut-hero .lede { font-size: 1.08rem; color: var(--text-2); max-width: 58ch; margin: 0 auto; }
+    .tut-hero .lede a { font-weight: 600; }
+
+    /* ---- Sticky jump nav ---- */
+    .tut-jumpnav {
+      position: sticky; top: 64px; z-index: 40;
+      background: rgba(255,255,255,.86);
+      backdrop-filter: saturate(160%) blur(10px);
+      -webkit-backdrop-filter: saturate(160%) blur(10px);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 12px 0;
+    }
+    .tut-jumpnav-inner {
+      display: flex; gap: 8px; overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .tut-jumpnav-inner::-webkit-scrollbar { display: none; }
+    .tut-pill {
+      flex: 0 0 auto;
+      font-size: .84rem; font-weight: 700; white-space: nowrap;
+      color: var(--text-2); background: var(--surface-2);
+      border: 1px solid var(--line); border-radius: 999px;
+      padding: 7px 15px;
+      transition: background .15s, color .15s, border-color .15s;
+    }
+    .tut-pill:hover { color: var(--accent); border-color: #f0c3b0; }
+
+    /* ---- Tab sections ---- */
+    .doc-tab { padding: 56px 0; border-top: 1px solid var(--line); }
+    .doc-tab:nth-of-type(odd) { background: var(--surface-2); }
+    .doc-tab-head { max-width: 700px; margin: 0 auto 40px; }
+    .doc-body { max-width: 780px; margin: 0 auto; display: grid; gap: 30px; }
+    .doc-feature { padding-bottom: 26px; border-bottom: 1px solid var(--line-soft); }
+    .doc-feature:last-of-type { border-bottom: none; padding-bottom: 0; }
+    .doc-feature h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; color: var(--text); }
+    .doc-feature > p { font-size: .95rem; color: var(--text-2); line-height: 1.6; margin-bottom: 14px; }
+    .doc-settings { list-style: none; display: grid; gap: 9px; padding: 0; }
+    .doc-settings li { font-size: .92rem; color: var(--text-2); line-height: 1.55; padding-left: 20px; position: relative; }
+    .doc-settings li::before { content: "→"; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+    .doc-settings li strong { color: var(--text); }
+
+    /* Tip callout (matches getting-started.html) */
+    .tip {
+      background: linear-gradient(135deg, rgba(232,68,10,.07), rgba(255,90,30,.04));
+      border-left: 3px solid var(--accent);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 12px 16px;
+      font-size: .9rem; color: var(--text-2); line-height: 1.55;
+    }
+    .tip strong { color: var(--accent-ink); font-weight: 700; }
+    .doc-tab .tip + .tip { margin-top: 12px; }
+
+    /* ---- Closing cross-links ---- */
+    .tut-next { padding: 64px 0 84px; text-align: center; }
+    .tut-next-inner { max-width: 640px; margin: 0 auto; }
+    .tut-next h2 { font-size: 1.6rem; font-weight: 800; margin-bottom: 12px; }
+    .tut-next-inner > p { color: var(--text-2); margin-bottom: 26px; }
+    .tut-next-secondary { margin-top: 20px; font-size: .92rem; color: var(--muted); }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 760px) {
+      .doc-tab-head, .doc-body { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== Header ===== -->
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="StripKit home">
+        <img src="resources/stripkit-icon.png" alt="" class="brand-mark" />
+        <span class="brand-name">StripKit</span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="index.html#features">Features</a>
+        <a href="getting-started.html">Guide</a>
+        <a href="tutorials.html" aria-current="page">Tutorials</a>
+        <a href="index.html#download">Download</a>
+        <a href="changelog.html">Changelog</a>
+        <a class="nav-gh" href="https://github.com/Vybecode-LTD/stripkit" target="_blank" rel="noopener"
+           aria-label="StripKit on GitHub">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.5v-1.8c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17 4.7 18 5 18 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.3v3.3c0 .3.2.7.8.5A11.5 11.5 0 0 0 23.5 12C23.5 5.7 18.3.5 12 .5z"/></svg>
+          GitHub
+        </a>
+        <a class="btn btn-sm" href="index.html#download">Get StripKit</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ===== Hero ===== -->
+    <div class="tut-hero">
+      <div class="container tut-hero-inner">
+        <span class="eyebrow">Complete reference</span>
+        <h1>Every setting, every tab, explained.</h1>
+        <p class="lede">
+          New here? Start with the 5-minute <a href="getting-started.html">Getting Started guide</a> instead.
+          This page is the exhaustive reference for when you already know the basics — every control, every
+          default value, every gotcha, across all six tabs.
+        </p>
+      </div>
+    </div>
+
+    <!-- ===== Jump nav ===== -->
+    <nav class="tut-jumpnav" aria-label="Jump to a tab">
+      <div class="container tut-jumpnav-inner">
+        <a class="tut-pill" href="#tab-create">Create</a>
+        <a class="tut-pill" href="#tab-import">Import</a>
+        <a class="tut-pill" href="#tab-batch">Batch</a>
+        <a class="tut-pill" href="#tab-skin">Skin</a>
+        <a class="tut-pill" href="#tab-generate">Generate</a>
+        <a class="tut-pill" href="#tab-assemble">Assemble</a>
+        <a class="tut-pill" href="#tab-shortcuts">Shortcuts</a>
+      </div>
+    </nav>
+
+    <!-- ===== Create ===== -->
+    <section class="doc-tab" id="tab-create">
+      <div class="container">
+        <header class="section-head doc-tab-head">
+          <span class="eyebrow">Tab 1 of 6 &middot; Create</span>
+          <h2>Every setting in the Create tab, in order</h2>
+          <p>Create is the main workflow: load a source image (or build a layered stack), configure the component type and its render settings, then export a stacked PNG filmstrip. The left sidebar is a scrollable settings panel; every change live-refreshes the Skia-rendered preview on the right with no separate "apply" step except Export itself.</p>
+        </header>
+        <div class="doc-body">
+
+          <div class="doc-feature">
+            <h3>Render Presets</h3>
+            <p>Save and restore the entire Create-tab render setup as a named preset. A preset captures type, frames, sweep, layout, parameter law, meter/arc settings, and export toggles — it never captures loaded art (source, background, base/pointer, or imported layers).</p>
+            <ul class="doc-settings">
+              <li><strong>Preset list</strong> — a list of saved preset names; selecting one enables Apply and Delete.</li>
+              <li><strong>Apply</strong> — restores every field the preset carries in a single batch, then re-renders once. Does not load or clear any art.</li>
+              <li><strong>Delete</strong> — removes the selected preset from both the visible list and persisted settings, matched by the specific preset object so duplicate-named presets can't desync.</li>
+              <li><strong>New preset name</strong> — text field for the name to save under; empty by default.</li>
+              <li><strong>Save</strong> — saves the current full render setup under the typed name, overwriting an existing preset of the same name (case-insensitive), then clears the field and selects the new preset.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Source Image</h3>
+            <p>The single transparent-PNG control art most component types animate.</p>
+            <ul class="doc-settings">
+              <li><strong>Load source image&hellip;</strong> — opens a file picker (drag-and-drop onto the preview does the same thing). For a rotary knob, loading auto-detects and centers the rotation pivot on the opaque content; for other types it resets the center to 0.5, 0.5. Also squares the frame to the loaded art.</li>
+              <li><strong>Source info readout</strong> — reads "No image loaded." until a file is loaded, then shows filename and pixel dimensions, e.g. "knob.png — 512&times;512px".</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Component Type</h3>
+            <p>Chooses which of the six control kinds you're producing. Switching types applies type-specific defaults and changes which sections below are visible.</p>
+            <ul class="doc-settings">
+              <li><strong>Component type</strong> — one dropdown: Rotary Knob (default), Vertical Fader, Horizontal Slider, Meter, Button, Toggle. Changing it resets Frame Width/Height to that type's defaults, and for Button/Toggle forces Frame Count to 2 — so switching types after manually tuning frame size silently resets it.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Frames</h3>
+            <p>How many discrete frames the exported strip contains.</p>
+            <ul class="doc-settings">
+              <li><strong>Frame count</strong> — numeric field, default 64, range 2&ndash;512. More frames means a smoother sweep and a larger file.</li>
+              <li><strong>32 / 64 / 128</strong> — three preset buttons that set Frame Count to the standard values in one click.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Frame Size (1x, px)</h3>
+            <p>The pixel dimensions of one frame cell at 1x, before any HiDPI scale is applied.</p>
+            <ul class="doc-settings">
+              <li><strong>Width</strong> — numeric field, default 80, range 1&ndash;4096.</li>
+              <li><strong>Height</strong> — numeric field, default 80, range 1&ndash;4096.</li>
+              <li><strong>Match frame to source size</strong> — does nothing if no source is loaded. For a rotary knob it squares the frame to the larger of the source's width/height; for a vertical fader it sets width to source width + 8px and height to source height &times; 6; for a horizontal slider it sets width to source width &times; 6 and height to source height + 8px.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Rotation (rotary knobs only)</h3>
+            <p>Only visible when Component Type is Rotary Knob. Controls the angular sweep the knob travels across the frame sequence.</p>
+            <ul class="doc-settings">
+              <li><strong>Sweep (degrees)</strong> — numeric field, default 270, range 1&ndash;360, step 5. Recomputes Start/End angle symmetrically around 0 each time you change it.</li>
+              <li><strong>270&deg; / 300&deg; / 360&deg;</strong> — three preset buttons that set Sweep directly.</li>
+              <li><strong>Clockwise (min &rarr; max)</strong> — checkbox, default on. When checked, Start angle is negative half the sweep and End is positive half; unchecking flips which end is negative. Also recomputes Start/End on toggle.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Center (alignment) &mdash; rotary knobs only</h3>
+            <p>Sets the rotation pivot so an off-center knob spins in place instead of orbiting.</p>
+            <ul class="doc-settings">
+              <li><strong>Auto-center on content</strong> — only enabled when a source is loaded. Re-runs content detection to reset Center X/Y to the opaque-pixel centroid and reports the result in the status bar.</li>
+              <li><strong>Enable crosshair</strong> — checkbox, default off. Shows a draggable crosshair over the preview for manual center placement; supersampling drops to 1 while it's on for responsiveness.</li>
+              <li><strong>Center X (0&ndash;1)</strong> — numeric field, default 0.5, range 0&ndash;1, step 0.01. Normalized horizontal pivot position.</li>
+              <li><strong>Center Y (0&ndash;1)</strong> — numeric field, default 0.5, range 0&ndash;1, step 0.01. Normalized vertical pivot position.</li>
+              <li><strong>Reset to image centre</strong> — sets Center X/Y back to 0.5, 0.5.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Value Arc / Fill Ring (rotary knobs only)</h3>
+            <p>An optional value-tracking arc, in the style of Serum or Vital, baked onto every knob frame.</p>
+            <ul class="doc-settings">
+              <li><strong>Add a value arc that tracks the value</strong> — checkbox, default off. Reveals the rest of this section when checked.</li>
+              <li><strong>Radius (0&ndash;1)</strong> — numeric field, default 0.88, range 0.1&ndash;1.2. Fraction of the frame's inscribed radius; ~0.88 sits just outside a typical knob body, 1.0 rings the frame edge.</li>
+              <li><strong>Thickness (px)</strong> — numeric field, default 4, range 0.5&ndash;64.</li>
+              <li><strong>Arc colour (#AARRGGBB)</strong> — hex text field, default <code>#FFE8440A</code> (the house accent). Invalid hex falls back to the default.</li>
+              <li><strong>Round end caps</strong> — checkbox, default on. Round vs. flat (butt) arc ends.</li>
+              <li><strong>Dim track behind</strong> — checkbox, default on. Draws a faint full-sweep track behind the lit fill so the unfilled remainder is visible; reveals the track colour field below when checked.</li>
+              <li><strong>Track colour (#AARRGGBB)</strong> — hex text field, default <code>#33FFFFFF</code>, only shown when Dim track behind is checked.</li>
+              <li><strong>Gradient along the arc</strong> — checkbox inside the "Gradient &amp; glow" expander, default off. Turns the lit arc into a sweep gradient from Arc colour to Gradient end colour.</li>
+              <li><strong>Gradient end colour</strong> — hex text field, default <code>#FFFFC107</code>, only shown when Gradient along the arc is checked.</li>
+              <li><strong>Glow</strong> — checkbox, default off. Adds a soft blurred under-stroke glow in the arc colour.</li>
+              <li><strong>Glow size (px)</strong> — numeric field, default 6, range 0&ndash;64, only shown when Glow is checked.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Layered Knob (base + pointer) &mdash; rotary knobs only</h3>
+            <p>An alternative to a single flat source image: a static base body plus a separately rotating pointer, so the body stays crisp at any resolution. There are three mutually exclusive ways to populate it — import a real layered file, auto-extract from a flat image, or load base and pointer by hand — and loading one discards the others.</p>
+            <ul class="doc-settings">
+              <li><strong>Import layered file (SVG / PSD)&hellip;</strong> — opens a picker for <code>.svg</code>/<code>.psd</code>/<code>.psb</code>, parses named layers off the UI thread, squares the frame to the imported canvas, and auto-detects the merged rotation center. Replaces the manual base/pointer slots and any previous import.</li>
+              <li><strong>Per-layer behaviour dropdown</strong> — one row per imported layer, showing its name and a Static/Rotate/Frame dropdown you can override; only shown once a layered file is imported.</li>
+              <li><strong>Clear import</strong> — disposes and clears the imported layer stack; only shown once a layered file is imported.</li>
+              <li><strong>Auto-extract from flat knob&hellip;</strong> — opens a picker, then splits a single flat knob image into a static base and rotating pointer via a radial-symmetry residual, immediately filling the Base/Pointer slots and reporting a confidence percentage. Works best on a round knob with one indicator drawn at the minimum (frame-0) position, and there is no preview-before-commit step — verify by scrubbing afterward.</li>
+              <li><strong>Load base (body)&hellip;</strong> — loads the static base/body layer, discards any imported layer stack, squares the frame to it, and auto-detects its content center (which also seeds the pointer's default pivot).</li>
+              <li><strong>Clear base</strong> — disposes/clears the base layer; only enabled once one is loaded.</li>
+              <li><strong>Base layer info readout</strong> — reads "None." until loaded, then shows filename and dimensions.</li>
+              <li><strong>Load pointer layer&hellip;</strong> — loads the rotating pointer drawn on top of the base, discarding any imported layer stack.</li>
+              <li><strong>Clear pointer</strong> — disposes/clears the pointer layer; only enabled once one is loaded.</li>
+              <li><strong>Pointer info readout</strong> — reads "None." until loaded.</li>
+              <li><strong>Pointer pivot X (0&ndash;1)</strong> — numeric field, default 0.5, range 0&ndash;1, only shown once a pointer is loaded. Normalized horizontal rotation pivot within the pointer's own art.</li>
+              <li><strong>Pointer pivot Y (0&ndash;1)</strong> — numeric field, default 0.5, range 0&ndash;1, only shown once a pointer is loaded.</li>
+              <li><strong>Center pointer on body</strong> — resets the pointer's pivot to the base's detected center (the knob axis); only shown once a pointer is loaded.</li>
+              <li><strong>Start angle (frame 0)</strong> — numeric field inside the "Advanced angles / pivot" expander, default -135, range -360 to 360. Editing it directly does not recompute Sweep (degrees) above.</li>
+              <li><strong>End angle (last frame)</strong> — numeric field in the same expander, default 135, range -360 to 360.</li>
+              <li><strong>Pivot offset X</strong> — numeric field in the same expander, default 0, range -2048 to 2048. An additional raw-pixel nudge added on top of the content-center pivot, for deliberately eccentric rotation.</li>
+              <li><strong>Pivot offset Y</strong> — numeric field in the same expander, default 0, range -2048 to 2048.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Travel (fader / slider only)</h3>
+            <p>Only visible when Component Type is Vertical Fader or Horizontal Slider. The loaded source image is treated as the moving cap; the Frame Size above defines the full track area.</p>
+            <ul class="doc-settings">
+              <li><strong>Edge margin (px)</strong> — numeric field, default 4, range 0&ndash;512. Gap left at each end of the cap's travel.</li>
+              <li><strong>Cap cross-axis offset (px)</strong> — numeric field, default 0, range -512 to 512. Offsets the cap on its non-travel axis.</li>
+              <li><strong>Auto-center cap on content</strong> — same underlying command as the knob's centering button; re-detects the content center for cross-axis centering. Only enabled with a source loaded.</li>
+              <li><strong>Enable crosshair</strong> — the same crosshair alignment tool used for knobs, reused here for cap centering.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Button / Toggle States</h3>
+            <p>Only visible when Component Type is Button or Toggle. Each frame here is a discrete UI state rather than a position or rotation transform.</p>
+            <ul class="doc-settings">
+              <li><strong>Import layered file (SVG / PSD)&hellip;</strong> — the same import command as the knob's layered import, but in this context each imported layer maps one-to-one to a frame index by ordinal position among Frame-tagged layers (off = 0, on = 1, and so on), not by rotation. A shared Static border or shadow layer doesn't count toward the frame index.</li>
+              <li><strong>Per-layer behaviour dropdown</strong> — same mechanism as the knob's layered-import list; lets you override Static/Rotate/Frame per layer (Rotate is still selectable here though it has no effect on a button). Only shown once a layered file is imported.</li>
+              <li><strong>Clear import</strong> — clears the imported layer stack; only shown once one is imported.</li>
+            </ul>
+            <p>A button/toggle filmstrip has one frame per state — frame 0 off, frame 1 on, plus optional frame 2 (pressed) and frame 3 (disabled). A toggle is just the off/on pair. Set Frame Count above to match the number of states you need. To supply the art, import a layered SVG or PSD with groups named <code>off</code> and <code>on</code> (or <code>state0</code>, <code>state1</code>, and so on) — each group renders only on its matching frame. The Generate tab can produce this button/toggle art directly from your own AI key.</p>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Meter</h3>
+            <p>Only visible when Component Type is Meter. Renders a progressive segment-fill indicator, either procedurally as colored bars or from loaded on/off-state art.</p>
+            <ul class="doc-settings">
+              <li><strong>Segments</strong> — numeric field, default 12, range 1&ndash;128. Number of LED-style bars for a procedural meter.</li>
+              <li><strong>Fill direction</strong> — dropdown, default Up. Options: Up, Down, Left to Right, Right to Left.</li>
+              <li><strong>Continuous (smooth) fill</strong> — checkbox, default off. When checked, the meter fills smoothly instead of snapping to whole segments — this interacts directly with Segments, since a segment count only matters when this is unchecked.</li>
+              <li><strong>On colour (#AARRGGBB)</strong> — hex text field, default <code>#FFE8440A</code> (house accent). Procedural lit-segment colour.</li>
+              <li><strong>Off colour</strong> — hex text field, default <code>#FF2A2A2A</code>. Procedural unlit-segment colour.</li>
+              <li><strong>Peak marker (highlight the top segment)</strong> — checkbox, default off. Highlights the topmost/leading lit segment in the Peak colour, baked per-frame into the filmstrip — it is not a live peak-hold behavior at runtime.</li>
+              <li><strong>Peak colour (#AARRGGBB)</strong> — hex text field, default <code>#FFFFFFFF</code>, only shown when Peak marker is checked.</li>
+            </ul>
+            <p>A meter is procedural (colored segment bars) by default. Load a Source Image as the on-state art — and optionally a Background as the off-state/track art — to switch to a layered meter that reveals real art up to the value instead.</p>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Static Background (optional)</h3>
+            <p>A fixed backdrop drawn behind the animated element on every frame. Most relevant for meters as the off-state/track art, but usable with any component type.</p>
+            <ul class="doc-settings">
+              <li><strong>Load background layer&hellip;</strong> — opens a file picker and loads a static background drawn behind every frame.</li>
+              <li><strong>Clear background</strong> — disposes/clears the background image; only enabled once one is loaded.</li>
+              <li><strong>Background info readout</strong> — reads "None." until loaded, then shows filename and dimensions.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Quality &amp; Output</h3>
+            <p>Rendering quality, sprite packing layout, and HiDPI export scale.</p>
+            <ul class="doc-settings">
+              <li><strong>Supersample (anti-aliasing)</strong> — dropdown, default 4. Options: 1, 2, 4, 8. Internal oversampling factor during render; export always uses the full value even though the live preview may temporarily cap it lower for responsiveness.</li>
+              <li><strong>Sprite layout</strong> — dropdown, default Strip. Options: Strip (a single 1&times;N strip along the stack direction) or Grid (an R&times;C sprite atlas).</li>
+              <li><strong>Grid columns</strong> — numeric field, default 8, range 1&ndash;512, only shown when Sprite layout is Grid. Rows are computed as the frame count divided by this, rounded up.</li>
+              <li><strong>Stack direction</strong> — dropdown, default Vertical, options Vertical or Horizontal, only shown when Sprite layout is Strip (it's hidden entirely under Grid layout). Frames stack vertically by default: frame 0 is the minimum value, frame N-1 is the maximum.</li>
+              <li><strong>Also export a HiDPI copy</strong> — checkbox, default on. Writes a second, upscaled PNG suffixed by the selected scale (for example <code>@2x</code>).</li>
+              <li><strong>Scale</strong> — dropdown, default 2, options 2, 3, 4 (i.e. <code>@2x</code>/<code>@3x</code>/<code>@4x</code>), only shown when Also export a HiDPI copy is checked. Drives the export suffix, the render/upscale multiplier, and the manifest's declared hi-res asset.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Parameter Law (advanced)</h3>
+            <p>Remaps each frame's position in the sweep to match a plugin's actual parameter law — for example a logarithmic frequency taper — instead of a straight linear divisor. The mapping applies uniformly to knob rotation, layered-knob pivot, meter fill, and the value arc.</p>
+            <ul class="doc-settings">
+              <li><strong>Frame mapping curve</strong> — dropdown, default Linear. Options: Linear, Skew, Logarithmic. Linear is a true no-op — it returns every value completely unchanged, so all pre-existing renders stay byte-identical.</li>
+              <li><strong>Skew exponent</strong> — numeric field, default 1.0, range 0.1&ndash;10, only shown when the curve is Skew. A power-law exponent using the same convention as JUCE's NormalisableRange skew factor; values below 1 front-load resolution toward the low end, values above 1 push it toward the high end.</li>
+              <li><strong>Log base</strong> — numeric field, default 9.0, range 1.1&ndash;1000, only shown when the curve is Logarithmic. Higher values compress the low end more aggressively — useful for frequency-style parameters.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Manifest (optional)</h3>
+            <p>Optionally writes a <code>skin.json</code> sidecar describing the exported control for a JUCE LookAndFeel or skin loader.</p>
+            <ul class="doc-settings">
+              <li><strong>Also write a skin.json manifest</strong> — checkbox, default on.</li>
+              <li><strong>Parameter id</strong> — text field, default empty (falls back to the export file's base name if left blank).</li>
+            </ul>
+            <p>This writes <code>&lt;name&gt;.skin.json</code> next to the exported PNG — one control bound to this parameter, ready to hand to a JUCE LookAndFeel or skin loader.</p>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Code Export (loader snippets)</h3>
+            <p>Emits ready-to-paste source code that loads the exported filmstrip and displays the frame matching a 0..1 value, for five target frameworks.</p>
+            <ul class="doc-settings">
+              <li><strong>Also emit ready-to-paste loader code</strong> — checkbox, default off. Reveals the per-target checkboxes below when checked.</li>
+              <li><strong>JUCE</strong> — checkbox, default on. Emits a JUCE LookAndFeel filmstrip Slider (or meter Component).</li>
+              <li><strong>CSS / HTML</strong> — checkbox, default on. Emits a CSS/HTML sprite control driven by <code>background-position</code>, plus a JS value setter.</li>
+              <li><strong>iPlug2</strong> — checkbox, default off. Emits an IBKnobControl/IBSliderControl/IBitmapControl snippet.</li>
+              <li><strong>HISE</strong> — checkbox, default off. Emits a ScriptPanel with a filmstrip paint routine.</li>
+              <li><strong>React / Web</strong> — checkbox, default off. Emits a <code>.jsx</code> sprite component driven by a 0..1 <code>value</code> prop, for WebView-based plugin GUIs (JUCE WebView, iPlug2 WebUI, Cmajor).</li>
+              <li><strong>Preview / copy code</strong> — an expander containing a live preview of one target's generated snippet.</li>
+              <li><strong>Target picker</strong> — dropdown inside the expander, default Juce, options Juce/Css/IPlug2/Hise/React. Selects which target is shown in the read-only preview below — it does not change which targets get exported (the checkboxes above control that).</li>
+              <li><strong>Code preview</strong> — a read-only, monospaced text box showing the live-updating snippet for the selected preview target.</li>
+              <li><strong>Copy to clipboard</strong> — copies the currently previewed snippet text.</li>
+            </ul>
+            <p>Export writes a loader file per ticked target next to the PNG (<code>.juce.h</code> / <code>.html</code> / <code>.iplug2.cpp</code> / <code>.hise.js</code> / <code>.jsx</code>). Each file loads the strip and shows one frame per value.</p>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Render Recipe (offline 3D)</h3>
+            <p>For path-tracing the control in an external 3D renderer such as Blender, KeyShot, or Octane, this exports a recipe so the offline render frames land on exactly the same angles as StripKit's own sweep math. The resulting frame sequence is later stacked into a strip on the Assemble tab.</p>
+            <ul class="doc-settings">
+              <li><strong>Preview / save render recipe</strong> — an expander containing the recipe target picker, live preview, save, and copy controls.</li>
+              <li><strong>Recipe target</strong> — dropdown, default Blender, options Blender/Csv/Json. Blender emits a <code>bpy</code> script that bakes a keyframe on every one of the N frames (exact angles, no interpolation drift) plus a 0..1 "value" custom property for non-rotary rigs; CSV/JSON emit an engine-agnostic <code>frame,value,angle_deg</code> table. All three share the same per-frame math the renderer uses, so the recipe and the runtime output can't drift apart.</li>
+              <li><strong>Recipe preview</strong> — a read-only text box showing the live-updating recipe text for the selected target.</li>
+              <li><strong>Save recipe&hellip;</strong> — opens a folder picker and saves the recipe file (for example <code>&lt;id&gt;.blender.py</code>, <code>&lt;id&gt;.frames.csv</code>, or <code>&lt;id&gt;.frames.json</code>) into it.</li>
+              <li><strong>Copy to clipboard</strong> — copies the currently previewed recipe text.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Preview Pane, Transport &amp; Export</h3>
+            <p>The right-hand column: a live-rendered preview image that also accepts dropped files, scrub/playback transport, live frame and dimension readouts, the export button, and a post-export folder shortcut.</p>
+            <ul class="doc-settings">
+              <li><strong>Preview image area</strong> — shows the current rendered frame and doubles as a drop zone for a PNG (the same load path as Load source image&hellip;); its border highlights briefly while a file is dragged over it.</li>
+              <li><strong>Previous frame</strong> — icon button; stops playback and steps the scrub position back one frame.</li>
+              <li><strong>Play / Stop</strong> — toggles animated playback of the preview scrub position.</li>
+              <li><strong>Next frame</strong> — icon button; stops playback and steps the scrub position forward one frame.</li>
+              <li><strong>Reset</strong> — icon button; resets the scrub position to the centred start frame.</li>
+              <li><strong>Scrub slider</strong> — default 0.5, range 0&ndash;1. Scrubs the normalized value range; internally the preview resamples at a fixed 1024-step virtual resolution regardless of the real Frame Count, so scrubbing looks smooth even at a low frame count.</li>
+              <li><strong>Frame readout</strong> — text showing the current frame index and count, plus the rotary angle (for knobs) or a percentage (for other types), reflecting the Parameter Law mapping.</li>
+              <li><strong>Strip dimensions readout</strong> — live-computed total exported pixel dimensions, e.g. "Strip: 80&times;5120px &middot; @2x: 160&times;10240px", including the HiDPI variant if that export is enabled.</li>
+              <li><strong>Status message</strong> — rolling feedback text for the most recent action: load, center, export, or an error. Defaults to "Load a source image to begin."</li>
+              <li><strong>Export filmstrip PNG</strong> — renders and saves the stacked PNG (plus the HiDPI copy, <code>skin.json</code> manifest, and ticked code snippets if those options are on). Also bound to <code>Ctrl+E</code>.</li>
+              <li><strong>Show in folder</strong> — opens the OS file explorer at the exported file. Only enabled after a successful export in the current session, and only while that file still exists.</li>
+            </ul>
+          </div>
+
+          <div class="tip"><strong>Tip:</strong> Sweep (degrees) and the Start/End angle fields are linked, but only in one direction. Changing Sweep recomputes Start/End symmetrically around 0 (and Clockwise flips which end is negative) — but the Start/End angle fields inside the "Advanced angles / pivot" expander can also be edited directly, and doing so does <strong>not</strong> update Sweep. If you hand-tune Start/End there, Sweep will silently no longer describe the actual angle range.</div>
+
+          <div class="tip"><strong>Tip:</strong> Loading art is mutually exclusive across the three layered-knob input modes — a single Source Image, manual Base+Pointer layers, and an imported SVG/PSD layer stack all clear each other out when you load a competing one. "Auto-extract from flat knob&hellip;" is the most aggressive of these: it loads the file and immediately overwrites the base/pointer/import slots with the extracted result, with no preview-before-commit step, so verify the result by scrubbing afterward.</div>
+
+          <div class="tip"><strong>Tip:</strong> Switching Component Type resets Frame Width/Height to that type's defaults (and forces Frame Count to 2 for Button/Toggle) — so if you've manually tuned frame size, do that after picking the final component type, not before.</div>
+
+          <div class="tip"><strong>Tip:</strong> The Center X/Y fields and the Pivot Offset X/Y fields are not the same thing, and they stack. Center X/Y is the detected (or crosshair-set) content center used as the rotation pivot; Pivot Offset X/Y, in the Advanced angles/pivot expander, is an additional raw-pixel nudge applied on top of that center — use it only for deliberately off-axis rotation. Separately, the crosshair itself is a pure alignment aid: the art stays frozen in place while you drag it, and only starts orbiting the new center after you release.</div>
+
+          <div class="tip"><strong>Tip:</strong> Sprite layout and Stack direction are mutually exclusive in the UI — Stack direction disappears once Sprite layout is set to Grid, and Grid columns only appears once it is. If you're exporting for iPlug2, be aware its built-in bitmap loader can only read a 1D strip, so a Grid layout with iPlug2 ticked produces a snippet containing a warning comment instead of working loader code.</div>
+
+          <div class="tip"><strong>Tip:</strong> Export stays enabled even without a loaded Source Image as long as there's something else to render — a procedural Meter, a loaded base layer, or an imported layer stack all count. "Show in folder" is scoped to the current session only: it's disabled until an export succeeds, and again if that exported file is later moved or deleted.</div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Import ===== -->
+    <section class="doc-tab" id="tab-import">
+      <div class="container">
+        <header class="section-head doc-tab-head">
+          <span class="eyebrow">Tab 2 of 6 &middot; Import</span>
+          <h2>Bring an existing filmstrip back to life</h2>
+          <p>Use the Import tab when you already have a rendered strip — a KnobMan export, a purchased asset, or something StripKit made earlier — and need to inspect, re-slice, re-orient, or re-time it instead of starting from source art.</p>
+        </header>
+        <div class="doc-body">
+
+          <div class="doc-feature">
+            <h3>Loading the source strip</h3>
+            <p>Get an existing filmstrip PNG onto the canvas via the file picker or by dropping it straight onto the preview pane.</p>
+            <ul class="doc-settings">
+              <li><strong>Load filmstrip&hellip;</strong> — opens a file picker defaulting to a <code>PNG image</code> filter (<code>*.png</code>), with a secondary <code>All images</code> filter covering <code>*.webp</code>, <code>*.bmp</code>, <code>*.jpg</code>, <code>*.jpeg</code>; switch the picker's filetype dropdown to see non-PNG strips. Loading runs auto-detection immediately and refreshes the preview.</li>
+              <li><strong>Drop zone (the preview pane)</strong> — accepts dropped files with extension <code>.png</code>, <code>.webp</code>, <code>.bmp</code>, <code>.jpg</code>, or <code>.jpeg</code> (case-insensitive); shows "Load a filmstrip — or drop one here" until something is loaded, and briefly highlights its border in accent orange while a valid file is dragged over it.</li>
+              <li><strong>Source strip readout</strong> — read-only; reads "No strip loaded." by default, then "{filename} — {width}&times;{height}px" once a strip is in.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Detected layout</h3>
+            <p>Read-only feedback on what the auto-detector inferred from the strip's pixel dimensions — frame count, frame size, stack orientation, and a rough guess at control type.</p>
+            <ul class="doc-settings">
+              <li><strong>Detected layout readout</strong> — formatted as "{count} frames &middot; {frameW}&times;{frameH}px &middot; {kind} &middot; vertical|horizontal", where kind is Rotary knob / button, Vertical fader, Horizontal slider, or Unknown based on the detected frame's aspect ratio. Orientation and frame dimensions here are not directly editable — only Frame Count below can be adjusted, and orientation only changes via Re-stack.</li>
+              <li><strong>Ambiguous-detection warning banner</strong> — an amber/red-bordered banner that appears when the detector's guess is ambiguous (for example a square frame whose total also divides evenly by an adjacent count, which can happen if the strip secretly contains an extra centre/rest frame). When shown, the status bar also reads "Loaded — detection is ambiguous; verify the frame count."</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Frame count &amp; frame size</h3>
+            <p>The editable slice count that drives preview, extract, and re-stack — kept intentionally separate from the resample target count below.</p>
+            <ul class="doc-settings">
+              <li><strong>Frame Count</strong> — numeric field, range 1&ndash;1024, step 1. Defaults to whatever the detector guessed as soon as a strip loads. Editing it recomputes frame width/height by dividing the strip's total pixel span by the new count, then re-slices the live preview.</li>
+              <li><strong>Frame Size readout</strong> — read-only, shown both under Frame Count and under the transport tile; reads "Frame: {w}&times;{h}px", or appends "&#9888; {total}px doesn't divide evenly by {count}" when the strip's total span doesn't divide evenly by the current Frame Count.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Export — single frame / re-stack</h3>
+            <p>Two direct export actions that operate on the loaded strip using the current Frame Count and detected orientation.</p>
+            <ul class="doc-settings">
+              <li><strong>Extract current frame&hellip;</strong> — saves the currently-previewed frame as its own standalone PNG, suggested filename "{baseName}_frame{index+1}.png". Disabled until a strip is loaded.</li>
+              <li><strong>Re-stack (flip orientation)&hellip;</strong> — re-stacks the strip into the opposite orientation from what was detected (vertical&rarr;horizontal or horizontal&rarr;vertical); there is no explicit direction chooser. Runs off the UI thread, suggested filename "{baseName}_{count}frames_{v|h}.png".</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Resample frame count</h3>
+            <p>A separate re-timing export that changes how many frames the exported strip has, independent of the Frame Count field used for slicing and preview.</p>
+            <ul class="doc-settings">
+              <li><strong>Target frames</strong> — numeric field, range 1&ndash;1024, step 1, default 64. Resets to the detected frame count every time a new strip loads. Changing it does not refresh the live preview — it only affects Export resampled&hellip; below.</li>
+              <li><strong>Export resampled&hellip;</strong> — re-times the strip to Target frames by picking the nearest source frame per output frame (no blending), run off the UI thread. Suggested filename "{baseName}_{targetCount}frames_{v|h}.png". Disabled until a strip is loaded.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Preview &amp; transport</h3>
+            <p>The right-hand preview shows the currently selected frame and doubles as the drop zone; the transport tile beneath it lets you scrub, step, or auto-play through the detected frames.</p>
+            <ul class="doc-settings">
+              <li><strong>Scrub slider</strong> — range 0&ndash;1, default 0.5, mapped continuously to a frame index; dragging re-renders the preview frame in real time.</li>
+              <li><strong>Previous frame / Next frame</strong> — step one frame at a time, clamped to the first/last frame; stops any auto-play first.</li>
+              <li><strong>Play / Stop</strong> — auto-plays a ping-pong loop (0&rarr;1&rarr;0) at roughly 30fps, one frame step per tick; the icon and label swap between Play and Stop while running.</li>
+              <li><strong>Reset to the first frame</strong> — stops any auto-play and jumps back to frame 0.</li>
+              <li><strong>Frame readout</strong> — read-only, monospace; reads "Frame {index+1}/{count}" (1-based numerator).</li>
+              <li><strong>Status message</strong> — read-only; defaults to "Load or drop a filmstrip to begin." and reflects the outcome of every load/extract/re-stack/resample action, including error text on failure.</li>
+              <li><strong>Show in folder</strong> — opens the OS file explorer with the most recently exported file selected; only enables once an export has happened in this session and that file still exists on disk.</li>
+            </ul>
+          </div>
+
+          <div class="tip">
+            <strong>Tip:</strong> Frame count is a guess, not a stored fact — a PNG doesn't record how many frames it contains, so detection infers it purely from divisibility of the strip's pixel dimensions. Always eyeball the scrub from min to max before trusting it, and pay close attention when the low-confidence banner appears (a square frame whose total also divides evenly by an adjacent count is the classic trap — it often means a hidden centre/rest frame). Editing Frame Count is destructive to what you're about to export: it re-slices the current preview basis, and Extract / Re-stack both use whatever value it currently holds, not the originally detected one. The <code>&#9888; doesn't divide evenly</code> warning on the Frame Size readout is a strong signal the count is wrong.
+          </div>
+
+          <div class="tip">
+            <strong>Tip:</strong> Target frames (resample) and Frame Count (slice) are deliberately decoupled — changing Target frames never re-slices or refreshes the live preview, it only feeds Export resampled&hellip;. Resample itself is nearest-frame only, never blended, so downsampling drops frames and is lossy; for the best quality, re-render from the original source art rather than resampling an already-rendered strip.
+          </div>
+
+          <div class="tip">
+            <strong>Tip:</strong> Re-stack always flips to the opposite orientation of what was detected — there's no vertical/horizontal dropdown, so a strip detected vertical exports horizontal and vice versa. And when dropping files, only the first accepted file in a multi-file drop is loaded; the rest are silently ignored.
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Batch ===== -->
+    <section class="doc-tab" id="tab-batch">
+      <div class="container">
+        <header class="section-head doc-tab-head">
+          <span class="eyebrow">Tab 3 of 6 &middot; Batch</span>
+          <h2>Render a whole folder of sources with one shared template</h2>
+          <p>The Batch tab applies a single render template — component type, frame count and size, rotation or meter behavior, quality, and export options — to every image in an input folder, writing one filmstrip per source. Reach for it when you have a set of already-designed control art (a folder of knob PNGs, meter housings, etc.) and want them all rendered the same way in one pass, off the UI thread, with progress and cancellation.</p>
+        </header>
+        <div class="doc-body">
+
+          <div class="doc-feature">
+            <h3>Loading art</h3>
+            <p>Two folder pickers in the right column: where the source images come from and where the rendered strips go. Both are disabled while a run is in progress.</p>
+            <ul class="doc-settings">
+              <li><strong>Choose input folder…</strong> — opens a folder picker and scans it (non-recursive) for image files, sorted ordinally by path. A summary line reports how many were found: <code>{N} image(s) found.</code>, or a warning if none matched.</li>
+              <li><strong>Choose output folder…</strong> — opens a folder picker for where each rendered strip is written. Both this and the input folder must be set before <strong>Run batch</strong> becomes enabled.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Component type &amp; frame geometry</h3>
+            <p>What kind of control you're rendering, how many frames each strip has, and each frame's pixel size at 1x.</p>
+            <ul class="doc-settings">
+              <li><strong>Component type</strong> — defaults to <code>RotaryKnob</code>. Choose from <code>RotaryKnob</code>, <code>VerticalFader</code>, <code>HorizontalSlider</code>, or <code>Meter</code>. Picking RotaryKnob reveals the Rotation section below; picking Meter reveals the Meter section instead.</li>
+              <li><strong>Frames</strong> — the frame count for every strip in the run, default <code>64</code>, range 2–512.</li>
+              <li><strong>Width</strong> — frame width in pixels at 1x, default <code>80</code>, range 1–4096.</li>
+              <li><strong>Height</strong> — frame height in pixels at 1x, default <code>80</code>, range 1–4096.</li>
+              <li><strong>Square knob frames to each source</strong> — checked by default. For knob renders, sizes each frame to that individual source's own larger side rather than forcing every source into the fixed Width/Height above, so differently-sized source PNGs each get a correctly proportioned, source-matched square frame.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Rotation</h3>
+            <p>Only shown when Component type is RotaryKnob. Governs the angular sweep baked into the frame sequence.</p>
+            <ul class="doc-settings">
+              <li><strong>Sweep (degrees)</strong> — total angular travel from minimum to maximum value, default <code>270</code>, range 1–360. The sweep is applied symmetrically around 0 (a 270° sweep runs -135° to +135°).</li>
+              <li><strong>Clockwise (min → max)</strong> — checked by default. Frame 0 sits at the negative angle and sweeps clockwise to the positive angle as the value rises; unchecking it reverses the sweep to counter-clockwise.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Meter</h3>
+            <p>Only shown when Component type is Meter. Configures segment count, fill behavior and direction, colors, and whether each source is finished art or a backdrop for procedural LEDs.</p>
+            <ul class="doc-settings">
+              <li><strong>Segments</strong> — number of discrete LED-style segments, default <code>12</code>, range 1–128. Only meaningful when Continuous fill is off.</li>
+              <li><strong>Fill direction</strong> — default <code>Up</code>. Choose from <code>Up</code>, <code>Down</code>, <code>LeftToRight</code>, <code>RightToLeft</code>, matching whichever edge the meter should fill from.</li>
+              <li><strong>Continuous (smooth) fill</strong> — unchecked by default. Unchecked fills in discrete steps of the Segments count (an LED-ladder look); checked produces a smooth, unsegmented fill instead.</li>
+              <li><strong>On colour (#AARRGGBB)</strong> — free-text hex entry, default <code>#FFE8440A</code> (an opaque ember/orange). Used for lit segments.</li>
+              <li><strong>Off colour</strong> — free-text hex entry, default <code>#FF2A2A2A</code> (an opaque dark grey). Used for unlit segments.</li>
+              <li><strong>Source is a backdrop (draw procedural LEDs on top)</strong> — unchecked by default. Unchecked treats every source image as ready-made lit/on-state art, revealed progressively up to the fill level. Checked treats every source as a housing/backdrop and draws procedural LED segments over it using the Segments count and the On/Off colours.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Quality &amp; output</h3>
+            <p>Rendering quality, stack orientation, and HiDPI export options applied across every source in the run.</p>
+            <ul class="doc-settings">
+              <li><strong>Supersample (anti-aliasing)</strong> — default <code>4</code>. Choose <code>1</code>, <code>2</code>, <code>4</code>, or <code>8</code>; higher values render at a larger internal resolution then downsample for smoother edges, at the cost of render time per frame per source.</li>
+              <li><strong>Stack direction</strong> — default <code>Vertical</code>. Choose <code>Vertical</code> or <code>Horizontal</code> for whether frames stack top-to-bottom or left-to-right in the output PNG.</li>
+              <li><strong>Also export a HiDPI copy</strong> — checked by default. Exports an additional higher-resolution copy of each strip at the Scale chosen below.</li>
+              <li><strong>Scale</strong> — only visible when "Also export a HiDPI copy" is checked. Default <code>2</code>. Choose <code>2</code>, <code>3</code>, or <code>4</code>, mapping to an <code>@2x</code>/<code>@3x</code>/<code>@4x</code> export suffix.</li>
+              <li><strong>Also write a skin.json per strip</strong> — unchecked by default. Writes a <code>skin.json</code> manifest alongside each rendered strip, binding it to a parameter.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Code export (per strip)</h3>
+            <p>Optional generation of ready-to-paste loader code for each exported strip, matching the Create and Assemble tabs' code-export panels.</p>
+            <ul class="doc-settings">
+              <li><strong>Also emit ready-to-paste loader code</strong> — unchecked by default. Master switch — reveals the per-target checkboxes below when checked, and no code is emitted for any target while it's unchecked.</li>
+              <li><strong>JUCE</strong> — checked by default (when code export is on). Emits a JUCE <code>LookAndFeel</code> filmstrip loader snippet per strip.</li>
+              <li><strong>CSS / HTML</strong> — unchecked by default. Emits a CSS/HTML sprite control driven by <code>background-position</code>, plus a JS value setter, per strip.</li>
+              <li><strong>iPlug2</strong> — unchecked by default. Emits an iPlug2 <code>IBKnobControl</code>/<code>IBSliderControl</code>/<code>IBitmapControl</code> snippet per strip.</li>
+              <li><strong>HISE</strong> — unchecked by default. Emits a HISE loader snippet per strip.</li>
+              <li><strong>React / Web</strong> — unchecked by default. Emits a <code>.jsx</code> sprite component driven by a 0..1 <code>value</code> prop per strip.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Run, cancel, progress, and results</h3>
+            <p>The controls that start and stop the job and report what happened. These stay live even while the render template is locked during a run.</p>
+            <ul class="doc-settings">
+              <li><strong>Run batch</strong> — enabled once both folders are chosen and no run is already active. Renders every source in the input folder using the template above, updating progress as it goes; on completion, reports either a done or cancelled status with counts.</li>
+              <li><strong>Cancel</strong> — enabled only while a run is in progress. Requests a cooperative stop; strips already written before the cancel are kept in the output folder.</li>
+              <li><strong>Progress bar</strong> — visible only while running, filling from 0 to 100 based on completed vs. total items.</li>
+              <li><strong>Progress text</strong> — shows <code>{Completed}/{Total} — {CurrentFile}</code>, updating as each source is processed.</li>
+              <li><strong>Status message</strong> — defaults to "Choose an input folder and an output folder.", then tracks the run: processing, done, cancelled, or an error message if the run threw an exception.</li>
+              <li><strong>Result summary</strong> — a scrollable panel filled in after the run completes. Reports "All {N} strips exported." when nothing failed, or a per-file failure list (filename and error, up to 8 entries with a "…and N more" line beyond that) when some strips failed.</li>
+            </ul>
+          </div>
+
+          <div class="tip"><strong>Tip:</strong> The Batch tab's Component type list is a subset of what StripKit supports elsewhere — only Rotary Knob, Vertical Fader, Horizontal Slider, and Meter are available. Button and Toggle controls need per-state art and aren't batch-able here.</div>
+
+          <div class="tip"><strong>Tip:</strong> "Square knob frames to each source" (on by default) means the Width/Height you set aren't a hard guarantee for knobs — each source's own larger dimension can override them file-by-file within the same run. Turn it off if you need every knob frame locked to the exact size you specified.</div>
+
+          <div class="tip"><strong>Tip:</strong> "Source is a backdrop" is a hard fork in how every strip in the run is built, not a minor tweak — leave it unchecked if your source PNGs are already fully-lit on-state art, and check it only if your sources are unlit housings that should get StripKit's own procedural LED segments drawn on top. Getting this backwards will silently produce the wrong look across the entire batch.</div>
+
+          <div class="tip"><strong>Tip:</strong> Only <code>.png</code>, <code>.webp</code>, <code>.bmp</code>, <code>.jpg</code>, and <code>.jpeg</code> files are picked up from the input folder, the scan doesn't look into subfolders, and files are processed in ordinal path-sort order — anything else in the folder is silently skipped and won't appear in the input count or the progress readout.</div>
+
+          <div class="tip"><strong>Tip:</strong> The on/off meter colours are plain hex text fields, not colour swatches — an invalid hex value silently falls back to the default colour rather than flagging an error, so double-check what you typed if a meter's colours look off after a run.</div>
+
+          <div class="tip"><strong>Tip:</strong> Cancelling doesn't roll back anything — whatever strips were already written to the output folder before you cancelled stay there. And if a run reports failures, check the Result summary panel rather than assuming the batch is clean; its failure list truncates at 8 entries.</div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Skin ===== -->
+    <section class="doc-tab" id="tab-skin">
+      <div class="container">
+        <header class="section-head doc-tab-head">
+          <span class="eyebrow">Tab 4 of 6 &middot; Skin</span>
+          <h2>Bind exported strips to plugin parameters as one skin.json</h2>
+          <p>The Skin tab assembles a multi-control <code>skin.json</code> manifest that binds several already-exported filmstrip PNGs to plugin parameters for a whole GUI. It doesn't render any pixels — it references strips you already exported from the Create or Batch tab, reads their dimensions to prefill fields, and writes the JSON.</p>
+        </header>
+        <div class="doc-body">
+
+          <div class="doc-feature">
+            <h3>Skin-level metadata</h3>
+            <p>Fields describing the whole skin, not any one control. These become the top-level properties of the exported <code>skin.json</code>.</p>
+            <ul class="doc-settings">
+              <li><strong>Name</strong> — the skin's name, default <code>My Skin</code>. Free text; also sanitized (invalid filename characters replaced with underscores) to produce the output file name.</li>
+              <li><strong>Author (optional)</strong> — free text, blank by default. Passed straight through to the manifest as typed.</li>
+              <li><strong>Base width</strong> — the design resolution (in pixels) that per-control bounds are authored against. Default 80, range 1–8192. Auto-seeded from the first control's frame width when you add your first control, but freely editable afterward.</li>
+              <li><strong>Base height</strong> — same as Base width, for height. Default 80, range 1–8192. Auto-seeded from the first control's frame height.</li>
+              <li><strong>Window background (optional)</strong> — a relative file name, blank by default. Type it directly, or click the <code>...</code> button to open the standard image picker, which fills the field with just the picked file's name. Left blank, it's omitted from the manifest entirely rather than written as an empty string.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Controls list</h3>
+            <p>The list of control bindings that becomes <code>skin.json</code>'s <code>controls[]</code> array, plus the commands to add and remove entries.</p>
+            <ul class="doc-settings">
+              <li><strong>Controls list</strong> — each row displays as <code>{Id} &middot; {Type} &middot; {ParameterId}</code>, e.g. <code>cutoff &middot; RotaryKnob &middot; param</code>. Selecting a row loads it into the detail editor on the right and enables Remove selected.</li>
+              <li><strong>Add from strip…</strong> — opens the image picker, then runs the same strip-layout detector used on the Import tab against the chosen file. Auto-fills Id, Parameter id, Type, Asset, Frames, Frame W/H, and Stack direction from the detection result, and sets Bounds W/H to the detected frame size. Shows an error status if the image fails to load.</li>
+              <li><strong>Add blank</strong> — adds a new control using its class defaults (Id <code>control</code>, Type RotaryKnob, Parameter id <code>param</code>, Frames 64, Frame W/H 80, Stack Vertical, Bounds W/H 80) for you to fill in manually.</li>
+              <li><strong>Remove selected</strong> — disabled until a control is selected. Removes the selected entry and re-selects a neighboring one (or none, if the list is now empty).</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Per-control editor — Control</h3>
+            <p>Shown only when a control is selected; otherwise the right panel reads "Select or add a control to edit it." Edits the selected control's identity fields.</p>
+            <ul class="doc-settings">
+              <li><strong>Id</strong> — free text, default <code>control</code> on a blank control. Falls back to the literal string <code>control</code> on export if left blank. Also used as the fallback for Parameter id if that field is blank.</li>
+              <li><strong>Type</strong> — a dropdown listing RotaryKnob, VerticalFader, HorizontalSlider, Meter, Button, and Toggle, default RotaryKnob. On export these map to the lower-case manifest strings <code>knob</code>, <code>vfader</code>, <code>hslider</code>, <code>meter</code>, <code>button</code>, and <code>toggle</code> respectively.</li>
+              <li><strong>Parameter id</strong> — free text, default <code>param</code>. The host/plugin parameter identifier (e.g. an APVTS id in a JUCE plugin) that the control reads and writes at runtime.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Per-control editor — Asset</h3>
+            <p>Points the control at the actual strip PNG file(s) and describes that strip's frame geometry.</p>
+            <ul class="doc-settings">
+              <li><strong>Strip file (1x, relative)</strong> — a relative file name, e.g. <code>cutoff_64frames.png</code>, blank by default. This is a text field, not a file picker — type the exact name of a strip already exported from Create or Batch.</li>
+              <li><strong>@2x file (optional)</strong> — a relative file name for the HiDPI variant, e.g. <code>cutoff_64frames@2x.png</code>, blank by default. Omitted from the manifest if left blank.</li>
+              <li><strong>Frames</strong> — the number of frames in the strip, default 64, range 1–512. Clamped to at least 1 on export regardless of what's typed.</li>
+              <li><strong>Frame W</strong> — the pixel width of one frame cell, default 80, range 1–8192. Clamped to at least 1 on export.</li>
+              <li><strong>Frame H</strong> — the pixel height of one frame cell, default 80, range 1–8192. Clamped to at least 1 on export.</li>
+              <li><strong>Stack direction</strong> — Vertical or Horizontal, default Vertical. Describes whether the strip's frames run top-to-bottom or left-to-right; serializes as <code>vertical</code> or <code>horizontal</code>.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Per-control editor — Bounds (base-resolution px)</h3>
+            <p>The on-screen placement rectangle for this control within the skin's overall design canvas (the Base width/Base height set at skin level).</p>
+            <ul class="doc-settings">
+              <li><strong>X</strong> — left-edge position in base-resolution pixels, default 0.0. No minimum or maximum, so negative values are allowed.</li>
+              <li><strong>Y</strong> — top-edge position in base-resolution pixels, default 0.0. No minimum or maximum, so negative values are allowed.</li>
+              <li><strong>W</strong> — width of the on-screen rectangle, default 80.0 (or the detected frame width, when added from a strip). Minimum 0; clamped to at least 0 on export.</li>
+              <li><strong>H</strong> — height of the on-screen rectangle, default 80.0 (or the detected frame height, when added from a strip). Minimum 0; clamped to at least 0 on export.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Per-control editor — Value range (optional)</h3>
+            <p>A collapsible section that maps the control's on-screen sweep to the parameter's numeric range for the host.</p>
+            <ul class="doc-settings">
+              <li><strong>Min</strong> — blank by default (the "0" shown is placeholder watermark text, not a value). Left blank or non-numeric, it's omitted from the manifest rather than defaulting to 0.</li>
+              <li><strong>Max</strong> — blank by default (watermark "1"). Same optional parse-or-omit behavior as Min.</li>
+              <li><strong>Default</strong> — blank by default (watermark "0.5"). Same optional parse-or-omit behavior as Min.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Export</h3>
+            <p>Finalizes the manifest and writes it to disk, plus the running status line shared by every command in this tab.</p>
+            <ul class="doc-settings">
+              <li><strong>Status line</strong> — reports the outcome of the last action: add-from-strip success, failure, or ambiguous-detection warning; add-blank; or export success/failure.</li>
+              <li><strong>Export skin.json…</strong> — disabled until at least one control is in the list. Opens a folder picker, then writes <code>&lt;sanitized Name&gt;.skin.json</code> into the chosen folder. On success the status line reports the control count and file name; on failure it shows the error message.</li>
+            </ul>
+          </div>
+
+          <div class="tip"><strong>Tip:</strong> The Type dropdown's on-screen order (RotaryKnob, VerticalFader, HorizontalSlider, Meter, Button, Toggle) doesn't match the exported strings — they map to <code>knob</code>, <code>vfader</code>, <code>hslider</code>, <code>meter</code>, <code>button</code>, and <code>toggle</code> respectively. If you're matching a manifest against loader code by hand, work from the lower-case strings, not the dropdown order.</div>
+
+          <div class="tip"><strong>Tip:</strong> Id and Parameter id are independent fields that are never auto-synced after you edit them separately — if you rename one, check the other. Likewise, only the very first control you add seeds the skin-level Base width/Base height from its frame size; adding a second, differently-sized control won't re-seed those fields, so set them by hand if your controls vary in size.</div>
+
+          <div class="tip"><strong>Tip:</strong> "Add from strip…" can mis-detect an ambiguous strip's frame count — if the status message warns the detection is low-confidence, double-check Frames, Frame W, and Frame H manually before exporting. Also note that Asset and @2x file are typed by hand, not chosen with a file picker, so a typo won't be caught until the manifest fails to load at runtime.</div>
+
+          <div class="tip"><strong>Tip:</strong> Exporting always overwrites any existing file of the same name in the target folder with no confirmation prompt, so double-check the Name field before re-exporting into the same folder. Also, this tab has no UI for grid/sprite layout, per-control background, or skin version, even though the manifest schema supports them — controls added here always export as a plain (non-grid) strip with no per-control background.</div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Generate ===== -->
+    <section class="doc-tab" id="tab-generate">
+      <div class="container">
+        <header class="section-head doc-tab-head">
+          <span class="eyebrow">Tab 5 of 6 &middot; Generate</span>
+          <h2>AI-generate layered control art from your own API key</h2>
+          <p>The Generate tab calls OpenAI, Gemini, Claude, or any OpenAI-compatible custom endpoint to produce a layered SVG knob, fader, slider, meter, button, or toggle, then hands it straight to the Create tab as a layered import. Reach for it when you don't have source art yet and want a working filmstrip in one pass, or when you want a whole matching set of controls in one consistent style.</p>
+        </header>
+        <div class="doc-body">
+
+          <div class="doc-feature">
+            <h3>Provider &amp; API key</h3>
+            <p>Choose which AI service generates the art and supply the credential for it. Your key never leaves this section unencrypted.</p>
+            <ul class="doc-settings">
+              <li><strong>Provider</strong> &mdash; a dropdown of <code>Claude</code>, <code>OpenAI</code>, <code>Gemini</code>, and <code>Custom</code>. Defaults to your last-used provider, or Claude if none is set. Switching providers reloads that provider's stored key, suggested models, and remembered model.</li>
+              <li><strong>API key</strong> &mdash; a masked text field (watermark <code>paste your key (sk-&hellip; / AIza&hellip; )</code>). Stored encrypted on this PC with Windows DPAPI and sent only to the provider you picked.</li>
+              <li><strong>Show key</strong> &mdash; a checkbox that reveals the key as plain text. Unchecked (masked) by default.</li>
+              <li><strong>Save key</strong> &mdash; encrypts and stores the current key for the selected provider. Enabled only once you've typed a key.</li>
+              <li><strong>Clear key</strong> &mdash; deletes the stored key for the selected provider and blanks the field.</li>
+              <li><strong>Endpoint base URL</strong> &mdash; appears only when Provider is <code>Custom</code>. Any OpenAI-compatible chat-completions endpoint, e.g. <code>https://openrouter.ai/api/v1</code> or <code>http://localhost:11434/v1</code>.</li>
+              <li><strong>Model</strong> &mdash; an editable autocomplete field, not a locked dropdown: type any model id or pick a per-provider suggestion. Defaults to your remembered model for that provider, or its default if none is remembered.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>What to make</h3>
+            <p>Pick the control type to generate. This drives which layers the AI is asked to produce.</p>
+            <ul class="doc-settings">
+              <li><strong>Control type</strong> &mdash; <code>RotaryKnob</code>, <code>VerticalFader</code>, <code>HorizontalSlider</code>, <code>Meter</code>, <code>Button</code>, or <code>Toggle</code>. Defaults to Rotary Knob. Knobs, buttons, toggles, and meters produce layered SVGs (knob = body + pointer; button/toggle/meter = off + on); faders and sliders produce a single cap/handle shape.</li>
+              <li><strong>Horizontal meter (fills left &rarr; right)</strong> &mdash; only shown when Control type is Meter. Unchecked by default, meaning a tall meter that fills bottom to top; check it for a wide meter that fills left to right.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Seeds</h3>
+            <p>Reusable named presets of the whole style / colour / effects setup below, so you don't have to re-enter a look every session. Apply one to prefill everything, tweak, or save your current settings as a new seed.</p>
+            <ul class="doc-settings">
+              <li><strong>Seed picker</strong> &mdash; ships with five built-ins: Vital / Serum modern, Vintage hardware, Minimal flat, Skeuomorphic metal, and Neon glow, followed by any seeds you've saved.</li>
+              <li><strong>Apply</strong> &mdash; copies the seed's style, notes, avoid list, both colours, canvas size, and all four effect toggles onto your current settings in one shot.</li>
+              <li><strong>Name field</strong> &mdash; a text box (watermark <code>name to save current as&hellip;</code>) for naming a new seed.</li>
+              <li><strong>Save</strong> &mdash; saves the current style/colour/effects settings as a user seed under that name, overwriting any existing user seed with the same name (case-insensitive). Built-in seeds are never overwritten.</li>
+              <li><strong>Delete</strong> &mdash; removes the selected saved seed. Built-in seeds can't be deleted.</li>
+              <li><strong>Style</strong> &mdash; <code>Modern</code> (default), <code>Minimal</code>, <code>Skeuomorphic</code>, <code>Vintage</code>, or <code>Flat</code>.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Colours</h3>
+            <p>Sets the body and accent colours fed into the generation prompt. Click a swatch to open a colour picker, or type a hex value directly.</p>
+            <ul class="doc-settings">
+              <li><strong>Body colour</strong> &mdash; empty by default, which means "let the model choose."</li>
+              <li><strong>Accent colour</strong> &mdash; defaults to <code>#E8440A</code>, matching the StripKit ember accent.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Effects</h3>
+            <p>Style qualities folded directly into the AI prompt. All four are unchecked by default.</p>
+            <ul class="doc-settings">
+              <li><strong>Drop shadow</strong> &mdash; unchecked by default.</li>
+              <li><strong>Outer glow</strong> &mdash; unchecked by default.</li>
+              <li><strong>Bevel / 3D</strong> &mdash; unchecked by default.</li>
+              <li><strong>Metallic sheen</strong> &mdash; unchecked by default.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Extra direction, avoid list &amp; canvas size</h3>
+            <p>Free-text prompt shaping plus the output canvas size.</p>
+            <ul class="doc-settings">
+              <li><strong>Extra direction (optional)</strong> &mdash; a multi-line free-text field (watermark <code>e.g. amber LED ring, knurled edge, brushed aluminium face</code>), empty by default.</li>
+              <li><strong>Describe a reference image&hellip;</strong> &mdash; opens an image picker, sends the file to your provider's vision endpoint, and appends the resulting style description onto Extra direction. Enabled only when a key is entered and nothing else is generating.</li>
+              <li><strong>Avoid (optional)</strong> &mdash; things the model should not include (watermark <code>e.g. no text, no numbers, no photo-realism</code>), empty by default; folded into every generation, single or set.</li>
+              <li><strong>Canvas size (px)</strong> &mdash; <code>256</code>, <code>512</code> (default), <code>768</code>, or <code>1024</code>. Sets the square SVG viewBox edge length.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Generate / Cancel / Variations</h3>
+            <p>The core single-control generation actions, plus a multi-take variations feature that generates several takes at once so you can pick a favourite.</p>
+            <ul class="doc-settings">
+              <li><strong>Generate</strong> &mdash; builds the request from every prompt-shaping field above and calls the provider. Enabled only when a key is entered and no generation is already running.</li>
+              <li><strong>Cancel</strong> &mdash; cancels the in-flight single generation. Enabled only while generating.</li>
+              <li><strong>Generate variations</strong> &mdash; generates several takes of the currently selected control type, all sharing the same style/colour/effects/avoid settings, and shows them as a results grid.</li>
+              <li><strong>Variation count</strong> &mdash; <code>2</code>, <code>4</code> (default), <code>6</code>, or <code>8</code> takes.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Prompt to be sent</h3>
+            <p>A collapsed-by-default expander showing a live, read-only preview of the exact system and user prompt your current settings would send &mdash; useful for understanding or debugging what the AI is being asked for. It recomputes automatically whenever a prompt-shaping field changes.</p>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Matching set</h3>
+            <p>Generate a whole family of controls in one consistent style/colour/effects setup &mdash; a head start on a full skin.</p>
+            <ul class="doc-settings">
+              <li><strong>Knob / Fader / Slider / Meter / Button / Toggle checkboxes</strong> &mdash; which control types to include. Knob, Fader, Meter, and Button are checked by default; Slider and Toggle are unchecked.</li>
+              <li><strong>Generate set</strong> &mdash; generates one item per ticked type, all sharing the same settings. Enabled only when at least one checkbox is ticked and a key is entered.</li>
+              <li><strong>Cancel</strong> &mdash; cancels the in-flight set or variations generation.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Right panel &mdash; preview and results</h3>
+            <p>The right side of the tab shows either a single live preview or a matching-set results grid, depending on what you last ran.</p>
+            <ul class="doc-settings">
+              <li><strong>Single-control preview</strong> &mdash; the at-rest composited preview of the most recently generated or refined control. Shown when there are no matching-set results.</li>
+              <li><strong>Matching-set results grid</strong> &mdash; one tile per generated set member or variation, each with its own <strong>Use in Create</strong>, <strong>Save</strong>, and <strong>Regenerate</strong> buttons. Shown once a set or variations run has produced results.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Result actions</h3>
+            <p>A persistent action bar under the preview handles handoff, saving, copying, and refining the current result.</p>
+            <ul class="doc-settings">
+              <li><strong>Use in Create</strong> &mdash; sends the current result to the Create tab as a layered import, honouring the actual generated control type (knob &rarr; body+pointer, button/toggle &rarr; off/on layers, fader/slider &rarr; a flattened single source). Enabled only once you have a result.</li>
+              <li><strong>Save SVG&hellip;</strong> &mdash; writes the generated SVG to disk, defaulting to a filename of <code>{provider}-knob</code>.</li>
+              <li><strong>Copy SVG</strong> &mdash; copies the generated SVG text to the clipboard.</li>
+              <li><strong>Refine field</strong> &mdash; a text box (watermark <code>describe a change, e.g. thicker pointer, warmer accent</code>) for describing a change, shown only once you have a result.</li>
+              <li><strong>Refine</strong> &mdash; sends the current SVG plus your instruction back to the same provider and model, replacing the result with the revised version while keeping the same control type. Enabled only when the refine field is non-blank.</li>
+              <li><strong>Save set&hellip;</strong> &mdash; writes every successful control in a matching set to a folder as SVGs, named <code>{style}-{componenttype}.svg</code>. Shown only when a set has results.</li>
+              <li><strong>Model response (raw)</strong> &mdash; a collapsed expander with the model's raw text reply, for diagnosing extraction failures. Shown only when a raw response exists.</li>
+            </ul>
+          </div>
+
+          <div class="tip"><strong>Tip:</strong> Switching Provider silently reloads a different stored key, suggested-models list, and remembered model &mdash; it won't warn you if you had an unsaved key typed in the box. Likewise, switching Provider resets Model back to that provider's remembered/default id, discarding any unsaved custom model you'd typed for the previous one. Save a key before you switch providers if you want to keep it.</div>
+
+          <div class="tip"><strong>Tip:</strong> Clicking Generate can trigger two network calls, not one. If the first take comes back structurally weak &mdash; a knob with no rotating pointer layer, or a button/toggle/meter with fewer than two state-frame layers &mdash; StripKit silently discards it and retries once automatically (status text reads "The first take was missing its moving part &mdash; regenerating once&hellip;"). There's no way to see or keep the rejected first attempt.</div>
+
+          <div class="tip"><strong>Tip:</strong> Applying a Seed overwrites style, notes, avoid list, both colours, canvas size, and all four effect checkboxes at once &mdash; there's no per-field opt-in, so it will clobber manual tweaks made just before you click Apply. Likewise, saving a seed under a name that already exists overwrites it silently (case-insensitive), with no confirmation prompt.</div>
+
+          <div class="tip"><strong>Tip:</strong> Body colour is left empty on purpose, meaning "let the model choose" &mdash; it isn't a placeholder you need to fill in. Accent colour is the only colour field with a real default (<code>#E8440A</code>).</div>
+
+          <div class="tip"><strong>Tip:</strong> "Horizontal meter" only appears, and only has any effect, when Control type is Meter &mdash; it's ignored for every other control type.</div>
+
+          <div class="tip"><strong>Tip:</strong> Generate variations reuses the same results grid, status line, and cancel logic as Generate set &mdash; the only visible difference is the tile labels ("Knob #1", "Knob #2"&hellip; instead of one tile per type). Regenerating a single tile inside either always starts a fresh generation rather than silently no-op'ing after a prior Cancel.</div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Assemble ===== -->
+    <section class="doc-tab" id="tab-assemble">
+      <div class="container">
+        <header class="section-head doc-tab-head">
+          <span class="eyebrow">Tab 6 of 6 &middot; Assemble</span>
+          <h2>Pack a folder of pre-rendered frames into one filmstrip</h2>
+          <p>Assemble takes frames you already rendered elsewhere — a path-traced PNG sequence out of Blender, KeyShot, or Octane, or any other pre-rendered set — and stacks them into one filmstrip PNG. It mirrors the Create tab's export feature set (HiDPI copy, <code>skin.json</code> manifest, loader-code snippets) but involves no procedural rendering: StripKit only reconciles, retimes, and packs the frames you give it.</p>
+        </header>
+        <div class="doc-body">
+
+          <div class="doc-feature">
+            <h3>Source frames</h3>
+            <p>Load, add to, reorder, and remove the frames that will become the filmstrip. Frames are natural-sorted automatically, so <code>frame_2</code> sorts before <code>frame_10</code> regardless of zero-padding.</p>
+            <ul class="doc-settings">
+              <li><strong>Choose folder…</strong> — opens a folder picker and enumerates every file inside matching an accepted extension. This <em>replaces</em> the current frame list entirely, discarding whatever was already loaded.</li>
+              <li><strong>Add files…</strong> — opens a multi-select image picker and adds the chosen files to the existing list (de-duplicated by path), then re-sorts the combined set.</li>
+              <li><strong>Clear</strong> — empties the frame list, clears the preview and readout, and resets the status line.</li>
+              <li><strong>Sequence info readout</strong> — reports frame count and dimensions, e.g. "N frame(s) &middot; WxH px &middot; uniform," or a min&ndash;max range with "mixed — will reconcile" when sizes differ.</li>
+              <li><strong>Warning text</strong> — shown only when a probe or QC pass has something to flag; appears in the accent-highlight color.</li>
+              <li><strong>Frame list rows</strong> — each row shows its position and file name plus three controls: <strong>&uarr;</strong> (move earlier), <strong>&darr;</strong> (move later), and <strong>&times;</strong> (remove). The list appears once at least one frame is loaded.</li>
+              <li><strong>Drop zone</strong> — drag a folder or a set of image files onto the preview area; this sets the list if it was empty, or adds to it otherwise.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Component type</h3>
+            <p>Declares what these frames depict, which sets the manifest and loader-code control type written on export.</p>
+            <ul class="doc-settings">
+              <li><strong>Component type</strong> — a dropdown defaulting to <strong>Rotary knob</strong>, with Vertical fader, Horizontal slider, Meter, Button, and Toggle also available. Changing it also live-regenerates the render-recipe preview further down the panel.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Layout</h3>
+            <p>Controls how frames are stacked into the final strip and how mismatched frame sizes get reconciled.</p>
+            <ul class="doc-settings">
+              <li><strong>Stack direction</strong> — Vertical (default) or Horizontal; stacks frames top-to-bottom or left-to-right.</li>
+              <li><strong>If frame sizes differ</strong> — <strong>Pad to largest</strong> (default: transparent-pads every frame up to the largest frame's dimensions, centred), <strong>Crop to smallest</strong> (centre-crops every frame down to the smallest), or <strong>Strict</strong> (any size mismatch refuses to assemble).</li>
+              <li><strong>Re-centre each frame on its content</strong> — unchecked by default. Re-centres every frame on its opaque content before packing; fixes a 3D object that drifts off-centre between renders.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Render QC (path-tracing)</h3>
+            <p>Catches common path-tracer failure modes — object drift, missing or blank transparency, premultiplied edges — before you commit to assembling.</p>
+            <ul class="doc-settings">
+              <li><strong>Check frames</strong> — decodes every frame off the UI thread and runs a QC analysis, enabled only once at least two frames are loaded. It reports either that N frames look clean, or flags specific issues: drift of 2px or more between frames (suggesting you tick "Re-centre each frame"), frames with no transparency at all (a possibly-missing transparent background), fully transparent frames (a likely failed or empty render), and premultiplied-looking edges (suggesting the "Un-premultiply alpha" fix below).</li>
+              <li><strong>Un-premultiply alpha (fix dark edge halos)</strong> — unchecked by default. Divides RGB by alpha to remove the dark fringe a premultiplied render leaves on anti-aliased edges; a no-op on fully opaque or fully transparent pixels, so it's safe to leave off unless you actually see halos.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Resample (optional)</h3>
+            <p>Re-times the assembled sequence to a different frame count, optionally synthesizing in-between frames — render fewer frames offline, ship more in the filmstrip.</p>
+            <ul class="doc-settings">
+              <li><strong>Re-time to a standard frame count</strong> — unchecked by default. Reveals the target-count and method controls below when checked.</li>
+              <li><strong>Target frame count</strong> — a numeric field, default 64, ranging 2&ndash;512, that sets the output frame count.</li>
+              <li><strong>32 / 64 / 128</strong> — three preset buttons that set the target frame count directly to the standard StripKit counts.</li>
+              <li><strong>Method</strong> — <strong>Nearest</strong> (default: picks the closest rendered frame — never ghosts, the safe choice for a moving pointer) or <strong>Crossfade</strong> (blends the two bracketing frames to synthesise in-betweens — good for slow, smooth motion, but can ghost on fast motion).</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Emission / glow pass (optional)</h3>
+            <p>An optional second render pass — an emission/glow AOV (arbitrary output variable) — additively composited over the beauty (main) frames, so path-traced glow reads as emitted light rather than being baked flat into the beauty render.</p>
+            <ul class="doc-settings">
+              <li><strong>Choose emission folder…</strong> — opens a folder picker for the second sequence, probed and natural-sorted the same way as the main sequence. The readout reports whether any readable frames were found and whether the count matches the beauty sequence.</li>
+              <li><strong>Emission info readout</strong> — defaults to "No emission pass added" until a folder is chosen.</li>
+              <li><strong>Intensity (%)</strong> — a slider from 0 to 100, default 100, converted to a 0.0&ndash;1.0 gain applied to the emission composite. Only visible once an emission pass is loaded.</li>
+              <li><strong>Remove emission pass</strong> — clears the stored emission frames and returns the section to its unloaded state.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Quality &amp; output</h3>
+            <p>HiDPI export scale for the assembled strip.</p>
+            <ul class="doc-settings">
+              <li><strong>Also export a HiDPI copy</strong> — checked by default. Writes an upscaled copy at the chosen scale alongside the main export. Reveals the Scale row when checked.</li>
+              <li><strong>Scale</strong> — <code>2</code>, <code>3</code>, or <code>4</code> (default <code>2</code>), i.e. @2x / @3x / @4x. Sets both the exported filename suffix and the upscale factor applied to the already-assembled strip.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Manifest (optional)</h3>
+            <p>Optionally write a <code>skin.json</code> manifest describing this single control alongside the exported PNG(s).</p>
+            <ul class="doc-settings">
+              <li><strong>Also write a skin.json manifest</strong> — checked by default.</li>
+              <li><strong>Parameter id</strong> — an empty-by-default text field (watermark "e.g. filterCutoff"); if left blank, the exported control's parameter id falls back to the output PNG's base file name.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Code export (loader snippets)</h3>
+            <p>Optionally emit ready-to-paste loader code files for one or more target platforms, written next to the exported PNG.</p>
+            <ul class="doc-settings">
+              <li><strong>Also emit ready-to-paste loader code</strong> — unchecked by default. Reveals the per-target checkboxes below when checked.</li>
+              <li><strong>JUCE</strong> — checked by default.</li>
+              <li><strong>CSS / HTML</strong> — unchecked by default.</li>
+              <li><strong>iPlug2</strong> — unchecked by default.</li>
+              <li><strong>HISE</strong> — unchecked by default.</li>
+              <li><strong>React / Web</strong> — unchecked by default. Emits a <code>.jsx</code> sprite component driven by a 0..1 <code>value</code> prop.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Render recipe (plan a render)</h3>
+            <p>For frames you haven't rendered yet: generates a Blender script or a CSV/JSON frame table so an offline render matches StripKit's <code>(N&minus;1)</code> sweep law. These fields are independent of, and don't feed, the assembly options above — the only thing they share is the Component type chosen earlier in the panel.</p>
+            <ul class="doc-settings">
+              <li><strong>Preview / save render recipe</strong> — a collapsible section containing all the recipe controls below.</li>
+              <li><strong>Frames to render</strong> — a numeric field, default 64, ranging 2&ndash;512.</li>
+              <li><strong>Render size (px)</strong> — a numeric field, default 256, ranging 8&ndash;4096; used as both width and height for a square render.</li>
+              <li><strong>Sweep (degrees)</strong> — a numeric field, default 270, ranging 1&ndash;360 (rotary controls); split symmetrically into a &minus;half..+half range around 0 for the recipe.</li>
+              <li><strong>Recipe format</strong> — <strong>Blender</strong> (default), <strong>CSV</strong>, or <strong>JSON</strong>; selecting a target regenerates the preview live.</li>
+              <li><strong>Recipe preview</strong> — a read-only, monospace, scrollable text area showing the generated script or table.</li>
+              <li><strong>Save recipe…</strong> — opens a folder picker and saves the currently-previewed format to disk.</li>
+              <li><strong>Copy to clipboard</strong> — copies the current recipe preview text.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Preview &amp; transport</h3>
+            <p>A scrubbable preview of the loaded sequence, on the right-hand panel; the same area doubles as the drag-and-drop target for loading frames.</p>
+            <ul class="doc-settings">
+              <li><strong>Preview / drop area</strong> — shows the currently scrubbed-to frame, decoded on demand. Displays a placeholder prompt until at least one frame is loaded.</li>
+              <li><strong>Previous frame</strong> — steps the preview back one frame.</li>
+              <li><strong>Play / Stop</strong> — toggles frame-by-frame playback of the preview.</li>
+              <li><strong>Next frame</strong> — steps the preview forward one frame.</li>
+              <li><strong>Reset</strong> — returns the preview to the first frame.</li>
+              <li><strong>Scrub slider</strong> — a normalized 0..1 position mapped to a frame index; the one control that live-re-renders the preview image as you drag it.</li>
+              <li><strong>Frame readout</strong> — shows "Frame i/n," or "Frame i/n — unreadable" if that frame failed to decode.</li>
+              <li><strong>Sequence info</strong> — the same summary text as the left panel, repeated in monospace under the transport row.</li>
+              <li><strong>Progress bar</strong> — appears only while an export is running, showing frames loaded so far.</li>
+              <li><strong>Status message</strong> — reports the current step: cleared, checked, assembling, cancelled, or the export result.</li>
+              <li><strong>Cancel</strong> — appears only while an export is running; cancels the in-flight assemble-and-export operation.</li>
+              <li><strong>Assemble &amp; export</strong> — enabled once at least two frames are loaded and no run is in progress. Opens a Save PNG dialog, then off the UI thread decodes all frames (and emission frames if enabled), packs them, and writes the main PNG plus whichever of the HiDPI copy, manifest, and loader-code files are ticked. The status line summarizes exactly what was written.</li>
+              <li><strong>Show in folder</strong> — enabled once an export has completed and the file still exists on disk; reveals the exported filmstrip in Explorer.</li>
+            </ul>
+          </div>
+
+          <div class="tip"><strong>Tip:</strong> "Choose folder…" replaces the current frame list; "Add files…" and dropping additional files or folders add to it. If you want to combine two folders, use "Add files…" (or drag-drop) for the second batch — picking "Choose folder…" again wipes out what you already loaded.</div>
+
+          <div class="tip"><strong>Tip:</strong> "Assemble &amp; export" and "Check frames" both stay disabled until you have at least two frames loaded — a single frame won't enable either button.</div>
+
+          <div class="tip"><strong>Tip:</strong> "Un-premultiply alpha" and "Re-centre each frame on its content" only take effect at export time. Scrubbing the transport slider previews the raw source frames and won't show what either fix will actually do to the exported strip.</div>
+
+          <div class="tip"><strong>Tip:</strong> only <code>.png</code>, <code>.webp</code>, <code>.bmp</code>, <code>.jpg</code>, <code>.jpeg</code>, <code>.exr</code>, <code>.hdr</code>, <code>.tif</code>, and <code>.tiff</code> are picked up from a chosen folder or drop — anything else is silently ignored, with no warning. If you're relying on the emission pass, make sure that folder has exactly as many frames as your beauty sequence; a mismatched count is reported in the emission info readout but won't block export.</div>
+
+          <div class="tip"><strong>Tip:</strong> the @2x/@3x/@4x export here is a post-hoc upscale of the already-assembled strip, not a native higher-resolution render — for the best quality at a given scale, render your source sequence at that resolution to begin with rather than relying on this upscale.</div>
+
+          <div class="tip"><strong>Tip:</strong> "Cancel" only appears (and only applies) during "Assemble &amp; export" — a "Check frames" scan can't be cancelled once started, even though it also runs asynchronously.</div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Shortcuts & quality-of-life ===== -->
+    <section class="doc-tab" id="tab-shortcuts">
+      <div class="container">
+        <header class="section-head doc-tab-head">
+          <span class="eyebrow">Beyond the six tabs &middot; Shortcuts &amp; quality-of-life</span>
+          <h2>Keyboard shortcuts, presets, and the stuff that remembers state for you</h2>
+          <p>These aren't a tab — they're cross-cutting conveniences available from the Create tab and the main window itself: keyboard shortcuts, saved render presets, the re-openable tutorial, and small persistence details that mean StripKit reopens where you left it.</p>
+        </header>
+        <div class="doc-body">
+
+          <div class="doc-feature">
+            <h3>Keyboard shortcuts</h3>
+            <p>Two window-level key bindings are wired to the main window, both Ctrl-modified so they never collide with plain keys, Space, or arrow keys inside text fields and checkboxes.</p>
+            <ul class="doc-settings">
+              <li><strong><code>Ctrl+O</code></strong> — runs the same command as "Load source image…", opening the file picker to load a source PNG into the Create tab.</li>
+              <li><strong><code>Ctrl+E</code></strong> — runs the Create tab's Export command directly, without touching the mouse.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Render presets</h3>
+            <p>A PRESETS section sits at the top of the Create tab's left panel. A preset is a named snapshot of the entire render setup — component type, frame count, sweep/pivot, sprite layout, parameter-law curve, meter and value-arc styling, and export preferences — deliberately excluding any loaded art (source image, background, or layers), so a preset is a reusable look, not an asset bundle.</p>
+            <ul class="doc-settings">
+              <li><strong>Preset name field</strong> — type a name here; Save is enabled only once the field is non-empty.</li>
+              <li><strong>Save</strong> — captures the full current render setup under that name. Saving under a name that already exists (case-insensitive match) overwrites the existing preset rather than creating a duplicate.</li>
+              <li><strong>Preset list / selection</strong> — pick a saved preset to enable the Apply and Delete commands.</li>
+              <li><strong>Apply</strong> — restores every field from the preset onto the Create tab in one pass (type, frames, sweep, layout, parameter law, meter/arc settings, export options) without refreshing the preview after every single field change.</li>
+              <li><strong>Delete</strong> — removes the selected preset from the list and from the persisted settings file, then clears the selection.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Getting Started tutorial</h3>
+            <p>A guided overlay walks through each tab's core loop. It auto-opens the first time you launch StripKit, and after that stays available on demand from the header's Help button.</p>
+            <ul class="doc-settings">
+              <li><strong>Help button (header)</strong> — reopens the walkthrough for whichever tab is currently active, always restarting at its first step.</li>
+              <li><strong>Load sample knob</strong> — on the Create walkthrough's first step, loads a bundled sample knob PNG so you can see the full flow without supplying your own art.</li>
+              <li><strong>Per-tab walkthroughs</strong> — Create, Import, Batch, Skin, Generate, and Assemble each have their own step sequence with tab-specific tips, rather than one generic tour.</li>
+              <li><strong>First-run tracking</strong> — a persisted flag records once you've finished or skipped any walkthrough, so the overlay stops auto-opening on launch but remains reachable from Help at any time.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Window &amp; session persistence</h3>
+            <p>StripKit remembers a handful of things about your last session so you don't have to re-set them every launch.</p>
+            <ul class="doc-settings">
+              <li><strong>Window size</strong> — the width and height you leave the window at are saved on close and restored on the next launch (clamped to a sane 200&ndash;20000px range; falls back to the 1060&times;740 default otherwise).</li>
+              <li><strong>Last active tab</strong> — whichever of the six tabs was selected when you closed StripKit is the one shown when you reopen it.</li>
+              <li><strong>Generate tab preferences</strong> — your last-used AI provider, any per-provider model id you pinned, and your saved prompt seeds persist across launches (API keys are stored separately, encrypted).</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>"Show in folder"</h3>
+            <p>After an export completes on the Create or Assemble tab, a "Show in folder" action appears alongside the transport controls.</p>
+            <ul class="doc-settings">
+              <li><strong>Show in folder</strong> — opens Windows Explorer with the just-exported file pre-selected, so you don't have to navigate to the output folder by hand. Best-effort: if the file has since been moved or deleted, it silently does nothing rather than erroring.</li>
+            </ul>
+          </div>
+
+          <div class="tip"><strong>Tip:</strong> <code>Ctrl+O</code> and <code>Ctrl+E</code> only fire with Ctrl held down — plain <code>O</code>, <code>E</code>, Space, and the arrow keys still behave normally inside text fields, numeric inputs, and checkboxes elsewhere in the UI.</div>
+          <div class="tip"><strong>Tip:</strong> A preset stores the render recipe, not the art — reapplying one after loading a different source image re-styles that new image with the saved settings instead of bringing back the old picture. Save a preset before experimenting with sprite layout or parameter-law curves so you can always get back to Strip/Linear.</div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Closing cross-links ===== -->
+    <div class="tut-next">
+      <div class="container tut-next-inner">
+        <h2>Ready to make something?</h2>
+        <p>Jump back into the app, or see what's changed recently.</p>
+        <a class="btn btn-lg" href="index.html#download">Download StripKit</a>
+        <p class="tut-next-secondary">
+          <a href="getting-started.html">5-minute Getting Started guide</a> &middot;
+          <a href="changelog.html">Changelog</a> &middot;
+          <a href="https://github.com/Vybecode-LTD/stripkit" target="_blank" rel="noopener">Source on GitHub</a>
+        </p>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <img src="resources/stripkit-icon.png" alt="" class="footer-mark" />
+        <div>
+          <div class="footer-name">StripKit</div>
+          <div class="footer-tag">Animated filmstrip generator for audio-plugin GUIs.</div>
+        </div>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="contact.html">Contact</a>
+        <a href="https://github.com/Vybecode-LTD/stripkit" target="_blank" rel="noopener">Source (MIT)</a>
+      </nav>
+      <div class="footer-maker">
+        <span>Made by</span>
+        <a href="https://vybeco.de" target="_blank" rel="noopener" class="maker-link">
+          <img src="resources/vybeco-logo.png" alt="VybeCode" class="maker-logo" />
+        </a>
+        <span class="footer-copy">© <span id="year">2026</span> VybeCode Software</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+
+</body>
+</html>

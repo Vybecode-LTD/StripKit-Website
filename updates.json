@@ -1,5 +1,22 @@
 [
   {
+    "version": "1.5.0",
+    "date": "2026-07-03",
+    "summary": "Path-traced (or any pre-rendered) frames → a filmstrip, in one step.",
+    "changes": [
+      { "type": "new", "text": "**Path-traced (or any pre-rendered) frames → a filmstrip, in one step.** Rendered your knob as a sequence of images (Blender, KeyShot, Octane, an export from another tool)? The new **Assemble** tab stacks the whole folder into a single filmstrip — drop it in, check the order, export. Pay the expensive lighting/anti-aliasing cost once, offline, then ship a strip that runs anywhere." },
+      { "type": "new", "text": "**A render recipe that matches StripKit's frame math.** Path-tracing a knob? Export a Blender script (or a CSV/JSON table) so your offline render lands each frame on exactly the right angle — then stack the result on the Assemble tab. No guesswork, no drift." },
+      { "type": "fix", "text": "**Catches common render mistakes.** Assembling a rendered sequence now flags object drift, a missing transparent background, blank frames, or dark edge halos — and offers one-click fixes." },
+      { "type": "new", "text": "**A new look.** A refined dark, precision-instrument interface — consistent across every tab." },
+      { "type": "fix", "text": "**Reliability + polish.** The playback transport now looks and behaves the same on every tab, and a pre-release audit hardened file import (a crafted SVG can no longer make the app phone home), fixed a colour shift in the un-premultiply cleanup, and squared away layered button/toggle state art." },
+      { "type": "new", "text": "**More of the path-tracing pipeline.** Assemble now reads **EXR / 16-bit HDR** frames straight from Blender / KeyShot / Octane (tone-mapped for you), can **blend in-between frames** to turn ~32 rendered frames into a smooth 64/128, and can **add an emission / glow pass** so lit parts read like real light." },
+      { "type": "new", "text": "**A batch of quality-of-life upgrades.** More export targets (now including **React** web components), sharper HDR imports (banding cleaned up), StripKit **remembers your window size and last tab**, **@3x / @4x** exports for the sharpest displays, a **meter peak marker**, keyboard shortcuts, loader code straight from the Batch tab, and a **\"Show in folder\"** button after every export." },
+      { "type": "new", "text": "**Pack frames into a grid instead of a strip.** A new \"Sprite layout\" option stacks frames into an R×C grid sheet — for loaders that expect a 2D atlas instead of a single long strip." },
+      { "type": "new", "text": "**Match your plugin's real parameter feel.** A new \"Parameter law\" curve (linear / skew / logarithmic) lets the visual sweep track a log-frequency or dB-style parameter instead of a straight-line divisor." },
+      { "type": "new", "text": "**Save your setup as a preset.** Save the current render setup — type, frames, sweep, layout, meter/arc styling, export options — as a named preset and reload it in one click next time." }
+    ]
+  },
+  {
     "version": "1.3.0",
     "date": "2026-06-18",
     "summary": "A full AI-generation workflow — matching sets, variations, refine, vision and seeds — plus meters and on/off toggles as first-class controls.",

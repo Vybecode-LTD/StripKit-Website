@@ -92,6 +92,7 @@ a:hover { color: var(--accent-hi); }
 .nav a { color: var(--text-2); font-weight: 600; font-size: .95rem; }
 .nav a:hover { color: var(--accent); }
 .nav .btn { color: #fff; }
+.nav .btn:hover { color: #fff; }
 
 /* ===== Hero ===== */
 .hero { padding: 84px 0 64px; }

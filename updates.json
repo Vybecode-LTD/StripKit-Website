@@ -1,5 +1,14 @@
 [
   {
+    "version": "1.5.1",
+    "date": "2026-07-04",
+    "summary": "Fixed: HDR image sequences now load consistently.",
+    "changes": [
+      { "type": "fix", "text": "**Fixed: HDR image sequences now load consistently.** Dragging or selecting HDR and 16-bit image files now works the same way as using \"Choose folder,\" instead of silently skipping them." },
+      { "type": "new", "text": "**Expanded in-app guides.** The Getting Started walkthroughs now cover all current features, including keyboard shortcuts, resampling options, batch limitations, and image generation details." }
+    ]
+  },
+  {
     "version": "1.5.0",
     "date": "2026-07-03",
     "summary": "Path-traced (or any pre-rendered) frames → a filmstrip, in one step.",

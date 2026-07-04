@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shortcuts &amp; Quality-of-Life — StripKit</title>
+  <meta name="description" content="StripKit's cross-cutting conveniences: keyboard shortcuts, render presets, the re-openable Getting Started tutorial, and window/session persistence." />
+  <meta name="theme-color" content="#e8440a" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Shortcuts & Quality-of-Life — StripKit" />
+  <meta property="og:description" content="Keyboard shortcuts, presets, and the stuff that remembers state for you." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://stripkit.pro/tutorials-shortcuts.html" />
+  <meta property="og:image" content="https://stripkit.pro/resources/screenshot.png" />
+
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="apple-touch-icon" href="resources/stripkit-icon.png" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/docs.css" />
+</head>
+<body>
+
+  <!-- ===== Header ===== -->
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="StripKit home">
+        <img src="resources/stripkit-icon.png" alt="" class="brand-mark" />
+        <span class="brand-name">StripKit</span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="index.html#features">Features</a>
+        <a href="getting-started.html">Guide</a>
+        <a href="tutorials.html" aria-current="page">Tutorials</a>
+        <a href="index.html#download">Download</a>
+        <a href="changelog.html">Changelog</a>
+        <a class="nav-gh" href="https://github.com/Vybecode-LTD/stripkit" target="_blank" rel="noopener"
+           aria-label="StripKit on GitHub">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.5v-1.8c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17 4.7 18 5 18 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.3v3.3c0 .3.2.7.8.5A11.5 11.5 0 0 0 23.5 12C23.5 5.7 18.3.5 12 .5z"/></svg>
+          GitHub
+        </a>
+        <a class="btn btn-sm" href="index.html#download">Get StripKit</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <div class="container tut-crumb">
+      <a href="tutorials.html">All tutorials</a>
+    </div>
+
+    <section class="tutorial-page">
+      <div class="container">
+        <header class="section-head tutorial-head">
+          <span class="eyebrow">Beyond the six tabs &middot; Shortcuts &amp; quality-of-life</span>
+          <h1>Keyboard shortcuts, presets, and the stuff that remembers state for you</h1>
+          <p>These aren't a tab — they're cross-cutting conveniences available from the Create tab and the main window itself: keyboard shortcuts, saved render presets, the re-openable tutorial, and small persistence details that mean StripKit reopens where you left it.</p>
+        </header>
+        <div class="doc-body">
+
+          <div class="doc-feature">
+            <h3>Keyboard shortcuts</h3>
+            <p>Two window-level key bindings are wired to the main window, both Ctrl-modified so they never collide with plain keys, Space, or arrow keys inside text fields and checkboxes.</p>
+            <ul class="doc-settings">
+              <li><strong><code>Ctrl+O</code></strong> — runs the same command as "Load source image…", opening the file picker to load a source PNG into the Create tab.</li>
+              <li><strong><code>Ctrl+E</code></strong> — runs the Create tab's Export command directly, without touching the mouse.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Render presets</h3>
+            <p>A PRESETS section sits at the top of the Create tab's left panel. A preset is a named snapshot of the entire render setup — component type, frame count, sweep/pivot, sprite layout, parameter-law curve, meter and value-arc styling, and export preferences — deliberately excluding any loaded art (source image, background, or layers), so a preset is a reusable look, not an asset bundle.</p>
+            <ul class="doc-settings">
+              <li><strong>Preset name field</strong> — type a name here; Save is enabled only once the field is non-empty.</li>
+              <li><strong>Save</strong> — captures the full current render setup under that name. Saving under a name that already exists (case-insensitive match) overwrites the existing preset rather than creating a duplicate.</li>
+              <li><strong>Preset list / selection</strong> — pick a saved preset to enable the Apply and Delete commands.</li>
+              <li><strong>Apply</strong> — restores every field from the preset onto the Create tab in one pass (type, frames, sweep, layout, parameter law, meter/arc settings, export options) without refreshing the preview after every single field change.</li>
+              <li><strong>Delete</strong> — removes the selected preset from the list and from the persisted settings file, then clears the selection.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Getting Started tutorial</h3>
+            <p>A guided overlay walks through each tab's core loop. It auto-opens the first time you launch StripKit, and after that stays available on demand from the header's Help button.</p>
+            <ul class="doc-settings">
+              <li><strong>Help button (header)</strong> — reopens the walkthrough for whichever tab is currently active, always restarting at its first step.</li>
+              <li><strong>Load sample knob</strong> — on the Create walkthrough's first step, loads a bundled sample knob PNG so you can see the full flow without supplying your own art.</li>
+              <li><strong>Per-tab walkthroughs</strong> — Create, Import, Batch, Skin, Generate, and Assemble each have their own step sequence with tab-specific tips, rather than one generic tour.</li>
+              <li><strong>First-run tracking</strong> — a persisted flag records once you've finished or skipped any walkthrough, so the overlay stops auto-opening on launch but remains reachable from Help at any time.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Window &amp; session persistence</h3>
+            <p>StripKit remembers a handful of things about your last session so you don't have to re-set them every launch.</p>
+            <ul class="doc-settings">
+              <li><strong>Window size</strong> — the width and height you leave the window at are saved on close and restored on the next launch (clamped to a sane 200&ndash;20000px range; falls back to the 1060&times;740 default otherwise).</li>
+              <li><strong>Last active tab</strong> — whichever of the six tabs was selected when you closed StripKit is the one shown when you reopen it.</li>
+              <li><strong>Generate tab preferences</strong> — your last-used AI provider, any per-provider model id you pinned, and your saved prompt seeds persist across launches (API keys are stored separately, encrypted).</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>"Show in folder"</h3>
+            <p>After an export completes on the Create or Assemble tab, a "Show in folder" action appears alongside the transport controls.</p>
+            <ul class="doc-settings">
+              <li><strong>Show in folder</strong> — opens Windows Explorer with the just-exported file pre-selected, so you don't have to navigate to the output folder by hand. Best-effort: if the file has since been moved or deleted, it silently does nothing rather than erroring.</li>
+            </ul>
+          </div>
+
+          <div class="tip"><strong>Tip:</strong> <code>Ctrl+O</code> and <code>Ctrl+E</code> only fire with Ctrl held down — plain <code>O</code>, <code>E</code>, Space, and the arrow keys still behave normally inside text fields, numeric inputs, and checkboxes elsewhere in the UI.</div>
+          <div class="tip"><strong>Tip:</strong> A preset stores the render recipe, not the art — reapplying one after loading a different source image re-styles that new image with the saved settings instead of bringing back the old picture. Save a preset before experimenting with sprite layout or parameter-law curves so you can always get back to Strip/Linear.</div>
+
+        </div>
+
+        <nav class="tut-pager" aria-label="Tutorial navigation">
+          <a class="pager-prev" href="tutorials-assemble.html"><span class="pager-label">Previous</span>&larr; Assemble</a>
+          <a class="pager-next" href="tutorials.html"><span class="pager-label">Done</span>All tutorials &rarr;</a>
+        </nav>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <img src="resources/stripkit-icon.png" alt="" class="footer-mark" />
+        <div>
+          <div class="footer-name">StripKit</div>
+          <div class="footer-tag">Animated filmstrip generator for audio-plugin GUIs.</div>
+        </div>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="contact.html">Contact</a>
+        <a href="https://github.com/Vybecode-LTD/stripkit" target="_blank" rel="noopener">Source (MIT)</a>
+      </nav>
+      <div class="footer-maker">
+        <span>Made by</span>
+        <a href="https://vybeco.de" target="_blank" rel="noopener" class="maker-link">
+          <img src="resources/vybeco-logo.png" alt="VybeCode" class="maker-logo" />
+        </a>
+        <span class="footer-copy">© <span id="year">2026</span> VybeCode Software</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+
+</body>
+</html>

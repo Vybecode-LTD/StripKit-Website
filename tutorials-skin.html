@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Skin Tab Tutorial — StripKit</title>
+  <meta name="description" content="Assemble a multi-control skin.json manifest in StripKit's Skin tab: bind already-exported strips to plugin parameters for a whole GUI." />
+  <meta name="theme-color" content="#e8440a" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Skin Tab Tutorial — StripKit" />
+  <meta property="og:description" content="Bind exported strips to plugin parameters as one skin.json manifest." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://stripkit.pro/tutorials-skin.html" />
+  <meta property="og:image" content="https://stripkit.pro/resources/screenshot.png" />
+
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="apple-touch-icon" href="resources/stripkit-icon.png" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/docs.css" />
+</head>
+<body>
+
+  <!-- ===== Header ===== -->
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="StripKit home">
+        <img src="resources/stripkit-icon.png" alt="" class="brand-mark" />
+        <span class="brand-name">StripKit</span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="index.html#features">Features</a>
+        <a href="getting-started.html">Guide</a>
+        <a href="tutorials.html" aria-current="page">Tutorials</a>
+        <a href="index.html#download">Download</a>
+        <a href="changelog.html">Changelog</a>
+        <a class="nav-gh" href="https://github.com/Vybecode-LTD/stripkit" target="_blank" rel="noopener"
+           aria-label="StripKit on GitHub">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.5v-1.8c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17 4.7 18 5 18 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.3v3.3c0 .3.2.7.8.5A11.5 11.5 0 0 0 23.5 12C23.5 5.7 18.3.5 12 .5z"/></svg>
+          GitHub
+        </a>
+        <a class="btn btn-sm" href="index.html#download">Get StripKit</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <div class="container tut-crumb">
+      <a href="tutorials.html">All tutorials</a>
+    </div>
+
+    <section class="tutorial-page">
+      <div class="container">
+        <header class="section-head tutorial-head">
+          <span class="eyebrow">Tab 4 of 6 &middot; Skin</span>
+          <h1>Bind exported strips to plugin parameters as one skin.json</h1>
+          <p>The Skin tab assembles a multi-control <code>skin.json</code> manifest that binds several already-exported filmstrip PNGs to plugin parameters for a whole GUI. It doesn't render any pixels — it references strips you already exported from the Create or Batch tab, reads their dimensions to prefill fields, and writes the JSON.</p>
+        </header>
+        <div class="doc-body">
+
+          <div class="doc-feature">
+            <h3>Skin-level metadata</h3>
+            <p>Fields describing the whole skin, not any one control. These become the top-level properties of the exported <code>skin.json</code>.</p>
+            <ul class="doc-settings">
+              <li><strong>Name</strong> — the skin's name, default <code>My Skin</code>. Free text; also sanitized (invalid filename characters replaced with underscores) to produce the output file name.</li>
+              <li><strong>Author (optional)</strong> — free text, blank by default. Passed straight through to the manifest as typed.</li>
+              <li><strong>Base width</strong> — the design resolution (in pixels) that per-control bounds are authored against. Default 80, range 1–8192. Auto-seeded from the first control's frame width when you add your first control, but freely editable afterward.</li>
+              <li><strong>Base height</strong> — same as Base width, for height. Default 80, range 1–8192. Auto-seeded from the first control's frame height.</li>
+              <li><strong>Window background (optional)</strong> — a relative file name, blank by default. Type it directly, or click the <code>...</code> button to open the standard image picker, which fills the field with just the picked file's name. Left blank, it's omitted from the manifest entirely rather than written as an empty string.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Controls list</h3>
+            <p>The list of control bindings that becomes <code>skin.json</code>'s <code>controls[]</code> array, plus the commands to add and remove entries.</p>
+            <ul class="doc-settings">
+              <li><strong>Controls list</strong> — each row displays as <code>{Id} &middot; {Type} &middot; {ParameterId}</code>, e.g. <code>cutoff &middot; RotaryKnob &middot; param</code>. Selecting a row loads it into the detail editor on the right and enables Remove selected.</li>
+              <li><strong>Add from strip…</strong> — opens the image picker, then runs the same strip-layout detector used on the Import tab against the chosen file. Auto-fills Id, Parameter id, Type, Asset, Frames, Frame W/H, and Stack direction from the detection result, and sets Bounds W/H to the detected frame size. Shows an error status if the image fails to load.</li>
+              <li><strong>Add blank</strong> — adds a new control using its class defaults (Id <code>control</code>, Type RotaryKnob, Parameter id <code>param</code>, Frames 64, Frame W/H 80, Stack Vertical, Bounds W/H 80) for you to fill in manually.</li>
+              <li><strong>Remove selected</strong> — disabled until a control is selected. Removes the selected entry and re-selects a neighboring one (or none, if the list is now empty).</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Per-control editor — Control</h3>
+            <p>Shown only when a control is selected; otherwise the right panel reads "Select or add a control to edit it." Edits the selected control's identity fields.</p>
+            <ul class="doc-settings">
+              <li><strong>Id</strong> — free text, default <code>control</code> on a blank control. Falls back to the literal string <code>control</code> on export if left blank. Also used as the fallback for Parameter id if that field is blank.</li>
+              <li><strong>Type</strong> — a dropdown listing RotaryKnob, VerticalFader, HorizontalSlider, Meter, Button, and Toggle, default RotaryKnob. On export these map to the lower-case manifest strings <code>knob</code>, <code>vfader</code>, <code>hslider</code>, <code>meter</code>, <code>button</code>, and <code>toggle</code> respectively.</li>
+              <li><strong>Parameter id</strong> — free text, default <code>param</code>. The host/plugin parameter identifier (e.g. an APVTS id in a JUCE plugin) that the control reads and writes at runtime.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Per-control editor — Asset</h3>
+            <p>Points the control at the actual strip PNG file(s) and describes that strip's frame geometry.</p>
+            <ul class="doc-settings">
+              <li><strong>Strip file (1x, relative)</strong> — a relative file name, e.g. <code>cutoff_64frames.png</code>, blank by default. This is a text field, not a file picker — type the exact name of a strip already exported from Create or Batch.</li>
+              <li><strong>@2x file (optional)</strong> — a relative file name for the HiDPI variant, e.g. <code>cutoff_64frames@2x.png</code>, blank by default. Omitted from the manifest if left blank.</li>
+              <li><strong>Frames</strong> — the number of frames in the strip, default 64, range 1–512. Clamped to at least 1 on export regardless of what's typed.</li>
+              <li><strong>Frame W</strong> — the pixel width of one frame cell, default 80, range 1–8192. Clamped to at least 1 on export.</li>
+              <li><strong>Frame H</strong> — the pixel height of one frame cell, default 80, range 1–8192. Clamped to at least 1 on export.</li>
+              <li><strong>Stack direction</strong> — Vertical or Horizontal, default Vertical. Describes whether the strip's frames run top-to-bottom or left-to-right; serializes as <code>vertical</code> or <code>horizontal</code>.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Per-control editor — Bounds (base-resolution px)</h3>
+            <p>The on-screen placement rectangle for this control within the skin's overall design canvas (the Base width/Base height set at skin level).</p>
+            <ul class="doc-settings">
+              <li><strong>X</strong> — left-edge position in base-resolution pixels, default 0.0. No minimum or maximum, so negative values are allowed.</li>
+              <li><strong>Y</strong> — top-edge position in base-resolution pixels, default 0.0. No minimum or maximum, so negative values are allowed.</li>
+              <li><strong>W</strong> — width of the on-screen rectangle, default 80.0 (or the detected frame width, when added from a strip). Minimum 0; clamped to at least 0 on export.</li>
+              <li><strong>H</strong> — height of the on-screen rectangle, default 80.0 (or the detected frame height, when added from a strip). Minimum 0; clamped to at least 0 on export.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Per-control editor — Value range (optional)</h3>
+            <p>A collapsible section that maps the control's on-screen sweep to the parameter's numeric range for the host.</p>
+            <ul class="doc-settings">
+              <li><strong>Min</strong> — blank by default (the "0" shown is placeholder watermark text, not a value). Left blank or non-numeric, it's omitted from the manifest rather than defaulting to 0.</li>
+              <li><strong>Max</strong> — blank by default (watermark "1"). Same optional parse-or-omit behavior as Min.</li>
+              <li><strong>Default</strong> — blank by default (watermark "0.5"). Same optional parse-or-omit behavior as Min.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Export</h3>
+            <p>Finalizes the manifest and writes it to disk, plus the running status line shared by every command in this tab.</p>
+            <ul class="doc-settings">
+              <li><strong>Status line</strong> — reports the outcome of the last action: add-from-strip success, failure, or ambiguous-detection warning; add-blank; or export success/failure.</li>
+              <li><strong>Export skin.json…</strong> — disabled until at least one control is in the list. Opens a folder picker, then writes <code>&lt;sanitized Name&gt;.skin.json</code> into the chosen folder. On success the status line reports the control count and file name; on failure it shows the error message.</li>
+            </ul>
+          </div>
+
+          <div class="tip"><strong>Tip:</strong> The Type dropdown's on-screen order (RotaryKnob, VerticalFader, HorizontalSlider, Meter, Button, Toggle) doesn't match the exported strings — they map to <code>knob</code>, <code>vfader</code>, <code>hslider</code>, <code>meter</code>, <code>button</code>, and <code>toggle</code> respectively. If you're matching a manifest against loader code by hand, work from the lower-case strings, not the dropdown order.</div>
+
+          <div class="tip"><strong>Tip:</strong> Id and Parameter id are independent fields that are never auto-synced after you edit them separately — if you rename one, check the other. Likewise, only the very first control you add seeds the skin-level Base width/Base height from its frame size; adding a second, differently-sized control won't re-seed those fields, so set them by hand if your controls vary in size.</div>
+
+          <div class="tip"><strong>Tip:</strong> "Add from strip…" can mis-detect an ambiguous strip's frame count — if the status message warns the detection is low-confidence, double-check Frames, Frame W, and Frame H manually before exporting. Also note that Asset and @2x file are typed by hand, not chosen with a file picker, so a typo won't be caught until the manifest fails to load at runtime.</div>
+
+          <div class="tip"><strong>Tip:</strong> Exporting always overwrites any existing file of the same name in the target folder with no confirmation prompt, so double-check the Name field before re-exporting into the same folder. Also, this tab has no UI for grid/sprite layout, per-control background, or skin version, even though the manifest schema supports them — controls added here always export as a plain (non-grid) strip with no per-control background.</div>
+
+        </div>
+
+        <nav class="tut-pager" aria-label="Tutorial navigation">
+          <a class="pager-prev" href="tutorials-batch.html"><span class="pager-label">Previous</span>&larr; Batch</a>
+          <a class="pager-next" href="tutorials-generate.html"><span class="pager-label">Next</span>Generate &rarr;</a>
+        </nav>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <img src="resources/stripkit-icon.png" alt="" class="footer-mark" />
+        <div>
+          <div class="footer-name">StripKit</div>
+          <div class="footer-tag">Animated filmstrip generator for audio-plugin GUIs.</div>
+        </div>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="contact.html">Contact</a>
+        <a href="https://github.com/Vybecode-LTD/stripkit" target="_blank" rel="noopener">Source (MIT)</a>
+      </nav>
+      <div class="footer-maker">
+        <span>Made by</span>
+        <a href="https://vybeco.de" target="_blank" rel="noopener" class="maker-link">
+          <img src="resources/vybeco-logo.png" alt="VybeCode" class="maker-logo" />
+        </a>
+        <span class="footer-copy">© <span id="year">2026</span> VybeCode Software</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+
+</body>
+</html>

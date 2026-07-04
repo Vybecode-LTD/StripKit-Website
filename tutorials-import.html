@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Import Tab Tutorial — StripKit</title>
+  <meta name="description" content="Bring an existing filmstrip back into StripKit: auto-detect layout, extract a frame, re-stack orientation, and resample to a new frame count." />
+  <meta name="theme-color" content="#e8440a" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Import Tab Tutorial — StripKit" />
+  <meta property="og:description" content="Detect, extract, re-stack, and resample an existing filmstrip." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://stripkit.pro/tutorials-import.html" />
+  <meta property="og:image" content="https://stripkit.pro/resources/screenshot.png" />
+
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="apple-touch-icon" href="resources/stripkit-icon.png" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/docs.css" />
+</head>
+<body>
+
+  <!-- ===== Header ===== -->
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="StripKit home">
+        <img src="resources/stripkit-icon.png" alt="" class="brand-mark" />
+        <span class="brand-name">StripKit</span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="index.html#features">Features</a>
+        <a href="getting-started.html">Guide</a>
+        <a href="tutorials.html" aria-current="page">Tutorials</a>
+        <a href="index.html#download">Download</a>
+        <a href="changelog.html">Changelog</a>
+        <a class="nav-gh" href="https://github.com/Vybecode-LTD/stripkit" target="_blank" rel="noopener"
+           aria-label="StripKit on GitHub">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.5v-1.8c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17 4.7 18 5 18 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.3v3.3c0 .3.2.7.8.5A11.5 11.5 0 0 0 23.5 12C23.5 5.7 18.3.5 12 .5z"/></svg>
+          GitHub
+        </a>
+        <a class="btn btn-sm" href="index.html#download">Get StripKit</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <div class="container tut-crumb">
+      <a href="tutorials.html">All tutorials</a>
+    </div>
+
+    <section class="tutorial-page">
+      <div class="container">
+        <header class="section-head tutorial-head">
+          <span class="eyebrow">Tab 2 of 6 &middot; Import</span>
+          <h1>Bring an existing filmstrip back to life</h1>
+          <p>Use the Import tab when you already have a rendered strip — a KnobMan export, a purchased asset, or something StripKit made earlier — and need to inspect, re-slice, re-orient, or re-time it instead of starting from source art.</p>
+        </header>
+        <div class="doc-body">
+
+          <div class="doc-feature">
+            <h3>Loading the source strip</h3>
+            <p>Get an existing filmstrip PNG onto the canvas via the file picker or by dropping it straight onto the preview pane.</p>
+            <ul class="doc-settings">
+              <li><strong>Load filmstrip&hellip;</strong> — opens a file picker defaulting to a <code>PNG image</code> filter (<code>*.png</code>), with a secondary <code>All images</code> filter covering <code>*.webp</code>, <code>*.bmp</code>, <code>*.jpg</code>, <code>*.jpeg</code>; switch the picker's filetype dropdown to see non-PNG strips. Loading runs auto-detection immediately and refreshes the preview.</li>
+              <li><strong>Drop zone (the preview pane)</strong> — accepts dropped files with extension <code>.png</code>, <code>.webp</code>, <code>.bmp</code>, <code>.jpg</code>, or <code>.jpeg</code> (case-insensitive); shows "Load a filmstrip — or drop one here" until something is loaded, and briefly highlights its border in accent orange while a valid file is dragged over it.</li>
+              <li><strong>Source strip readout</strong> — read-only; reads "No strip loaded." by default, then "{filename} — {width}&times;{height}px" once a strip is in.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Detected layout</h3>
+            <p>Read-only feedback on what the auto-detector inferred from the strip's pixel dimensions — frame count, frame size, stack orientation, and a rough guess at control type.</p>
+            <ul class="doc-settings">
+              <li><strong>Detected layout readout</strong> — formatted as "{count} frames &middot; {frameW}&times;{frameH}px &middot; {kind} &middot; vertical|horizontal", where kind is Rotary knob / button, Vertical fader, Horizontal slider, or Unknown based on the detected frame's aspect ratio. Orientation and frame dimensions here are not directly editable — only Frame Count below can be adjusted, and orientation only changes via Re-stack.</li>
+              <li><strong>Ambiguous-detection warning banner</strong> — an amber/red-bordered banner that appears when the detector's guess is ambiguous (for example a square frame whose total also divides evenly by an adjacent count, which can happen if the strip secretly contains an extra centre/rest frame). When shown, the status bar also reads "Loaded — detection is ambiguous; verify the frame count."</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Frame count &amp; frame size</h3>
+            <p>The editable slice count that drives preview, extract, and re-stack — kept intentionally separate from the resample target count below.</p>
+            <ul class="doc-settings">
+              <li><strong>Frame Count</strong> — numeric field, range 1&ndash;1024, step 1. Defaults to whatever the detector guessed as soon as a strip loads. Editing it recomputes frame width/height by dividing the strip's total pixel span by the new count, then re-slices the live preview.</li>
+              <li><strong>Frame Size readout</strong> — read-only, shown both under Frame Count and under the transport tile; reads "Frame: {w}&times;{h}px", or appends "&#9888; {total}px doesn't divide evenly by {count}" when the strip's total span doesn't divide evenly by the current Frame Count.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Export — single frame / re-stack</h3>
+            <p>Two direct export actions that operate on the loaded strip using the current Frame Count and detected orientation.</p>
+            <ul class="doc-settings">
+              <li><strong>Extract current frame&hellip;</strong> — saves the currently-previewed frame as its own standalone PNG, suggested filename "{baseName}_frame{index+1}.png". Disabled until a strip is loaded.</li>
+              <li><strong>Re-stack (flip orientation)&hellip;</strong> — re-stacks the strip into the opposite orientation from what was detected (vertical&rarr;horizontal or horizontal&rarr;vertical); there is no explicit direction chooser. Runs off the UI thread, suggested filename "{baseName}_{count}frames_{v|h}.png".</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Resample frame count</h3>
+            <p>A separate re-timing export that changes how many frames the exported strip has, independent of the Frame Count field used for slicing and preview.</p>
+            <ul class="doc-settings">
+              <li><strong>Target frames</strong> — numeric field, range 1&ndash;1024, step 1, default 64. Resets to the detected frame count every time a new strip loads. Changing it does not refresh the live preview — it only affects Export resampled&hellip; below.</li>
+              <li><strong>Export resampled&hellip;</strong> — re-times the strip to Target frames by picking the nearest source frame per output frame (no blending), run off the UI thread. Suggested filename "{baseName}_{targetCount}frames_{v|h}.png". Disabled until a strip is loaded.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Preview &amp; transport</h3>
+            <p>The right-hand preview shows the currently selected frame and doubles as the drop zone; the transport tile beneath it lets you scrub, step, or auto-play through the detected frames.</p>
+            <ul class="doc-settings">
+              <li><strong>Scrub slider</strong> — range 0&ndash;1, default 0.5, mapped continuously to a frame index; dragging re-renders the preview frame in real time.</li>
+              <li><strong>Previous frame / Next frame</strong> — step one frame at a time, clamped to the first/last frame; stops any auto-play first.</li>
+              <li><strong>Play / Stop</strong> — auto-plays a ping-pong loop (0&rarr;1&rarr;0) at roughly 30fps, one frame step per tick; the icon and label swap between Play and Stop while running.</li>
+              <li><strong>Reset to the first frame</strong> — stops any auto-play and jumps back to frame 0.</li>
+              <li><strong>Frame readout</strong> — read-only, monospace; reads "Frame {index+1}/{count}" (1-based numerator).</li>
+              <li><strong>Status message</strong> — read-only; defaults to "Load or drop a filmstrip to begin." and reflects the outcome of every load/extract/re-stack/resample action, including error text on failure.</li>
+              <li><strong>Show in folder</strong> — opens the OS file explorer with the most recently exported file selected; only enables once an export has happened in this session and that file still exists on disk.</li>
+            </ul>
+          </div>
+
+          <div class="tip">
+            <strong>Tip:</strong> Frame count is a guess, not a stored fact — a PNG doesn't record how many frames it contains, so detection infers it purely from divisibility of the strip's pixel dimensions. Always eyeball the scrub from min to max before trusting it, and pay close attention when the low-confidence banner appears (a square frame whose total also divides evenly by an adjacent count is the classic trap — it often means a hidden centre/rest frame). Editing Frame Count is destructive to what you're about to export: it re-slices the current preview basis, and Extract / Re-stack both use whatever value it currently holds, not the originally detected one. The <code>&#9888; doesn't divide evenly</code> warning on the Frame Size readout is a strong signal the count is wrong.
+          </div>
+
+          <div class="tip">
+            <strong>Tip:</strong> Target frames (resample) and Frame Count (slice) are deliberately decoupled — changing Target frames never re-slices or refreshes the live preview, it only feeds Export resampled&hellip;. Resample itself is nearest-frame only, never blended, so downsampling drops frames and is lossy; for the best quality, re-render from the original source art rather than resampling an already-rendered strip.
+          </div>
+
+          <div class="tip">
+            <strong>Tip:</strong> Re-stack always flips to the opposite orientation of what was detected — there's no vertical/horizontal dropdown, so a strip detected vertical exports horizontal and vice versa. And when dropping files, only the first accepted file in a multi-file drop is loaded; the rest are silently ignored.
+          </div>
+
+        </div>
+
+        <nav class="tut-pager" aria-label="Tutorial navigation">
+          <a class="pager-prev" href="tutorials-create.html"><span class="pager-label">Previous</span>&larr; Create</a>
+          <a class="pager-next" href="tutorials-batch.html"><span class="pager-label">Next</span>Batch &rarr;</a>
+        </nav>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <img src="resources/stripkit-icon.png" alt="" class="footer-mark" />
+        <div>
+          <div class="footer-name">StripKit</div>
+          <div class="footer-tag">Animated filmstrip generator for audio-plugin GUIs.</div>
+        </div>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="contact.html">Contact</a>
+        <a href="https://github.com/Vybecode-LTD/stripkit" target="_blank" rel="noopener">Source (MIT)</a>
+      </nav>
+      <div class="footer-maker">
+        <span>Made by</span>
+        <a href="https://vybeco.de" target="_blank" rel="noopener" class="maker-link">
+          <img src="resources/vybeco-logo.png" alt="VybeCode" class="maker-logo" />
+        </a>
+        <span class="footer-copy">© <span id="year">2026</span> VybeCode Software</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+
+</body>
+</html>

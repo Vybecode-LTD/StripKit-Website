@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Batch Tab Tutorial — StripKit</title>
+  <meta name="description" content="Render a whole folder of source images into filmstrips in one pass with StripKit's Batch tab — shared template, progress, cancel, and per-strip loader code." />
+  <meta name="theme-color" content="#e8440a" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Batch Tab Tutorial — StripKit" />
+  <meta property="og:description" content="One shared render template applied across a whole folder of sources." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://stripkit.pro/tutorials-batch.html" />
+  <meta property="og:image" content="https://stripkit.pro/resources/screenshot.png" />
+
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="apple-touch-icon" href="resources/stripkit-icon.png" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/docs.css" />
+</head>
+<body>
+
+  <!-- ===== Header ===== -->
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="StripKit home">
+        <img src="resources/stripkit-icon.png" alt="" class="brand-mark" />
+        <span class="brand-name">StripKit</span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="index.html#features">Features</a>
+        <a href="getting-started.html">Guide</a>
+        <a href="tutorials.html" aria-current="page">Tutorials</a>
+        <a href="index.html#download">Download</a>
+        <a href="changelog.html">Changelog</a>
+        <a class="nav-gh" href="https://github.com/Vybecode-LTD/stripkit" target="_blank" rel="noopener"
+           aria-label="StripKit on GitHub">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.5v-1.8c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17 4.7 18 5 18 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.3v3.3c0 .3.2.7.8.5A11.5 11.5 0 0 0 23.5 12C23.5 5.7 18.3.5 12 .5z"/></svg>
+          GitHub
+        </a>
+        <a class="btn btn-sm" href="index.html#download">Get StripKit</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <div class="container tut-crumb">
+      <a href="tutorials.html">All tutorials</a>
+    </div>
+
+    <section class="tutorial-page">
+      <div class="container">
+        <header class="section-head tutorial-head">
+          <span class="eyebrow">Tab 3 of 6 &middot; Batch</span>
+          <h1>Render a whole folder of sources with one shared template</h1>
+          <p>The Batch tab applies a single render template — component type, frame count and size, rotation or meter behavior, quality, and export options — to every image in an input folder, writing one filmstrip per source. Reach for it when you have a set of already-designed control art (a folder of knob PNGs, meter housings, etc.) and want them all rendered the same way in one pass, off the UI thread, with progress and cancellation.</p>
+        </header>
+        <div class="doc-body">
+
+          <div class="doc-feature">
+            <h3>Loading art</h3>
+            <p>Two folder pickers in the right column: where the source images come from and where the rendered strips go. Both are disabled while a run is in progress.</p>
+            <ul class="doc-settings">
+              <li><strong>Choose input folder…</strong> — opens a folder picker and scans it (non-recursive) for image files, sorted ordinally by path. A summary line reports how many were found: <code>{N} image(s) found.</code>, or a warning if none matched.</li>
+              <li><strong>Choose output folder…</strong> — opens a folder picker for where each rendered strip is written. Both this and the input folder must be set before <strong>Run batch</strong> becomes enabled.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Component type &amp; frame geometry</h3>
+            <p>What kind of control you're rendering, how many frames each strip has, and each frame's pixel size at 1x.</p>
+            <ul class="doc-settings">
+              <li><strong>Component type</strong> — defaults to <code>RotaryKnob</code>. Choose from <code>RotaryKnob</code>, <code>VerticalFader</code>, <code>HorizontalSlider</code>, or <code>Meter</code>. Picking RotaryKnob reveals the Rotation section below; picking Meter reveals the Meter section instead.</li>
+              <li><strong>Frames</strong> — the frame count for every strip in the run, default <code>64</code>, range 2–512.</li>
+              <li><strong>Width</strong> — frame width in pixels at 1x, default <code>80</code>, range 1–4096.</li>
+              <li><strong>Height</strong> — frame height in pixels at 1x, default <code>80</code>, range 1–4096.</li>
+              <li><strong>Square knob frames to each source</strong> — checked by default. For knob renders, sizes each frame to that individual source's own larger side rather than forcing every source into the fixed Width/Height above, so differently-sized source PNGs each get a correctly proportioned, source-matched square frame.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Rotation</h3>
+            <p>Only shown when Component type is RotaryKnob. Governs the angular sweep baked into the frame sequence.</p>
+            <ul class="doc-settings">
+              <li><strong>Sweep (degrees)</strong> — total angular travel from minimum to maximum value, default <code>270</code>, range 1–360. The sweep is applied symmetrically around 0 (a 270° sweep runs -135° to +135°).</li>
+              <li><strong>Clockwise (min → max)</strong> — checked by default. Frame 0 sits at the negative angle and sweeps clockwise to the positive angle as the value rises; unchecking it reverses the sweep to counter-clockwise.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Meter</h3>
+            <p>Only shown when Component type is Meter. Configures segment count, fill behavior and direction, colors, and whether each source is finished art or a backdrop for procedural LEDs.</p>
+            <ul class="doc-settings">
+              <li><strong>Segments</strong> — number of discrete LED-style segments, default <code>12</code>, range 1–128. Only meaningful when Continuous fill is off.</li>
+              <li><strong>Fill direction</strong> — default <code>Up</code>. Choose from <code>Up</code>, <code>Down</code>, <code>LeftToRight</code>, <code>RightToLeft</code>, matching whichever edge the meter should fill from.</li>
+              <li><strong>Continuous (smooth) fill</strong> — unchecked by default. Unchecked fills in discrete steps of the Segments count (an LED-ladder look); checked produces a smooth, unsegmented fill instead.</li>
+              <li><strong>On colour (#AARRGGBB)</strong> — free-text hex entry, default <code>#FFE8440A</code> (an opaque ember/orange). Used for lit segments.</li>
+              <li><strong>Off colour</strong> — free-text hex entry, default <code>#FF2A2A2A</code> (an opaque dark grey). Used for unlit segments.</li>
+              <li><strong>Source is a backdrop (draw procedural LEDs on top)</strong> — unchecked by default. Unchecked treats every source image as ready-made lit/on-state art, revealed progressively up to the fill level. Checked treats every source as a housing/backdrop and draws procedural LED segments over it using the Segments count and the On/Off colours.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Quality &amp; output</h3>
+            <p>Rendering quality, stack orientation, and HiDPI export options applied across every source in the run.</p>
+            <ul class="doc-settings">
+              <li><strong>Supersample (anti-aliasing)</strong> — default <code>4</code>. Choose <code>1</code>, <code>2</code>, <code>4</code>, or <code>8</code>; higher values render at a larger internal resolution then downsample for smoother edges, at the cost of render time per frame per source.</li>
+              <li><strong>Stack direction</strong> — default <code>Vertical</code>. Choose <code>Vertical</code> or <code>Horizontal</code> for whether frames stack top-to-bottom or left-to-right in the output PNG.</li>
+              <li><strong>Also export a HiDPI copy</strong> — checked by default. Exports an additional higher-resolution copy of each strip at the Scale chosen below.</li>
+              <li><strong>Scale</strong> — only visible when "Also export a HiDPI copy" is checked. Default <code>2</code>. Choose <code>2</code>, <code>3</code>, or <code>4</code>, mapping to an <code>@2x</code>/<code>@3x</code>/<code>@4x</code> export suffix.</li>
+              <li><strong>Also write a skin.json per strip</strong> — unchecked by default. Writes a <code>skin.json</code> manifest alongside each rendered strip, binding it to a parameter.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Code export (per strip)</h3>
+            <p>Optional generation of ready-to-paste loader code for each exported strip, matching the Create and Assemble tabs' code-export panels.</p>
+            <ul class="doc-settings">
+              <li><strong>Also emit ready-to-paste loader code</strong> — unchecked by default. Master switch — reveals the per-target checkboxes below when checked, and no code is emitted for any target while it's unchecked.</li>
+              <li><strong>JUCE</strong> — checked by default (when code export is on). Emits a JUCE <code>LookAndFeel</code> filmstrip loader snippet per strip.</li>
+              <li><strong>CSS / HTML</strong> — unchecked by default. Emits a CSS/HTML sprite control driven by <code>background-position</code>, plus a JS value setter, per strip.</li>
+              <li><strong>iPlug2</strong> — unchecked by default. Emits an iPlug2 <code>IBKnobControl</code>/<code>IBSliderControl</code>/<code>IBitmapControl</code> snippet per strip.</li>
+              <li><strong>HISE</strong> — unchecked by default. Emits a HISE loader snippet per strip.</li>
+              <li><strong>React / Web</strong> — unchecked by default. Emits a <code>.jsx</code> sprite component driven by a 0..1 <code>value</code> prop per strip.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Run, cancel, progress, and results</h3>
+            <p>The controls that start and stop the job and report what happened. These stay live even while the render template is locked during a run.</p>
+            <ul class="doc-settings">
+              <li><strong>Run batch</strong> — enabled once both folders are chosen and no run is already active. Renders every source in the input folder using the template above, updating progress as it goes; on completion, reports either a done or cancelled status with counts.</li>
+              <li><strong>Cancel</strong> — enabled only while a run is in progress. Requests a cooperative stop; strips already written before the cancel are kept in the output folder.</li>
+              <li><strong>Progress bar</strong> — visible only while running, filling from 0 to 100 based on completed vs. total items.</li>
+              <li><strong>Progress text</strong> — shows <code>{Completed}/{Total} — {CurrentFile}</code>, updating as each source is processed.</li>
+              <li><strong>Status message</strong> — defaults to "Choose an input folder and an output folder.", then tracks the run: processing, done, cancelled, or an error message if the run threw an exception.</li>
+              <li><strong>Result summary</strong> — a scrollable panel filled in after the run completes. Reports "All {N} strips exported." when nothing failed, or a per-file failure list (filename and error, up to 8 entries with a "…and N more" line beyond that) when some strips failed.</li>
+            </ul>
+          </div>
+
+          <div class="tip"><strong>Tip:</strong> The Batch tab's Component type list is a subset of what StripKit supports elsewhere — only Rotary Knob, Vertical Fader, Horizontal Slider, and Meter are available. Button and Toggle controls need per-state art and aren't batch-able here.</div>
+
+          <div class="tip"><strong>Tip:</strong> "Square knob frames to each source" (on by default) means the Width/Height you set aren't a hard guarantee for knobs — each source's own larger dimension can override them file-by-file within the same run. Turn it off if you need every knob frame locked to the exact size you specified.</div>
+
+          <div class="tip"><strong>Tip:</strong> "Source is a backdrop" is a hard fork in how every strip in the run is built, not a minor tweak — leave it unchecked if your source PNGs are already fully-lit on-state art, and check it only if your sources are unlit housings that should get StripKit's own procedural LED segments drawn on top. Getting this backwards will silently produce the wrong look across the entire batch.</div>
+
+          <div class="tip"><strong>Tip:</strong> Only <code>.png</code>, <code>.webp</code>, <code>.bmp</code>, <code>.jpg</code>, and <code>.jpeg</code> files are picked up from the input folder, the scan doesn't look into subfolders, and files are processed in ordinal path-sort order — anything else in the folder is silently skipped and won't appear in the input count or the progress readout.</div>
+
+          <div class="tip"><strong>Tip:</strong> The on/off meter colours are plain hex text fields, not colour swatches — an invalid hex value silently falls back to the default colour rather than flagging an error, so double-check what you typed if a meter's colours look off after a run.</div>
+
+          <div class="tip"><strong>Tip:</strong> Cancelling doesn't roll back anything — whatever strips were already written to the output folder before you cancelled stay there. And if a run reports failures, check the Result summary panel rather than assuming the batch is clean; its failure list truncates at 8 entries.</div>
+
+        </div>
+
+        <nav class="tut-pager" aria-label="Tutorial navigation">
+          <a class="pager-prev" href="tutorials-import.html"><span class="pager-label">Previous</span>&larr; Import</a>
+          <a class="pager-next" href="tutorials-skin.html"><span class="pager-label">Next</span>Skin &rarr;</a>
+        </nav>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <img src="resources/stripkit-icon.png" alt="" class="footer-mark" />
+        <div>
+          <div class="footer-name">StripKit</div>
+          <div class="footer-tag">Animated filmstrip generator for audio-plugin GUIs.</div>
+        </div>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="contact.html">Contact</a>
+        <a href="https://github.com/Vybecode-LTD/stripkit" target="_blank" rel="noopener">Source (MIT)</a>
+      </nav>
+      <div class="footer-maker">
+        <span>Made by</span>
+        <a href="https://vybeco.de" target="_blank" rel="noopener" class="maker-link">
+          <img src="resources/vybeco-logo.png" alt="VybeCode" class="maker-logo" />
+        </a>
+        <span class="footer-copy">© <span id="year">2026</span> VybeCode Software</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+
+</body>
+</html>

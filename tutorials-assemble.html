@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Assemble Tab Tutorial — StripKit</title>
+  <meta name="description" content="Pack a folder of pre-rendered frames — a path-traced sequence from Blender, KeyShot, or Octane — into one filmstrip with StripKit's Assemble tab: QC, resample, emission pass, and render recipes." />
+  <meta name="theme-color" content="#e8440a" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Assemble Tab Tutorial — StripKit" />
+  <meta property="og:description" content="Pack a folder of pre-rendered frames into one filmstrip." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://stripkit.pro/tutorials-assemble.html" />
+  <meta property="og:image" content="https://stripkit.pro/resources/screenshot.png" />
+
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="apple-touch-icon" href="resources/stripkit-icon.png" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/docs.css" />
+</head>
+<body>
+
+  <!-- ===== Header ===== -->
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="StripKit home">
+        <img src="resources/stripkit-icon.png" alt="" class="brand-mark" />
+        <span class="brand-name">StripKit</span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="index.html#features">Features</a>
+        <a href="getting-started.html">Guide</a>
+        <a href="tutorials.html" aria-current="page">Tutorials</a>
+        <a href="index.html#download">Download</a>
+        <a href="changelog.html">Changelog</a>
+        <a class="nav-gh" href="https://github.com/Vybecode-LTD/stripkit" target="_blank" rel="noopener"
+           aria-label="StripKit on GitHub">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.5v-1.8c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17 4.7 18 5 18 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.3v3.3c0 .3.2.7.8.5A11.5 11.5 0 0 0 23.5 12C23.5 5.7 18.3.5 12 .5z"/></svg>
+          GitHub
+        </a>
+        <a class="btn btn-sm" href="index.html#download">Get StripKit</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <div class="container tut-crumb">
+      <a href="tutorials.html">All tutorials</a>
+    </div>
+
+    <section class="tutorial-page">
+      <div class="container">
+        <header class="section-head tutorial-head">
+          <span class="eyebrow">Tab 6 of 6 &middot; Assemble</span>
+          <h1>Pack a folder of pre-rendered frames into one filmstrip</h1>
+          <p>Assemble takes frames you already rendered elsewhere — a path-traced PNG sequence out of Blender, KeyShot, or Octane, or any other pre-rendered set — and stacks them into one filmstrip PNG. It mirrors the Create tab's export feature set (HiDPI copy, <code>skin.json</code> manifest, loader-code snippets) but involves no procedural rendering: StripKit only reconciles, retimes, and packs the frames you give it.</p>
+        </header>
+        <div class="doc-body">
+
+          <div class="doc-feature">
+            <h3>Source frames</h3>
+            <p>Load, add to, reorder, and remove the frames that will become the filmstrip. Frames are natural-sorted automatically, so <code>frame_2</code> sorts before <code>frame_10</code> regardless of zero-padding.</p>
+            <ul class="doc-settings">
+              <li><strong>Choose folder…</strong> — opens a folder picker and enumerates every file inside matching an accepted extension. This <em>replaces</em> the current frame list entirely, discarding whatever was already loaded.</li>
+              <li><strong>Add files…</strong> — opens a multi-select image picker and adds the chosen files to the existing list (de-duplicated by path), then re-sorts the combined set.</li>
+              <li><strong>Clear</strong> — empties the frame list, clears the preview and readout, and resets the status line.</li>
+              <li><strong>Sequence info readout</strong> — reports frame count and dimensions, e.g. "N frame(s) &middot; WxH px &middot; uniform," or a min&ndash;max range with "mixed — will reconcile" when sizes differ.</li>
+              <li><strong>Warning text</strong> — shown only when a probe or QC pass has something to flag; appears in the accent-highlight color.</li>
+              <li><strong>Frame list rows</strong> — each row shows its position and file name plus three controls: <strong>&uarr;</strong> (move earlier), <strong>&darr;</strong> (move later), and <strong>&times;</strong> (remove). The list appears once at least one frame is loaded.</li>
+              <li><strong>Drop zone</strong> — drag a folder or a set of image files onto the preview area; this sets the list if it was empty, or adds to it otherwise.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Component type</h3>
+            <p>Declares what these frames depict, which sets the manifest and loader-code control type written on export.</p>
+            <ul class="doc-settings">
+              <li><strong>Component type</strong> — a dropdown defaulting to <strong>Rotary knob</strong>, with Vertical fader, Horizontal slider, Meter, Button, and Toggle also available. Changing it also live-regenerates the render-recipe preview further down the panel.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Layout</h3>
+            <p>Controls how frames are stacked into the final strip and how mismatched frame sizes get reconciled.</p>
+            <ul class="doc-settings">
+              <li><strong>Stack direction</strong> — Vertical (default) or Horizontal; stacks frames top-to-bottom or left-to-right.</li>
+              <li><strong>If frame sizes differ</strong> — <strong>Pad to largest</strong> (default: transparent-pads every frame up to the largest frame's dimensions, centred), <strong>Crop to smallest</strong> (centre-crops every frame down to the smallest), or <strong>Strict</strong> (any size mismatch refuses to assemble).</li>
+              <li><strong>Re-centre each frame on its content</strong> — unchecked by default. Re-centres every frame on its opaque content before packing; fixes a 3D object that drifts off-centre between renders.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Render QC (path-tracing)</h3>
+            <p>Catches common path-tracer failure modes — object drift, missing or blank transparency, premultiplied edges — before you commit to assembling.</p>
+            <ul class="doc-settings">
+              <li><strong>Check frames</strong> — decodes every frame off the UI thread and runs a QC analysis, enabled only once at least two frames are loaded. It reports either that N frames look clean, or flags specific issues: drift of 2px or more between frames (suggesting you tick "Re-centre each frame"), frames with no transparency at all (a possibly-missing transparent background), fully transparent frames (a likely failed or empty render), and premultiplied-looking edges (suggesting the "Un-premultiply alpha" fix below).</li>
+              <li><strong>Un-premultiply alpha (fix dark edge halos)</strong> — unchecked by default. Divides RGB by alpha to remove the dark fringe a premultiplied render leaves on anti-aliased edges; a no-op on fully opaque or fully transparent pixels, so it's safe to leave off unless you actually see halos.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Resample (optional)</h3>
+            <p>Re-times the assembled sequence to a different frame count, optionally synthesizing in-between frames — render fewer frames offline, ship more in the filmstrip.</p>
+            <ul class="doc-settings">
+              <li><strong>Re-time to a standard frame count</strong> — unchecked by default. Reveals the target-count and method controls below when checked.</li>
+              <li><strong>Target frame count</strong> — a numeric field, default 64, ranging 2&ndash;512, that sets the output frame count.</li>
+              <li><strong>32 / 64 / 128</strong> — three preset buttons that set the target frame count directly to the standard StripKit counts.</li>
+              <li><strong>Method</strong> — <strong>Nearest</strong> (default: picks the closest rendered frame — never ghosts, the safe choice for a moving pointer) or <strong>Crossfade</strong> (blends the two bracketing frames to synthesise in-betweens — good for slow, smooth motion, but can ghost on fast motion).</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Emission / glow pass (optional)</h3>
+            <p>An optional second render pass — an emission/glow AOV (arbitrary output variable) — additively composited over the beauty (main) frames, so path-traced glow reads as emitted light rather than being baked flat into the beauty render.</p>
+            <ul class="doc-settings">
+              <li><strong>Choose emission folder…</strong> — opens a folder picker for the second sequence, probed and natural-sorted the same way as the main sequence. The readout reports whether any readable frames were found and whether the count matches the beauty sequence.</li>
+              <li><strong>Emission info readout</strong> — defaults to "No emission pass added" until a folder is chosen.</li>
+              <li><strong>Intensity (%)</strong> — a slider from 0 to 100, default 100, converted to a 0.0&ndash;1.0 gain applied to the emission composite. Only visible once an emission pass is loaded.</li>
+              <li><strong>Remove emission pass</strong> — clears the stored emission frames and returns the section to its unloaded state.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Quality &amp; output</h3>
+            <p>HiDPI export scale for the assembled strip.</p>
+            <ul class="doc-settings">
+              <li><strong>Also export a HiDPI copy</strong> — checked by default. Writes an upscaled copy at the chosen scale alongside the main export. Reveals the Scale row when checked.</li>
+              <li><strong>Scale</strong> — <code>2</code>, <code>3</code>, or <code>4</code> (default <code>2</code>), i.e. @2x / @3x / @4x. Sets both the exported filename suffix and the upscale factor applied to the already-assembled strip.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Manifest (optional)</h3>
+            <p>Optionally write a <code>skin.json</code> manifest describing this single control alongside the exported PNG(s).</p>
+            <ul class="doc-settings">
+              <li><strong>Also write a skin.json manifest</strong> — checked by default.</li>
+              <li><strong>Parameter id</strong> — an empty-by-default text field (watermark "e.g. filterCutoff"); if left blank, the exported control's parameter id falls back to the output PNG's base file name.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Code export (loader snippets)</h3>
+            <p>Optionally emit ready-to-paste loader code files for one or more target platforms, written next to the exported PNG.</p>
+            <ul class="doc-settings">
+              <li><strong>Also emit ready-to-paste loader code</strong> — unchecked by default. Reveals the per-target checkboxes below when checked.</li>
+              <li><strong>JUCE</strong> — checked by default.</li>
+              <li><strong>CSS / HTML</strong> — unchecked by default.</li>
+              <li><strong>iPlug2</strong> — unchecked by default.</li>
+              <li><strong>HISE</strong> — unchecked by default.</li>
+              <li><strong>React / Web</strong> — unchecked by default. Emits a <code>.jsx</code> sprite component driven by a 0..1 <code>value</code> prop.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Render recipe (plan a render)</h3>
+            <p>For frames you haven't rendered yet: generates a Blender script or a CSV/JSON frame table so an offline render matches StripKit's <code>(N&minus;1)</code> sweep law. These fields are independent of, and don't feed, the assembly options above — the only thing they share is the Component type chosen earlier in the panel.</p>
+            <ul class="doc-settings">
+              <li><strong>Preview / save render recipe</strong> — a collapsible section containing all the recipe controls below.</li>
+              <li><strong>Frames to render</strong> — a numeric field, default 64, ranging 2&ndash;512.</li>
+              <li><strong>Render size (px)</strong> — a numeric field, default 256, ranging 8&ndash;4096; used as both width and height for a square render.</li>
+              <li><strong>Sweep (degrees)</strong> — a numeric field, default 270, ranging 1&ndash;360 (rotary controls); split symmetrically into a &minus;half..+half range around 0 for the recipe.</li>
+              <li><strong>Recipe format</strong> — <strong>Blender</strong> (default), <strong>CSV</strong>, or <strong>JSON</strong>; selecting a target regenerates the preview live.</li>
+              <li><strong>Recipe preview</strong> — a read-only, monospace, scrollable text area showing the generated script or table.</li>
+              <li><strong>Save recipe…</strong> — opens a folder picker and saves the currently-previewed format to disk.</li>
+              <li><strong>Copy to clipboard</strong> — copies the current recipe preview text.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Preview &amp; transport</h3>
+            <p>A scrubbable preview of the loaded sequence, on the right-hand panel; the same area doubles as the drag-and-drop target for loading frames.</p>
+            <ul class="doc-settings">
+              <li><strong>Preview / drop area</strong> — shows the currently scrubbed-to frame, decoded on demand. Displays a placeholder prompt until at least one frame is loaded.</li>
+              <li><strong>Previous frame</strong> — steps the preview back one frame.</li>
+              <li><strong>Play / Stop</strong> — toggles frame-by-frame playback of the preview.</li>
+              <li><strong>Next frame</strong> — steps the preview forward one frame.</li>
+              <li><strong>Reset</strong> — returns the preview to the first frame.</li>
+              <li><strong>Scrub slider</strong> — a normalized 0..1 position mapped to a frame index; the one control that live-re-renders the preview image as you drag it.</li>
+              <li><strong>Frame readout</strong> — shows "Frame i/n," or "Frame i/n — unreadable" if that frame failed to decode.</li>
+              <li><strong>Sequence info</strong> — the same summary text as the left panel, repeated in monospace under the transport row.</li>
+              <li><strong>Progress bar</strong> — appears only while an export is running, showing frames loaded so far.</li>
+              <li><strong>Status message</strong> — reports the current step: cleared, checked, assembling, cancelled, or the export result.</li>
+              <li><strong>Cancel</strong> — appears only while an export is running; cancels the in-flight assemble-and-export operation.</li>
+              <li><strong>Assemble &amp; export</strong> — enabled once at least two frames are loaded and no run is in progress. Opens a Save PNG dialog, then off the UI thread decodes all frames (and emission frames if enabled), packs them, and writes the main PNG plus whichever of the HiDPI copy, manifest, and loader-code files are ticked. The status line summarizes exactly what was written.</li>
+              <li><strong>Show in folder</strong> — enabled once an export has completed and the file still exists on disk; reveals the exported filmstrip in Explorer.</li>
+            </ul>
+          </div>
+
+          <div class="tip"><strong>Tip:</strong> "Choose folder…" replaces the current frame list; "Add files…" and dropping additional files or folders add to it. If you want to combine two folders, use "Add files…" (or drag-drop) for the second batch — picking "Choose folder…" again wipes out what you already loaded.</div>
+
+          <div class="tip"><strong>Tip:</strong> "Assemble &amp; export" and "Check frames" both stay disabled until you have at least two frames loaded — a single frame won't enable either button.</div>
+
+          <div class="tip"><strong>Tip:</strong> "Un-premultiply alpha" and "Re-centre each frame on its content" only take effect at export time. Scrubbing the transport slider previews the raw source frames and won't show what either fix will actually do to the exported strip.</div>
+
+          <div class="tip"><strong>Tip:</strong> only <code>.png</code>, <code>.webp</code>, <code>.bmp</code>, <code>.jpg</code>, <code>.jpeg</code>, <code>.exr</code>, <code>.hdr</code>, <code>.tif</code>, and <code>.tiff</code> are picked up from a chosen folder or drop — anything else is silently ignored, with no warning. If you're relying on the emission pass, make sure that folder has exactly as many frames as your beauty sequence; a mismatched count is reported in the emission info readout but won't block export.</div>
+
+          <div class="tip"><strong>Tip:</strong> the @2x/@3x/@4x export here is a post-hoc upscale of the already-assembled strip, not a native higher-resolution render — for the best quality at a given scale, render your source sequence at that resolution to begin with rather than relying on this upscale.</div>
+
+          <div class="tip"><strong>Tip:</strong> "Cancel" only appears (and only applies) during "Assemble &amp; export" — a "Check frames" scan can't be cancelled once started, even though it also runs asynchronously.</div>
+
+        </div>
+
+        <nav class="tut-pager" aria-label="Tutorial navigation">
+          <a class="pager-prev" href="tutorials-generate.html"><span class="pager-label">Previous</span>&larr; Generate</a>
+          <a class="pager-next" href="tutorials-shortcuts.html"><span class="pager-label">Next</span>Shortcuts &rarr;</a>
+        </nav>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <img src="resources/stripkit-icon.png" alt="" class="footer-mark" />
+        <div>
+          <div class="footer-name">StripKit</div>
+          <div class="footer-tag">Animated filmstrip generator for audio-plugin GUIs.</div>
+        </div>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="contact.html">Contact</a>
+        <a href="https://github.com/Vybecode-LTD/stripkit" target="_blank" rel="noopener">Source (MIT)</a>
+      </nav>
+      <div class="footer-maker">
+        <span>Made by</span>
+        <a href="https://vybeco.de" target="_blank" rel="noopener" class="maker-link">
+          <img src="resources/vybeco-logo.png" alt="VybeCode" class="maker-logo" />
+        </a>
+        <span class="footer-copy">© <span id="year">2026</span> VybeCode Software</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+
+</body>
+</html>

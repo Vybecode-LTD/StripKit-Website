@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Tab Tutorial — StripKit</title>
+  <meta name="description" content="Every setting in the StripKit Create tab: source art, component type, frames, rotation, alignment, value arc, layered knobs, meters, quality, parameter law, manifest, code export, and render recipe." />
+  <meta name="theme-color" content="#e8440a" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Create Tab Tutorial — StripKit" />
+  <meta property="og:description" content="Every setting in the Create tab, in order — the main StripKit workflow." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://stripkit.pro/tutorials-create.html" />
+  <meta property="og:image" content="https://stripkit.pro/resources/screenshot.png" />
+
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="apple-touch-icon" href="resources/stripkit-icon.png" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/docs.css" />
+</head>
+<body>
+
+  <!-- ===== Header ===== -->
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="StripKit home">
+        <img src="resources/stripkit-icon.png" alt="" class="brand-mark" />
+        <span class="brand-name">StripKit</span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="index.html#features">Features</a>
+        <a href="getting-started.html">Guide</a>
+        <a href="tutorials.html" aria-current="page">Tutorials</a>
+        <a href="index.html#download">Download</a>
+        <a href="changelog.html">Changelog</a>
+        <a class="nav-gh" href="https://github.com/Vybecode-LTD/stripkit" target="_blank" rel="noopener"
+           aria-label="StripKit on GitHub">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.5v-1.8c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17 4.7 18 5 18 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.3v3.3c0 .3.2.7.8.5A11.5 11.5 0 0 0 23.5 12C23.5 5.7 18.3.5 12 .5z"/></svg>
+          GitHub
+        </a>
+        <a class="btn btn-sm" href="index.html#download">Get StripKit</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <div class="container tut-crumb">
+      <a href="tutorials.html">All tutorials</a>
+    </div>
+
+    <section class="tutorial-page">
+      <div class="container">
+        <header class="section-head tutorial-head">
+          <span class="eyebrow">Tab 1 of 6 &middot; Create</span>
+          <h1>Every setting in the Create tab, in order</h1>
+          <p>Create is the main workflow: load a source image (or build a layered stack), configure the component type and its render settings, then export a stacked PNG filmstrip. The left sidebar is a scrollable settings panel; every change live-refreshes the Skia-rendered preview on the right with no separate "apply" step except Export itself.</p>
+        </header>
+        <div class="doc-body">
+
+          <div class="doc-feature">
+            <h3>Render Presets</h3>
+            <p>Save and restore the entire Create-tab render setup as a named preset. A preset captures type, frames, sweep, layout, parameter law, meter/arc settings, and export toggles — it never captures loaded art (source, background, base/pointer, or imported layers).</p>
+            <ul class="doc-settings">
+              <li><strong>Preset list</strong> — a list of saved preset names; selecting one enables Apply and Delete.</li>
+              <li><strong>Apply</strong> — restores every field the preset carries in a single batch, then re-renders once. Does not load or clear any art.</li>
+              <li><strong>Delete</strong> — removes the selected preset from both the visible list and persisted settings, matched by the specific preset object so duplicate-named presets can't desync.</li>
+              <li><strong>New preset name</strong> — text field for the name to save under; empty by default.</li>
+              <li><strong>Save</strong> — saves the current full render setup under the typed name, overwriting an existing preset of the same name (case-insensitive), then clears the field and selects the new preset.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Source Image</h3>
+            <p>The single transparent-PNG control art most component types animate.</p>
+            <ul class="doc-settings">
+              <li><strong>Load source image&hellip;</strong> — opens a file picker (drag-and-drop onto the preview does the same thing). For a rotary knob, loading auto-detects and centers the rotation pivot on the opaque content; for other types it resets the center to 0.5, 0.5. Also squares the frame to the loaded art.</li>
+              <li><strong>Source info readout</strong> — reads "No image loaded." until a file is loaded, then shows filename and pixel dimensions, e.g. "knob.png — 512&times;512px".</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Component Type</h3>
+            <p>Chooses which of the six control kinds you're producing. Switching types applies type-specific defaults and changes which sections below are visible.</p>
+            <ul class="doc-settings">
+              <li><strong>Component type</strong> — one dropdown: Rotary Knob (default), Vertical Fader, Horizontal Slider, Meter, Button, Toggle. Changing it resets Frame Width/Height to that type's defaults, and for Button/Toggle forces Frame Count to 2 — so switching types after manually tuning frame size silently resets it.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Frames</h3>
+            <p>How many discrete frames the exported strip contains.</p>
+            <ul class="doc-settings">
+              <li><strong>Frame count</strong> — numeric field, default 64, range 2&ndash;512. More frames means a smoother sweep and a larger file.</li>
+              <li><strong>32 / 64 / 128</strong> — three preset buttons that set Frame Count to the standard values in one click.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Frame Size (1x, px)</h3>
+            <p>The pixel dimensions of one frame cell at 1x, before any HiDPI scale is applied.</p>
+            <ul class="doc-settings">
+              <li><strong>Width</strong> — numeric field, default 80, range 1&ndash;4096.</li>
+              <li><strong>Height</strong> — numeric field, default 80, range 1&ndash;4096.</li>
+              <li><strong>Match frame to source size</strong> — does nothing if no source is loaded. For a rotary knob it squares the frame to the larger of the source's width/height; for a vertical fader it sets width to source width + 8px and height to source height &times; 6; for a horizontal slider it sets width to source width &times; 6 and height to source height + 8px.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Rotation (rotary knobs only)</h3>
+            <p>Only visible when Component Type is Rotary Knob. Controls the angular sweep the knob travels across the frame sequence.</p>
+            <ul class="doc-settings">
+              <li><strong>Sweep (degrees)</strong> — numeric field, default 270, range 1&ndash;360, step 5. Recomputes Start/End angle symmetrically around 0 each time you change it.</li>
+              <li><strong>270&deg; / 300&deg; / 360&deg;</strong> — three preset buttons that set Sweep directly.</li>
+              <li><strong>Clockwise (min &rarr; max)</strong> — checkbox, default on. When checked, Start angle is negative half the sweep and End is positive half; unchecking flips which end is negative. Also recomputes Start/End on toggle.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Center (alignment) &mdash; rotary knobs only</h3>
+            <p>Sets the rotation pivot so an off-center knob spins in place instead of orbiting.</p>
+            <ul class="doc-settings">
+              <li><strong>Auto-center on content</strong> — only enabled when a source is loaded. Re-runs content detection to reset Center X/Y to the opaque-pixel centroid and reports the result in the status bar.</li>
+              <li><strong>Enable crosshair</strong> — checkbox, default off. Shows a draggable crosshair over the preview for manual center placement; supersampling drops to 1 while it's on for responsiveness.</li>
+              <li><strong>Center X (0&ndash;1)</strong> — numeric field, default 0.5, range 0&ndash;1, step 0.01. Normalized horizontal pivot position.</li>
+              <li><strong>Center Y (0&ndash;1)</strong> — numeric field, default 0.5, range 0&ndash;1, step 0.01. Normalized vertical pivot position.</li>
+              <li><strong>Reset to image centre</strong> — sets Center X/Y back to 0.5, 0.5.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Value Arc / Fill Ring (rotary knobs only)</h3>
+            <p>An optional value-tracking arc, in the style of Serum or Vital, baked onto every knob frame.</p>
+            <ul class="doc-settings">
+              <li><strong>Add a value arc that tracks the value</strong> — checkbox, default off. Reveals the rest of this section when checked.</li>
+              <li><strong>Radius (0&ndash;1)</strong> — numeric field, default 0.88, range 0.1&ndash;1.2. Fraction of the frame's inscribed radius; ~0.88 sits just outside a typical knob body, 1.0 rings the frame edge.</li>
+              <li><strong>Thickness (px)</strong> — numeric field, default 4, range 0.5&ndash;64.</li>
+              <li><strong>Arc colour (#AARRGGBB)</strong> — hex text field, default <code>#FFE8440A</code> (the house accent). Invalid hex falls back to the default.</li>
+              <li><strong>Round end caps</strong> — checkbox, default on. Round vs. flat (butt) arc ends.</li>
+              <li><strong>Dim track behind</strong> — checkbox, default on. Draws a faint full-sweep track behind the lit fill so the unfilled remainder is visible; reveals the track colour field below when checked.</li>
+              <li><strong>Track colour (#AARRGGBB)</strong> — hex text field, default <code>#33FFFFFF</code>, only shown when Dim track behind is checked.</li>
+              <li><strong>Gradient along the arc</strong> — checkbox inside the "Gradient &amp; glow" expander, default off. Turns the lit arc into a sweep gradient from Arc colour to Gradient end colour.</li>
+              <li><strong>Gradient end colour</strong> — hex text field, default <code>#FFFFC107</code>, only shown when Gradient along the arc is checked.</li>
+              <li><strong>Glow</strong> — checkbox, default off. Adds a soft blurred under-stroke glow in the arc colour.</li>
+              <li><strong>Glow size (px)</strong> — numeric field, default 6, range 0&ndash;64, only shown when Glow is checked.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Layered Knob (base + pointer) &mdash; rotary knobs only</h3>
+            <p>An alternative to a single flat source image: a static base body plus a separately rotating pointer, so the body stays crisp at any resolution. There are three mutually exclusive ways to populate it — import a real layered file, auto-extract from a flat image, or load base and pointer by hand — and loading one discards the others.</p>
+            <ul class="doc-settings">
+              <li><strong>Import layered file (SVG / PSD)&hellip;</strong> — opens a picker for <code>.svg</code>/<code>.psd</code>/<code>.psb</code>, parses named layers off the UI thread, squares the frame to the imported canvas, and auto-detects the merged rotation center. Replaces the manual base/pointer slots and any previous import.</li>
+              <li><strong>Per-layer behaviour dropdown</strong> — one row per imported layer, showing its name and a Static/Rotate/Frame dropdown you can override; only shown once a layered file is imported.</li>
+              <li><strong>Clear import</strong> — disposes and clears the imported layer stack; only shown once a layered file is imported.</li>
+              <li><strong>Auto-extract from flat knob&hellip;</strong> — opens a picker, then splits a single flat knob image into a static base and rotating pointer via a radial-symmetry residual, immediately filling the Base/Pointer slots and reporting a confidence percentage. Works best on a round knob with one indicator drawn at the minimum (frame-0) position, and there is no preview-before-commit step — verify by scrubbing afterward.</li>
+              <li><strong>Load base (body)&hellip;</strong> — loads the static base/body layer, discards any imported layer stack, squares the frame to it, and auto-detects its content center (which also seeds the pointer's default pivot).</li>
+              <li><strong>Clear base</strong> — disposes/clears the base layer; only enabled once one is loaded.</li>
+              <li><strong>Base layer info readout</strong> — reads "None." until loaded, then shows filename and dimensions.</li>
+              <li><strong>Load pointer layer&hellip;</strong> — loads the rotating pointer drawn on top of the base, discarding any imported layer stack.</li>
+              <li><strong>Clear pointer</strong> — disposes/clears the pointer layer; only enabled once one is loaded.</li>
+              <li><strong>Pointer info readout</strong> — reads "None." until loaded.</li>
+              <li><strong>Pointer pivot X (0&ndash;1)</strong> — numeric field, default 0.5, range 0&ndash;1, only shown once a pointer is loaded. Normalized horizontal rotation pivot within the pointer's own art.</li>
+              <li><strong>Pointer pivot Y (0&ndash;1)</strong> — numeric field, default 0.5, range 0&ndash;1, only shown once a pointer is loaded.</li>
+              <li><strong>Center pointer on body</strong> — resets the pointer's pivot to the base's detected center (the knob axis); only shown once a pointer is loaded.</li>
+              <li><strong>Start angle (frame 0)</strong> — numeric field inside the "Advanced angles / pivot" expander, default -135, range -360 to 360. Editing it directly does not recompute Sweep (degrees) above.</li>
+              <li><strong>End angle (last frame)</strong> — numeric field in the same expander, default 135, range -360 to 360.</li>
+              <li><strong>Pivot offset X</strong> — numeric field in the same expander, default 0, range -2048 to 2048. An additional raw-pixel nudge added on top of the content-center pivot, for deliberately eccentric rotation.</li>
+              <li><strong>Pivot offset Y</strong> — numeric field in the same expander, default 0, range -2048 to 2048.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Travel (fader / slider only)</h3>
+            <p>Only visible when Component Type is Vertical Fader or Horizontal Slider. The loaded source image is treated as the moving cap; the Frame Size above defines the full track area.</p>
+            <ul class="doc-settings">
+              <li><strong>Edge margin (px)</strong> — numeric field, default 4, range 0&ndash;512. Gap left at each end of the cap's travel.</li>
+              <li><strong>Cap cross-axis offset (px)</strong> — numeric field, default 0, range -512 to 512. Offsets the cap on its non-travel axis.</li>
+              <li><strong>Auto-center cap on content</strong> — same underlying command as the knob's centering button; re-detects the content center for cross-axis centering. Only enabled with a source loaded.</li>
+              <li><strong>Enable crosshair</strong> — the same crosshair alignment tool used for knobs, reused here for cap centering.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Button / Toggle States</h3>
+            <p>Only visible when Component Type is Button or Toggle. Each frame here is a discrete UI state rather than a position or rotation transform.</p>
+            <ul class="doc-settings">
+              <li><strong>Import layered file (SVG / PSD)&hellip;</strong> — the same import command as the knob's layered import, but in this context each imported layer maps one-to-one to a frame index by ordinal position among Frame-tagged layers (off = 0, on = 1, and so on), not by rotation. A shared Static border or shadow layer doesn't count toward the frame index.</li>
+              <li><strong>Per-layer behaviour dropdown</strong> — same mechanism as the knob's layered-import list; lets you override Static/Rotate/Frame per layer (Rotate is still selectable here though it has no effect on a button). Only shown once a layered file is imported.</li>
+              <li><strong>Clear import</strong> — clears the imported layer stack; only shown once one is imported.</li>
+            </ul>
+            <p>A button/toggle filmstrip has one frame per state — frame 0 off, frame 1 on, plus optional frame 2 (pressed) and frame 3 (disabled). A toggle is just the off/on pair. Set Frame Count above to match the number of states you need. To supply the art, import a layered SVG or PSD with groups named <code>off</code> and <code>on</code> (or <code>state0</code>, <code>state1</code>, and so on) — each group renders only on its matching frame. The Generate tab can produce this button/toggle art directly from your own AI key.</p>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Meter</h3>
+            <p>Only visible when Component Type is Meter. Renders a progressive segment-fill indicator, either procedurally as colored bars or from loaded on/off-state art.</p>
+            <ul class="doc-settings">
+              <li><strong>Segments</strong> — numeric field, default 12, range 1&ndash;128. Number of LED-style bars for a procedural meter.</li>
+              <li><strong>Fill direction</strong> — dropdown, default Up. Options: Up, Down, Left to Right, Right to Left.</li>
+              <li><strong>Continuous (smooth) fill</strong> — checkbox, default off. When checked, the meter fills smoothly instead of snapping to whole segments — this interacts directly with Segments, since a segment count only matters when this is unchecked.</li>
+              <li><strong>On colour (#AARRGGBB)</strong> — hex text field, default <code>#FFE8440A</code> (house accent). Procedural lit-segment colour.</li>
+              <li><strong>Off colour</strong> — hex text field, default <code>#FF2A2A2A</code>. Procedural unlit-segment colour.</li>
+              <li><strong>Peak marker (highlight the top segment)</strong> — checkbox, default off. Highlights the topmost/leading lit segment in the Peak colour, baked per-frame into the filmstrip — it is not a live peak-hold behavior at runtime.</li>
+              <li><strong>Peak colour (#AARRGGBB)</strong> — hex text field, default <code>#FFFFFFFF</code>, only shown when Peak marker is checked.</li>
+            </ul>
+            <p>A meter is procedural (colored segment bars) by default. Load a Source Image as the on-state art — and optionally a Background as the off-state/track art — to switch to a layered meter that reveals real art up to the value instead.</p>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Static Background (optional)</h3>
+            <p>A fixed backdrop drawn behind the animated element on every frame. Most relevant for meters as the off-state/track art, but usable with any component type.</p>
+            <ul class="doc-settings">
+              <li><strong>Load background layer&hellip;</strong> — opens a file picker and loads a static background drawn behind every frame.</li>
+              <li><strong>Clear background</strong> — disposes/clears the background image; only enabled once one is loaded.</li>
+              <li><strong>Background info readout</strong> — reads "None." until loaded, then shows filename and dimensions.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Quality &amp; Output</h3>
+            <p>Rendering quality, sprite packing layout, and HiDPI export scale.</p>
+            <ul class="doc-settings">
+              <li><strong>Supersample (anti-aliasing)</strong> — dropdown, default 4. Options: 1, 2, 4, 8. Internal oversampling factor during render; export always uses the full value even though the live preview may temporarily cap it lower for responsiveness.</li>
+              <li><strong>Sprite layout</strong> — dropdown, default Strip. Options: Strip (a single 1&times;N strip along the stack direction) or Grid (an R&times;C sprite atlas).</li>
+              <li><strong>Grid columns</strong> — numeric field, default 8, range 1&ndash;512, only shown when Sprite layout is Grid. Rows are computed as the frame count divided by this, rounded up.</li>
+              <li><strong>Stack direction</strong> — dropdown, default Vertical, options Vertical or Horizontal, only shown when Sprite layout is Strip (it's hidden entirely under Grid layout). Frames stack vertically by default: frame 0 is the minimum value, frame N-1 is the maximum.</li>
+              <li><strong>Also export a HiDPI copy</strong> — checkbox, default on. Writes a second, upscaled PNG suffixed by the selected scale (for example <code>@2x</code>).</li>
+              <li><strong>Scale</strong> — dropdown, default 2, options 2, 3, 4 (i.e. <code>@2x</code>/<code>@3x</code>/<code>@4x</code>), only shown when Also export a HiDPI copy is checked. Drives the export suffix, the render/upscale multiplier, and the manifest's declared hi-res asset.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Parameter Law (advanced)</h3>
+            <p>Remaps each frame's position in the sweep to match a plugin's actual parameter law — for example a logarithmic frequency taper — instead of a straight linear divisor. The mapping applies uniformly to knob rotation, layered-knob pivot, meter fill, and the value arc.</p>
+            <ul class="doc-settings">
+              <li><strong>Frame mapping curve</strong> — dropdown, default Linear. Options: Linear, Skew, Logarithmic. Linear is a true no-op — it returns every value completely unchanged, so all pre-existing renders stay byte-identical.</li>
+              <li><strong>Skew exponent</strong> — numeric field, default 1.0, range 0.1&ndash;10, only shown when the curve is Skew. A power-law exponent using the same convention as JUCE's NormalisableRange skew factor; values below 1 front-load resolution toward the low end, values above 1 push it toward the high end.</li>
+              <li><strong>Log base</strong> — numeric field, default 9.0, range 1.1&ndash;1000, only shown when the curve is Logarithmic. Higher values compress the low end more aggressively — useful for frequency-style parameters.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Manifest (optional)</h3>
+            <p>Optionally writes a <code>skin.json</code> sidecar describing the exported control for a JUCE LookAndFeel or skin loader.</p>
+            <ul class="doc-settings">
+              <li><strong>Also write a skin.json manifest</strong> — checkbox, default on.</li>
+              <li><strong>Parameter id</strong> — text field, default empty (falls back to the export file's base name if left blank).</li>
+            </ul>
+            <p>This writes <code>&lt;name&gt;.skin.json</code> next to the exported PNG — one control bound to this parameter, ready to hand to a JUCE LookAndFeel or skin loader.</p>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Code Export (loader snippets)</h3>
+            <p>Emits ready-to-paste source code that loads the exported filmstrip and displays the frame matching a 0..1 value, for five target frameworks.</p>
+            <ul class="doc-settings">
+              <li><strong>Also emit ready-to-paste loader code</strong> — checkbox, default off. Reveals the per-target checkboxes below when checked.</li>
+              <li><strong>JUCE</strong> — checkbox, default on. Emits a JUCE LookAndFeel filmstrip Slider (or meter Component).</li>
+              <li><strong>CSS / HTML</strong> — checkbox, default on. Emits a CSS/HTML sprite control driven by <code>background-position</code>, plus a JS value setter.</li>
+              <li><strong>iPlug2</strong> — checkbox, default off. Emits an IBKnobControl/IBSliderControl/IBitmapControl snippet.</li>
+              <li><strong>HISE</strong> — checkbox, default off. Emits a ScriptPanel with a filmstrip paint routine.</li>
+              <li><strong>React / Web</strong> — checkbox, default off. Emits a <code>.jsx</code> sprite component driven by a 0..1 <code>value</code> prop, for WebView-based plugin GUIs (JUCE WebView, iPlug2 WebUI, Cmajor).</li>
+              <li><strong>Preview / copy code</strong> — an expander containing a live preview of one target's generated snippet.</li>
+              <li><strong>Target picker</strong> — dropdown inside the expander, default Juce, options Juce/Css/IPlug2/Hise/React. Selects which target is shown in the read-only preview below — it does not change which targets get exported (the checkboxes above control that).</li>
+              <li><strong>Code preview</strong> — a read-only, monospaced text box showing the live-updating snippet for the selected preview target.</li>
+              <li><strong>Copy to clipboard</strong> — copies the currently previewed snippet text.</li>
+            </ul>
+            <p>Export writes a loader file per ticked target next to the PNG (<code>.juce.h</code> / <code>.html</code> / <code>.iplug2.cpp</code> / <code>.hise.js</code> / <code>.jsx</code>). Each file loads the strip and shows one frame per value.</p>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Render Recipe (offline 3D)</h3>
+            <p>For path-tracing the control in an external 3D renderer such as Blender, KeyShot, or Octane, this exports a recipe so the offline render frames land on exactly the same angles as StripKit's own sweep math. The resulting frame sequence is later stacked into a strip on the Assemble tab.</p>
+            <ul class="doc-settings">
+              <li><strong>Preview / save render recipe</strong> — an expander containing the recipe target picker, live preview, save, and copy controls.</li>
+              <li><strong>Recipe target</strong> — dropdown, default Blender, options Blender/Csv/Json. Blender emits a <code>bpy</code> script that bakes a keyframe on every one of the N frames (exact angles, no interpolation drift) plus a 0..1 "value" custom property for non-rotary rigs; CSV/JSON emit an engine-agnostic <code>frame,value,angle_deg</code> table. All three share the same per-frame math the renderer uses, so the recipe and the runtime output can't drift apart.</li>
+              <li><strong>Recipe preview</strong> — a read-only text box showing the live-updating recipe text for the selected target.</li>
+              <li><strong>Save recipe&hellip;</strong> — opens a folder picker and saves the recipe file (for example <code>&lt;id&gt;.blender.py</code>, <code>&lt;id&gt;.frames.csv</code>, or <code>&lt;id&gt;.frames.json</code>) into it.</li>
+              <li><strong>Copy to clipboard</strong> — copies the currently previewed recipe text.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Preview Pane, Transport &amp; Export</h3>
+            <p>The right-hand column: a live-rendered preview image that also accepts dropped files, scrub/playback transport, live frame and dimension readouts, the export button, and a post-export folder shortcut.</p>
+            <ul class="doc-settings">
+              <li><strong>Preview image area</strong> — shows the current rendered frame and doubles as a drop zone for a PNG (the same load path as Load source image&hellip;); its border highlights briefly while a file is dragged over it.</li>
+              <li><strong>Previous frame</strong> — icon button; stops playback and steps the scrub position back one frame.</li>
+              <li><strong>Play / Stop</strong> — toggles animated playback of the preview scrub position.</li>
+              <li><strong>Next frame</strong> — icon button; stops playback and steps the scrub position forward one frame.</li>
+              <li><strong>Reset</strong> — icon button; resets the scrub position to the centred start frame.</li>
+              <li><strong>Scrub slider</strong> — default 0.5, range 0&ndash;1. Scrubs the normalized value range; internally the preview resamples at a fixed 1024-step virtual resolution regardless of the real Frame Count, so scrubbing looks smooth even at a low frame count.</li>
+              <li><strong>Frame readout</strong> — text showing the current frame index and count, plus the rotary angle (for knobs) or a percentage (for other types), reflecting the Parameter Law mapping.</li>
+              <li><strong>Strip dimensions readout</strong> — live-computed total exported pixel dimensions, e.g. "Strip: 80&times;5120px &middot; @2x: 160&times;10240px", including the HiDPI variant if that export is enabled.</li>
+              <li><strong>Status message</strong> — rolling feedback text for the most recent action: load, center, export, or an error. Defaults to "Load a source image to begin."</li>
+              <li><strong>Export filmstrip PNG</strong> — renders and saves the stacked PNG (plus the HiDPI copy, <code>skin.json</code> manifest, and ticked code snippets if those options are on). Also bound to <code>Ctrl+E</code>.</li>
+              <li><strong>Show in folder</strong> — opens the OS file explorer at the exported file. Only enabled after a successful export in the current session, and only while that file still exists.</li>
+            </ul>
+          </div>
+
+          <div class="tip"><strong>Tip:</strong> Sweep (degrees) and the Start/End angle fields are linked, but only in one direction. Changing Sweep recomputes Start/End symmetrically around 0 (and Clockwise flips which end is negative) — but the Start/End angle fields inside the "Advanced angles / pivot" expander can also be edited directly, and doing so does <strong>not</strong> update Sweep. If you hand-tune Start/End there, Sweep will silently no longer describe the actual angle range.</div>
+
+          <div class="tip"><strong>Tip:</strong> Loading art is mutually exclusive across the three layered-knob input modes — a single Source Image, manual Base+Pointer layers, and an imported SVG/PSD layer stack all clear each other out when you load a competing one. "Auto-extract from flat knob&hellip;" is the most aggressive of these: it loads the file and immediately overwrites the base/pointer/import slots with the extracted result, with no preview-before-commit step, so verify the result by scrubbing afterward.</div>
+
+          <div class="tip"><strong>Tip:</strong> Switching Component Type resets Frame Width/Height to that type's defaults (and forces Frame Count to 2 for Button/Toggle) — so if you've manually tuned frame size, do that after picking the final component type, not before.</div>
+
+          <div class="tip"><strong>Tip:</strong> The Center X/Y fields and the Pivot Offset X/Y fields are not the same thing, and they stack. Center X/Y is the detected (or crosshair-set) content center used as the rotation pivot; Pivot Offset X/Y, in the Advanced angles/pivot expander, is an additional raw-pixel nudge applied on top of that center — use it only for deliberately off-axis rotation. Separately, the crosshair itself is a pure alignment aid: the art stays frozen in place while you drag it, and only starts orbiting the new center after you release.</div>
+
+          <div class="tip"><strong>Tip:</strong> Sprite layout and Stack direction are mutually exclusive in the UI — Stack direction disappears once Sprite layout is set to Grid, and Grid columns only appears once it is. If you're exporting for iPlug2, be aware its built-in bitmap loader can only read a 1D strip, so a Grid layout with iPlug2 ticked produces a snippet containing a warning comment instead of working loader code.</div>
+
+          <div class="tip"><strong>Tip:</strong> Export stays enabled even without a loaded Source Image as long as there's something else to render — a procedural Meter, a loaded base layer, or an imported layer stack all count. "Show in folder" is scoped to the current session only: it's disabled until an export succeeds, and again if that exported file is later moved or deleted.</div>
+
+        </div>
+
+        <nav class="tut-pager" aria-label="Tutorial navigation">
+          <a class="pager-prev" href="tutorials.html"><span class="pager-label">Back</span>All tutorials</a>
+          <a class="pager-next" href="tutorials-import.html"><span class="pager-label">Next</span>Import &rarr;</a>
+        </nav>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <img src="resources/stripkit-icon.png" alt="" class="footer-mark" />
+        <div>
+          <div class="footer-name">StripKit</div>
+          <div class="footer-tag">Animated filmstrip generator for audio-plugin GUIs.</div>
+        </div>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="contact.html">Contact</a>
+        <a href="https://github.com/Vybecode-LTD/stripkit" target="_blank" rel="noopener">Source (MIT)</a>
+      </nav>
+      <div class="footer-maker">
+        <span>Made by</span>
+        <a href="https://vybeco.de" target="_blank" rel="noopener" class="maker-link">
+          <img src="resources/vybeco-logo.png" alt="VybeCode" class="maker-logo" />
+        </a>
+        <span class="footer-copy">© <span id="year">2026</span> VybeCode Software</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+
+</body>
+</html>

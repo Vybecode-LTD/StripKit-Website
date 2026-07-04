@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Generate Tab Tutorial — StripKit</title>
+  <meta name="description" content="AI-generate layered control art in StripKit's Generate tab using your own OpenAI, Gemini, Claude, or custom-endpoint API key — seeds, variations, matching sets, and refine." />
+  <meta name="theme-color" content="#e8440a" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Generate Tab Tutorial — StripKit" />
+  <meta property="og:description" content="AI-generate layered control art from your own API key." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://stripkit.pro/tutorials-generate.html" />
+  <meta property="og:image" content="https://stripkit.pro/resources/screenshot.png" />
+
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="apple-touch-icon" href="resources/stripkit-icon.png" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/docs.css" />
+</head>
+<body>
+
+  <!-- ===== Header ===== -->
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="StripKit home">
+        <img src="resources/stripkit-icon.png" alt="" class="brand-mark" />
+        <span class="brand-name">StripKit</span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="index.html#features">Features</a>
+        <a href="getting-started.html">Guide</a>
+        <a href="tutorials.html" aria-current="page">Tutorials</a>
+        <a href="index.html#download">Download</a>
+        <a href="changelog.html">Changelog</a>
+        <a class="nav-gh" href="https://github.com/Vybecode-LTD/stripkit" target="_blank" rel="noopener"
+           aria-label="StripKit on GitHub">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.5v-1.8c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17 4.7 18 5 18 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.3v3.3c0 .3.2.7.8.5A11.5 11.5 0 0 0 23.5 12C23.5 5.7 18.3.5 12 .5z"/></svg>
+          GitHub
+        </a>
+        <a class="btn btn-sm" href="index.html#download">Get StripKit</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <div class="container tut-crumb">
+      <a href="tutorials.html">All tutorials</a>
+    </div>
+
+    <section class="tutorial-page">
+      <div class="container">
+        <header class="section-head tutorial-head">
+          <span class="eyebrow">Tab 5 of 6 &middot; Generate</span>
+          <h1>AI-generate layered control art from your own API key</h1>
+          <p>The Generate tab calls OpenAI, Gemini, Claude, or any OpenAI-compatible custom endpoint to produce a layered SVG knob, fader, slider, meter, button, or toggle, then hands it straight to the Create tab as a layered import. Reach for it when you don't have source art yet and want a working filmstrip in one pass, or when you want a whole matching set of controls in one consistent style.</p>
+        </header>
+        <div class="doc-body">
+
+          <div class="doc-feature">
+            <h3>Provider &amp; API key</h3>
+            <p>Choose which AI service generates the art and supply the credential for it. Your key never leaves this section unencrypted.</p>
+            <ul class="doc-settings">
+              <li><strong>Provider</strong> &mdash; a dropdown of <code>Claude</code>, <code>OpenAI</code>, <code>Gemini</code>, and <code>Custom</code>. Defaults to your last-used provider, or Claude if none is set. Switching providers reloads that provider's stored key, suggested models, and remembered model.</li>
+              <li><strong>API key</strong> &mdash; a masked text field (watermark <code>paste your key (sk-&hellip; / AIza&hellip; )</code>). Stored encrypted on this PC with Windows DPAPI and sent only to the provider you picked.</li>
+              <li><strong>Show key</strong> &mdash; a checkbox that reveals the key as plain text. Unchecked (masked) by default.</li>
+              <li><strong>Save key</strong> &mdash; encrypts and stores the current key for the selected provider. Enabled only once you've typed a key.</li>
+              <li><strong>Clear key</strong> &mdash; deletes the stored key for the selected provider and blanks the field.</li>
+              <li><strong>Endpoint base URL</strong> &mdash; appears only when Provider is <code>Custom</code>. Any OpenAI-compatible chat-completions endpoint, e.g. <code>https://openrouter.ai/api/v1</code> or <code>http://localhost:11434/v1</code>.</li>
+              <li><strong>Model</strong> &mdash; an editable autocomplete field, not a locked dropdown: type any model id or pick a per-provider suggestion. Defaults to your remembered model for that provider, or its default if none is remembered.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>What to make</h3>
+            <p>Pick the control type to generate. This drives which layers the AI is asked to produce.</p>
+            <ul class="doc-settings">
+              <li><strong>Control type</strong> &mdash; <code>RotaryKnob</code>, <code>VerticalFader</code>, <code>HorizontalSlider</code>, <code>Meter</code>, <code>Button</code>, or <code>Toggle</code>. Defaults to Rotary Knob. Knobs, buttons, toggles, and meters produce layered SVGs (knob = body + pointer; button/toggle/meter = off + on); faders and sliders produce a single cap/handle shape.</li>
+              <li><strong>Horizontal meter (fills left &rarr; right)</strong> &mdash; only shown when Control type is Meter. Unchecked by default, meaning a tall meter that fills bottom to top; check it for a wide meter that fills left to right.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Seeds</h3>
+            <p>Reusable named presets of the whole style / colour / effects setup below, so you don't have to re-enter a look every session. Apply one to prefill everything, tweak, or save your current settings as a new seed.</p>
+            <ul class="doc-settings">
+              <li><strong>Seed picker</strong> &mdash; ships with five built-ins: Vital / Serum modern, Vintage hardware, Minimal flat, Skeuomorphic metal, and Neon glow, followed by any seeds you've saved.</li>
+              <li><strong>Apply</strong> &mdash; copies the seed's style, notes, avoid list, both colours, canvas size, and all four effect toggles onto your current settings in one shot.</li>
+              <li><strong>Name field</strong> &mdash; a text box (watermark <code>name to save current as&hellip;</code>) for naming a new seed.</li>
+              <li><strong>Save</strong> &mdash; saves the current style/colour/effects settings as a user seed under that name, overwriting any existing user seed with the same name (case-insensitive). Built-in seeds are never overwritten.</li>
+              <li><strong>Delete</strong> &mdash; removes the selected saved seed. Built-in seeds can't be deleted.</li>
+              <li><strong>Style</strong> &mdash; <code>Modern</code> (default), <code>Minimal</code>, <code>Skeuomorphic</code>, <code>Vintage</code>, or <code>Flat</code>.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Colours</h3>
+            <p>Sets the body and accent colours fed into the generation prompt. Click a swatch to open a colour picker, or type a hex value directly.</p>
+            <ul class="doc-settings">
+              <li><strong>Body colour</strong> &mdash; empty by default, which means "let the model choose."</li>
+              <li><strong>Accent colour</strong> &mdash; defaults to <code>#E8440A</code>, matching the StripKit ember accent.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Effects</h3>
+            <p>Style qualities folded directly into the AI prompt. All four are unchecked by default.</p>
+            <ul class="doc-settings">
+              <li><strong>Drop shadow</strong> &mdash; unchecked by default.</li>
+              <li><strong>Outer glow</strong> &mdash; unchecked by default.</li>
+              <li><strong>Bevel / 3D</strong> &mdash; unchecked by default.</li>
+              <li><strong>Metallic sheen</strong> &mdash; unchecked by default.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Extra direction, avoid list &amp; canvas size</h3>
+            <p>Free-text prompt shaping plus the output canvas size.</p>
+            <ul class="doc-settings">
+              <li><strong>Extra direction (optional)</strong> &mdash; a multi-line free-text field (watermark <code>e.g. amber LED ring, knurled edge, brushed aluminium face</code>), empty by default.</li>
+              <li><strong>Describe a reference image&hellip;</strong> &mdash; opens an image picker, sends the file to your provider's vision endpoint, and appends the resulting style description onto Extra direction. Enabled only when a key is entered and nothing else is generating.</li>
+              <li><strong>Avoid (optional)</strong> &mdash; things the model should not include (watermark <code>e.g. no text, no numbers, no photo-realism</code>), empty by default; folded into every generation, single or set.</li>
+              <li><strong>Canvas size (px)</strong> &mdash; <code>256</code>, <code>512</code> (default), <code>768</code>, or <code>1024</code>. Sets the square SVG viewBox edge length.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Generate / Cancel / Variations</h3>
+            <p>The core single-control generation actions, plus a multi-take variations feature that generates several takes at once so you can pick a favourite.</p>
+            <ul class="doc-settings">
+              <li><strong>Generate</strong> &mdash; builds the request from every prompt-shaping field above and calls the provider. Enabled only when a key is entered and no generation is already running.</li>
+              <li><strong>Cancel</strong> &mdash; cancels the in-flight single generation. Enabled only while generating.</li>
+              <li><strong>Generate variations</strong> &mdash; generates several takes of the currently selected control type, all sharing the same style/colour/effects/avoid settings, and shows them as a results grid.</li>
+              <li><strong>Variation count</strong> &mdash; <code>2</code>, <code>4</code> (default), <code>6</code>, or <code>8</code> takes.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Prompt to be sent</h3>
+            <p>A collapsed-by-default expander showing a live, read-only preview of the exact system and user prompt your current settings would send &mdash; useful for understanding or debugging what the AI is being asked for. It recomputes automatically whenever a prompt-shaping field changes.</p>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Matching set</h3>
+            <p>Generate a whole family of controls in one consistent style/colour/effects setup &mdash; a head start on a full skin.</p>
+            <ul class="doc-settings">
+              <li><strong>Knob / Fader / Slider / Meter / Button / Toggle checkboxes</strong> &mdash; which control types to include. Knob, Fader, Meter, and Button are checked by default; Slider and Toggle are unchecked.</li>
+              <li><strong>Generate set</strong> &mdash; generates one item per ticked type, all sharing the same settings. Enabled only when at least one checkbox is ticked and a key is entered.</li>
+              <li><strong>Cancel</strong> &mdash; cancels the in-flight set or variations generation.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Right panel &mdash; preview and results</h3>
+            <p>The right side of the tab shows either a single live preview or a matching-set results grid, depending on what you last ran.</p>
+            <ul class="doc-settings">
+              <li><strong>Single-control preview</strong> &mdash; the at-rest composited preview of the most recently generated or refined control. Shown when there are no matching-set results.</li>
+              <li><strong>Matching-set results grid</strong> &mdash; one tile per generated set member or variation, each with its own <strong>Use in Create</strong>, <strong>Save</strong>, and <strong>Regenerate</strong> buttons. Shown once a set or variations run has produced results.</li>
+            </ul>
+          </div>
+
+          <div class="doc-feature">
+            <h3>Result actions</h3>
+            <p>A persistent action bar under the preview handles handoff, saving, copying, and refining the current result.</p>
+            <ul class="doc-settings">
+              <li><strong>Use in Create</strong> &mdash; sends the current result to the Create tab as a layered import, honouring the actual generated control type (knob &rarr; body+pointer, button/toggle &rarr; off/on layers, fader/slider &rarr; a flattened single source). Enabled only once you have a result.</li>
+              <li><strong>Save SVG&hellip;</strong> &mdash; writes the generated SVG to disk, defaulting to a filename of <code>{provider}-knob</code>.</li>
+              <li><strong>Copy SVG</strong> &mdash; copies the generated SVG text to the clipboard.</li>
+              <li><strong>Refine field</strong> &mdash; a text box (watermark <code>describe a change, e.g. thicker pointer, warmer accent</code>) for describing a change, shown only once you have a result.</li>
+              <li><strong>Refine</strong> &mdash; sends the current SVG plus your instruction back to the same provider and model, replacing the result with the revised version while keeping the same control type. Enabled only when the refine field is non-blank.</li>
+              <li><strong>Save set&hellip;</strong> &mdash; writes every successful control in a matching set to a folder as SVGs, named <code>{style}-{componenttype}.svg</code>. Shown only when a set has results.</li>
+              <li><strong>Model response (raw)</strong> &mdash; a collapsed expander with the model's raw text reply, for diagnosing extraction failures. Shown only when a raw response exists.</li>
+            </ul>
+          </div>
+
+          <div class="tip"><strong>Tip:</strong> Switching Provider silently reloads a different stored key, suggested-models list, and remembered model &mdash; it won't warn you if you had an unsaved key typed in the box. Likewise, switching Provider resets Model back to that provider's remembered/default id, discarding any unsaved custom model you'd typed for the previous one. Save a key before you switch providers if you want to keep it.</div>
+
+          <div class="tip"><strong>Tip:</strong> Clicking Generate can trigger two network calls, not one. If the first take comes back structurally weak &mdash; a knob with no rotating pointer layer, or a button/toggle/meter with fewer than two state-frame layers &mdash; StripKit silently discards it and retries once automatically (status text reads "The first take was missing its moving part &mdash; regenerating once&hellip;"). There's no way to see or keep the rejected first attempt.</div>
+
+          <div class="tip"><strong>Tip:</strong> Applying a Seed overwrites style, notes, avoid list, both colours, canvas size, and all four effect checkboxes at once &mdash; there's no per-field opt-in, so it will clobber manual tweaks made just before you click Apply. Likewise, saving a seed under a name that already exists overwrites it silently (case-insensitive), with no confirmation prompt.</div>
+
+          <div class="tip"><strong>Tip:</strong> Body colour is left empty on purpose, meaning "let the model choose" &mdash; it isn't a placeholder you need to fill in. Accent colour is the only colour field with a real default (<code>#E8440A</code>).</div>
+
+          <div class="tip"><strong>Tip:</strong> "Horizontal meter" only appears, and only has any effect, when Control type is Meter &mdash; it's ignored for every other control type.</div>
+
+          <div class="tip"><strong>Tip:</strong> Generate variations reuses the same results grid, status line, and cancel logic as Generate set &mdash; the only visible difference is the tile labels ("Knob #1", "Knob #2"&hellip; instead of one tile per type). Regenerating a single tile inside either always starts a fresh generation rather than silently no-op'ing after a prior Cancel.</div>
+
+        </div>
+
+        <nav class="tut-pager" aria-label="Tutorial navigation">
+          <a class="pager-prev" href="tutorials-skin.html"><span class="pager-label">Previous</span>&larr; Skin</a>
+          <a class="pager-next" href="tutorials-assemble.html"><span class="pager-label">Next</span>Assemble &rarr;</a>
+        </nav>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <img src="resources/stripkit-icon.png" alt="" class="footer-mark" />
+        <div>
+          <div class="footer-name">StripKit</div>
+          <div class="footer-tag">Animated filmstrip generator for audio-plugin GUIs.</div>
+        </div>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="contact.html">Contact</a>
+        <a href="https://github.com/Vybecode-LTD/stripkit" target="_blank" rel="noopener">Source (MIT)</a>
+      </nav>
+      <div class="footer-maker">
+        <span>Made by</span>
+        <a href="https://vybeco.de" target="_blank" rel="noopener" class="maker-link">
+          <img src="resources/vybeco-logo.png" alt="VybeCode" class="maker-logo" />
+        </a>
+        <span class="footer-copy">© <span id="year">2026</span> VybeCode Software</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+
+</body>
+</html>

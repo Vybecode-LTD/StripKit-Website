@@ -377,7 +377,7 @@
             <div class="step-content">
               <h3>Choose your control type</h3>
               <p>
-                Pick one of the four types in the <strong>Type</strong> dropdown.
+                Pick one of the six types in the <strong>Type</strong> dropdown.
                 The type determines how the per-frame transform is computed:
               </p>
               <ul>
@@ -385,6 +385,8 @@
                 <li><strong>Fader</strong> — vertical cap that travels a fixed pixel distance</li>
                 <li><strong>Slider</strong> — horizontal cap, same travel logic as Fader</li>
                 <li><strong>Meter</strong> — progressive fill; procedural or layered art</li>
+                <li><strong>Button</strong> — discrete state frames (off / on, plus optional pressed &amp; disabled)</li>
+                <li><strong>Toggle</strong> — a latching on/off pair, rendered like a 2-state button</li>
               </ul>
               <div class="tip">
                 <strong>Tip:</strong> You don't need source art for a procedural
@@ -471,9 +473,10 @@
                 <code>frameHeight × frameCount</code>.
               </p>
               <ul>
-                <li><strong>@2x export</strong> — doubles the resolution for HiDPI displays; name ends in <code>@2x.png</code></li>
+                <li><strong>HiDPI export</strong> — write an upscaled copy at @2x, @3x, or @4x for high-density displays; name ends in <code>@2x.png</code>, <code>@3x.png</code>, etc.</li>
                 <li><strong>skin.json manifest</strong> — a schema-valid JSON file that binds the strip to a parameter id and records its dimensions</li>
-                <li><strong>Loader code</strong> — pick JUCE, iPlug2, CSS/HTML, or HISE; StripKit writes a ready-to-paste file next to the PNG</li>
+                <li><strong>Loader code</strong> — pick JUCE, iPlug2, CSS/HTML, HISE, or React; StripKit writes a ready-to-paste file next to the PNG</li>
+                <li><strong>Sprite layout</strong> — a single strip (default) or a row×column grid atlas for loaders that expect one</li>
               </ul>
               <div class="tip">
                 <strong>Tip:</strong> Enable <strong>Export loader code → JUCE</strong>
@@ -549,6 +552,30 @@
               <li>Layered mode: source = lit-segment overlay</li>
               <li>Four fill directions (up/down/left/right)</li>
               <li>Discrete or continuous fill</li>
+            </ul>
+          </div>
+
+          <div class="ctrl-card">
+            <div class="ctrl-icon">⏻</div>
+            <h3>Button</h3>
+            <p>Discrete state frames — one per UI state.</p>
+            <ul class="ctrl-detail">
+              <li>Layered SVG / PSD with off / on groups</li>
+              <li>Optional pressed &amp; disabled states</li>
+              <li>One frame per state, not a sweep</li>
+              <li>The Generate tab can make the art for you</li>
+            </ul>
+          </div>
+
+          <div class="ctrl-card">
+            <div class="ctrl-icon">⇄</div>
+            <h3>Toggle</h3>
+            <p>A latching on/off pair, like a 2-state button.</p>
+            <ul class="ctrl-detail">
+              <li>Just the off + on frames</li>
+              <li>Switch-style generated art</li>
+              <li>Latching code-export binding</li>
+              <li>Rendered exactly like a 2-frame button</li>
             </ul>
           </div>
 
@@ -643,7 +670,7 @@
 
         <div class="next-grid">
 
-          <a class="next-card" href="index.html#features">
+          <a class="next-card" href="tutorials-import.html">
             <div class="next-icon">⇊</div>
             <div class="next-body">
               <h4>Import an existing strip</h4>
@@ -656,41 +683,65 @@
             </div>
           </a>
 
-          <a class="next-card" href="index.html#features">
+          <a class="next-card" href="tutorials-batch.html">
             <div class="next-icon">▦</div>
             <div class="next-body">
               <h4>Batch render a folder</h4>
               <p>
                 Have a whole folder of source PNGs? The <strong>Batch</strong>
                 tab renders them all in one off-thread pass using a shared
-                template — frame count, sweep, @2x, and code export all apply
+                template — frame count, sweep, HiDPI, and code export all apply
                 to every file.
               </p>
             </div>
           </a>
 
-          <a class="next-card" href="index.html#features">
-            <div class="next-icon">◑</div>
-            <div class="next-body">
-              <h4>Layered knobs</h4>
-              <p>
-                Split your knob into a static <strong>base</strong> and a
-                rotating <strong>pointer</strong> — only the indicator moves,
-                so the body stays crisp at every position. Load them as separate
-                PNGs, or let StripKit auto-extract the pointer from a flat knob.
-              </p>
-            </div>
-          </a>
-
-          <a class="next-card" href="index.html#features">
+          <a class="next-card" href="tutorials-generate.html">
             <div class="next-icon">✦</div>
             <div class="next-body">
               <h4>AI-generated art</h4>
               <p>
                 The <strong>Generate</strong> tab takes a style prompt and your
-                own OpenAI, Gemini, or Claude API key, and produces a layered
-                knob SVG — body and pointer in separate groups — ready to render
-                straight to a filmstrip. No external design tool needed.
+                own OpenAI, Gemini, Claude, or custom-endpoint key, and produces
+                layered SVG control art — knobs, faders, meters, buttons, and
+                more — ready to render straight to a filmstrip.
+              </p>
+            </div>
+          </a>
+
+          <a class="next-card" href="tutorials-assemble.html">
+            <div class="next-icon">☰</div>
+            <div class="next-body">
+              <h4>Assemble path-traced frames</h4>
+              <p>
+                Rendered your control as a frame sequence in Blender, KeyShot, or
+                Octane? The <strong>Assemble</strong> tab natural-sorts and packs
+                the whole folder into one strip — with render QC, crossfade
+                re-timing, and an emission/glow pass.
+              </p>
+            </div>
+          </a>
+
+          <a class="next-card" href="tutorials-skin.html">
+            <div class="next-icon">{ }</div>
+            <div class="next-body">
+              <h4>Build a full skin</h4>
+              <p>
+                The <strong>Skin</strong> tab assembles a multi-control
+                <code>skin.json</code> manifest that binds several exported
+                strips to plugin parameters for a whole GUI at once.
+              </p>
+            </div>
+          </a>
+
+          <a class="next-card" href="tutorials.html">
+            <div class="next-icon">◲</div>
+            <div class="next-body">
+              <h4>The complete reference</h4>
+              <p>
+                Every setting on every tab, documented in full — the
+                <strong>Tutorials</strong> section is the exhaustive companion to
+                this quickstart when you need to look up exactly what a control does.
               </p>
             </div>
           </a>

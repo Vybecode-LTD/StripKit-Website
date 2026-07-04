@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>StripKit — Animated Filmstrip Generator for Audio-Plugin GUIs</title>
-  <meta name="description" content="StripKit turns a single transparent PNG into animated filmstrip sprite sheets for audio-plugin knobs, faders, sliders, and meters — with smart alignment, batch processing, and JUCE-ready manifests." />
+  <meta name="description" content="StripKit turns a single transparent PNG into animated filmstrip sprite sheets for audio-plugin knobs, faders, sliders, meters, buttons, and toggles — with smart alignment, AI art generation, path-traced frame assembly, batch processing, and JUCE-ready manifests." />
   <meta name="theme-color" content="#e8440a" />
 
   <!-- Open Graph -->
@@ -47,8 +47,8 @@
         <h1>One PNG in.<br />A flawless animated <span class="accent">filmstrip</span> out.</h1>
         <p class="lede">
           StripKit turns a single transparent image into a frame-perfect sprite sheet for
-          rotary knobs, faders, sliders, and meters — the exact format a JUCE-style
-          LookAndFeel loads, one frame per parameter value.
+          rotary knobs, faders, sliders, meters, buttons, and toggles — the exact format a
+          JUCE-style LookAndFeel loads, one frame per parameter value.
         </p>
         <div class="hero-cta">
           <a class="btn btn-lg" id="download-btn" href="#download">Download for Windows</a>
@@ -58,9 +58,9 @@
           </div>
         </div>
         <ul class="hero-stats">
-          <li><span class="stat-value">4</span><span class="stat-label">control types</span></li>
+          <li><span class="stat-value">6</span><span class="stat-label">control types</span></li>
           <li><span class="stat-value">32–128</span><span class="stat-label">frames</span></li>
-          <li><span class="stat-value">@2x</span><span class="stat-label">HiDPI export</span></li>
+          <li><span class="stat-value">@2–4x</span><span class="stat-label">HiDPI export</span></li>
         </ul>
       </div>
       <div class="hero-shot">
@@ -100,7 +100,22 @@
         <article class="feature-card">
           <div class="feature-icon feature-icon--bars">▮▮▮</div>
           <h3>Meters</h3>
-          <p>Procedural LED segments or layered on/off art, four fill directions, discrete or continuous.</p>
+          <p>Procedural LED segments or layered on/off art, four fill directions, discrete or continuous, optional peak marker.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon">⏻</div>
+          <h3>Buttons &amp; toggles</h3>
+          <p>Discrete state frames — off / on, plus optional pressed and disabled — from a layered SVG or PSD, or AI-generated.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon">✦</div>
+          <h3>AI art generation</h3>
+          <p>Generate layered control art from a prompt with your own OpenAI, Gemini, Claude, or custom-endpoint key — then render it straight to a strip.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon">☰</div>
+          <h3>Path-traced assembly</h3>
+          <p>Stack a pre-rendered frame sequence (Blender, KeyShot, Octane) into one strip — with render QC, crossfade re-timing, and an emission pass.</p>
         </article>
         <article class="feature-card">
           <div class="feature-icon">◎</div>
@@ -125,7 +140,7 @@
         <article class="feature-card">
           <div class="feature-icon">✦</div>
           <h3>Crisp rendering</h3>
-          <p>Supersampling + a Mitchell cubic resampler keep rotated edges sharp; export @2x for HiDPI in one toggle.</p>
+          <p>Supersampling + a Mitchell cubic resampler keep rotated edges sharp; export @2x, @3x, or @4x for HiDPI in one toggle.</p>
         </article>
         <article class="feature-card">
           <div class="feature-icon">▷</div>

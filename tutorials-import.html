@@ -91,7 +91,7 @@
             <h3>Export — single frame / re-stack</h3>
             <p>Two direct export actions that operate on the loaded strip using the current Frame Count and detected orientation.</p>
             <ul class="doc-settings">
-              <li><strong>Extract current frame&hellip;</strong> — saves the currently-previewed frame as its own standalone PNG, suggested filename "{baseName}_frame{index+1}.png". Disabled until a strip is loaded.</li>
+              <li><strong>Extract current frame&hellip;</strong> — saves the currently-previewed frame as its own standalone PNG, suggested filename "{baseName}_frame{index+1}.png". Disabled until a strip is loaded. The same action is also available as an accent-styled button directly on the transport tile next to the status message, for quick access while scrubbing.</li>
               <li><strong>Re-stack (flip orientation)&hellip;</strong> — re-stacks the strip into the opposite orientation from what was detected (vertical&rarr;horizontal or horizontal&rarr;vertical); there is no explicit direction chooser. Runs off the UI thread, suggested filename "{baseName}_{count}frames_{v|h}.png".</li>
             </ul>
           </div>

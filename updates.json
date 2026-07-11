@@ -1,5 +1,17 @@
 [
   {
+    "version": "1.6.0",
+    "date": "2026-07-11",
+    "summary": "Build complete sprite kits in one click.",
+    "changes": [
+      { "type": "new", "text": "**Build complete sprite kits in one click.** Generate a matching set of controls, then use the new Build kit button to automatically create all the image files and configuration you need for your plugin UI." },
+      { "type": "new", "text": "**Better organization and shortcuts.** The Generate tab now labels its control set as \"Matching Kit,\" includes Select all / Clear buttons for faster picking, and shows a button to open your finished kit folder." },
+      { "type": "new", "text": "**Tooltips and color pickers everywhere.** Every numeric field now has helpful explanations, and you can now use live color pickers (instead of typing hex codes) in the Create and Batch tabs, just like Generate already had." },
+      { "type": "new", "text": "**Clearer button styles.** Destructive actions like Remove, Delete, and Clear now use a distinct visual style so you won't accidentally confuse them with regular buttons." },
+      { "type": "new", "text": "**Accessibility and polish across all tabs.** Added descriptions for icon-only buttons, improved contrast and fonts, organized the Create tab into cleaner sections, and unified the app's icons onto a single font." }
+    ]
+  },
+  {
     "version": "1.5.1",
     "date": "2026-07-04",
     "summary": "Fixed: HDR image sequences now load consistently.",
